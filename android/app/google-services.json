@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "582450987697",
+    "project_id": "dr-nashar",
+    "storage_bucket": "dr-nashar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:582450987697:android:fa2933d788c30b3fed5890",
+        "android_client_info": {
+          "package_name": "com.drnashar.dr_nashar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "582450987697-l9kj6t6qo090scl2l1ajtbjhvf6uvt3m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCv4cmmnMhXpfHslfUHnVXztdlVA0c_M4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "582450987697-l9kj6t6qo090scl2l1ajtbjhvf6uvt3m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
