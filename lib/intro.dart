@@ -9,14 +9,14 @@ class IntroScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.blackColor,
+      backgroundColor: Colors.black,
       body: SafeArea(
         child: Center(
           child: Column(
 
             children:  [
               SizedBox(height: 30.0,),
-              Image(image: AssetImage('images/IntroImage.png')),
+              Image(image: AssetImage('images/Icon/Icon.png')),
               TextButton(onPressed: (){
                 Navigator.of(context).pushNamed('Signin');
               }, child: Text('signin'))
