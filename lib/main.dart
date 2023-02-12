@@ -1,4 +1,8 @@
-import 'package:dr_nashar/singin.dart';
+import 'package:dr_nashar/home.dart';
+import 'package:dr_nashar/resetpassword.dart';
+import 'package:dr_nashar/signin.dart';
+import 'package:dr_nashar/signup.dart';
+import 'package:dr_nashar/resetpassword.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:video_player/video_player.dart';
@@ -6,6 +10,7 @@ import 'intro.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:chewie/chewie.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -22,10 +27,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-    home: IntroScreen(),
+      debugShowCheckedModeBanner: false,
+    home: const IntroScreen(),
     routes: {
-      'Intro':(context) =>IntroScreen(),
-      'Signin':(context) =>SignIn(),
+      'Intro':(context) =>const IntroScreen(),
+      'Sign in':(context) =>const SignIn(),
+      'Sign up':(context) =>const SignUp(),
+      'Reset Password' :(context) =>const ResetPassword(),
+      'Home':(context) =>const home(),
 },
     );
   }
