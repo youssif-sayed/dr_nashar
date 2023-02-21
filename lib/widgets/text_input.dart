@@ -1,13 +1,15 @@
-import 'package:dr_nashar/utils/colors_palette.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Project imports:
+import 'package:dr_nashar/utils/colors_palette.dart';
 
 class TextInput extends StatefulWidget {
   final String hint;
   final TextInputType inputType;
   final IconData? prefixIcon;
   final String? Function(String?)? validator;
-  final void Function(String?)? onSaved;
+  final void Function(String?)? onChanged;
 
   const TextInput({
     Key? key,
@@ -15,7 +17,7 @@ class TextInput extends StatefulWidget {
     this.inputType = TextInputType.text,
     this.prefixIcon,
     this.validator,
-    this.onSaved,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -28,39 +30,33 @@ class _TextInputState extends State<TextInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          height: 47,
-          width: double.infinity,
-          decoration: BoxDecoration(color: ColorsPalette.white,borderRadius: BorderRadius.circular(50),),
-        ),
-        TextFormField(
-        style: TextStyle(color: Colors.black),
-        obscureText: widget.inputType == TextInputType.visiblePassword && _obscured,
-        keyboardType: widget.inputType,
-        validator: widget.validator,
-        onSaved: widget.onSaved,
-        cursorRadius: Radius.circular(200),
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.all(12),
-          isDense: true,
+    return TextFormField(
+    style: TextStyle(color: Colors.black),
+    obscureText: widget.inputType == TextInputType.visiblePassword && _obscured,
+    keyboardType: widget.inputType,
+    validator: widget.validator,
+    onChanged: widget.onChanged,
+    cursorRadius: Radius.circular(200),
+    decoration: InputDecoration(
+      filled: true,
+      fillColor: Colors.white,
+      contentPadding: const EdgeInsets.all(12),
+      isDense: true,
 
-          focusColor: ColorsPalette.darkGrey,
+      focusColor: ColorsPalette.darkGrey,
 
 
-          border:  OutlineInputBorder(borderSide: const BorderSide(color: ColorsPalette.white),borderRadius: BorderRadius.circular(50)),
-          prefixIcon: widget.prefixIcon != null ? Icon(widget.prefixIcon, color: Colors.blueAccent) : null,
-          hintText: widget.hint,
-          hintStyle: const TextStyle(color: ColorsPalette.darkGrey),
-          suffixIcon: widget.inputType == TextInputType.visiblePassword
-              ? IconButton(
-                  icon: Icon(_obscured ? Icons.visibility : Icons.visibility_off),
-                  onPressed: _toggleObscure,
-                )
-              : null,
-        ),
-      ),]
-    );
+      border:  OutlineInputBorder(borderSide: const BorderSide(color: ColorsPalette.white),borderRadius: BorderRadius.circular(50)),
+      prefixIcon: widget.prefixIcon != null ? Icon(widget.prefixIcon, color: Colors.blueAccent) : null,
+      hintText: widget.hint,
+      hintStyle: const TextStyle(color: ColorsPalette.darkGrey),
+      suffixIcon: widget.inputType == TextInputType.visiblePassword
+          ? IconButton(
+              icon: Icon(_obscured ? Icons.visibility : Icons.visibility_off),
+              onPressed: _toggleObscure,
+            )
+          : null,
+    ),
+      );
   }
 }

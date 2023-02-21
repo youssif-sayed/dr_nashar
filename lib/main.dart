@@ -1,39 +1,94 @@
-import 'package:dr_nashar/resetpassword.dart';
-import 'package:dr_nashar/signin.dart';
-import 'package:dr_nashar/signup.dart';
+// Flutter imports:
+import 'dart:async';
+
+import 'package:dr_nashar/screens/home.dart';
+import 'package:dr_nashar/screens/intro.dart';
+import 'package:dr_nashar/screens/signin.dart';
+import 'package:dr_nashar/screens/signup.dart';
+import 'package:dr_nashar/shared/network/dio.dart';
+import 'package:dr_nashar/user/UserID.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_windowmanager/flutter_windowmanager.dart';
-import 'package:video_player/video_player.dart';
-import 'intro.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+
+// Package imports:
 import 'package:chewie/chewie.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_windowmanager/flutter_windowmanager.dart';
+import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
+
+// Project imports:
+import 'package:dr_nashar/screens/resetpassword.dart';
+
+import 'firebase_options.dart';
+import 'dart:io'show Platform;
+
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await DioHelperPayment.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  if(Platform.isAndroid)
   FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+
   runApp( MyApp());
 }
 
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late StreamSubscription<User?> user;
+
+  void initState() {
+    super.initState();
+    user =  FirebaseAuth.instance.authStateChanges().listen((user) async {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        UserID.userID = await FirebaseAuth.instance.currentUser;
+         await UserID.get_user_data();
+        print(UserID.userID?.uid);
+        print('User is signed in!');
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    user.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-    home: IntroScreen(),
-    routes: {
-      'Intro':(context) =>IntroScreen(),
-      'SignInScreen':(context) =>SignIn(),
-      'SignUpScreen' :(context)=>SignUpScreen(),
-      'RestPasswordScreen':(context)=>ResetPassword(),
+
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => UserID())],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+      initialRoute: FirebaseAuth.instance.currentUser!=null ?'HomeScreen':'Intro',
+      home: IntroScreen(),
+      routes: {
+        'Intro':(context) =>IntroScreen(),
+        'SignInScreen':(context) =>SignIn(),
+        'SignUpScreen' :(context)=>SignUpScreen(),
+        'RestPasswordScreen':(context)=>ResetPassword(),
+        'HomeScreen' :(context)=>HomeScreen(),
 
 },
+      ),
     );
   }
+
+
 }
 
 
