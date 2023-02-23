@@ -238,7 +238,7 @@ class _SignInState extends State<SignIn> {
                 isLoading = false;
               });
               Navigator.of(context).pop();
-              Navigator.of(context).pushReplacementNamed('HomeScreen');
+              Navigator.of(context).pushReplacementNamed('LoadingHomeScreen');
             }
             else{
               setState(() {

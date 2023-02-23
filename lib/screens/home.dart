@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: Colors.white, fontSize: 35,fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  '${data['firstName']}',
+                                  '${UserID.userdata['firstName']}',
                                   maxLines: 3,
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 35,fontWeight: FontWeight.bold),

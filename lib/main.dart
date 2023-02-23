@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:dr_nashar/screens/home.dart';
 import 'package:dr_nashar/screens/intro.dart';
+import 'package:dr_nashar/screens/loadingHome.dart';
 import 'package:dr_nashar/screens/signin.dart';
 import 'package:dr_nashar/screens/signup.dart';
 import 'package:dr_nashar/shared/network/dio.dart';
@@ -45,25 +46,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late StreamSubscription<User?> user;
+
 
   void initState() {
     super.initState();
-    user =  FirebaseAuth.instance.authStateChanges().listen((user) async {
-      if (user == null) {
-        print('User is currently signed out!');
-      } else {
-        UserID.userID = await FirebaseAuth.instance.currentUser;
-         await UserID.get_user_data();
-        print(UserID.userID?.uid);
-        print('User is signed in!');
-      }
-    });
+
   }
 
   @override
   void dispose() {
-    user.cancel();
     super.dispose();
   }
 
@@ -74,13 +65,14 @@ class _MyAppState extends State<MyApp> {
       providers: [ChangeNotifierProvider(create: (_) => UserID())],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-      initialRoute: FirebaseAuth.instance.currentUser!=null ?'HomeScreen':'Intro',
+      initialRoute: FirebaseAuth.instance.currentUser!=null ?'LoadingHomeScreen':'Intro',
       home: IntroScreen(),
       routes: {
         'Intro':(context) =>IntroScreen(),
         'SignInScreen':(context) =>SignIn(),
         'SignUpScreen' :(context)=>SignUpScreen(),
         'RestPasswordScreen':(context)=>ResetPassword(),
+        'LoadingHomeScreen':(context)=>LoadingHomeScreen(),
         'HomeScreen' :(context)=>HomeScreen(),
 
 },
