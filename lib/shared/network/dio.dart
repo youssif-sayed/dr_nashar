@@ -5,7 +5,7 @@ class DioHelperPayment {
   static late Dio dio;
   static init (){
     dio = Dio(
-      BaseOptions(baseUrl: ' https://accept.paymob.com/api /',receiveDataWhenStatusError: true));
+      BaseOptions(baseUrl: 'https://accept.paymob.com/api/',receiveDataWhenStatusError: true));
   }
 
   static Future<Response> getData({

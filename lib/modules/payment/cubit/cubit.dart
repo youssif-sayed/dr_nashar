@@ -15,6 +15,8 @@ class PaymentCubit extends Cubit<PaymentState> {
     DioHelperPayment.postData(
         url: "auth/tokens", data: {"api_key": PayMobApiKey}).then((value) {
       PayMobFirstToken = value.data['token'];
+      print ('First token : $PayMobFirstToken');
+      price = '${price}00';
       getOrderID(price, firstname, lastname, email, phone);
       emit(PaymentSuccessState());
     }).catchError((error) {
@@ -31,6 +33,7 @@ class PaymentCubit extends Cubit<PaymentState> {
       "currency":"EGP",
     }).then((value) {
       PayMobOrderID = value.data['id'].toString();
+      print ('OrderID : $PayMobOrderID');
       getFinalTokenCard(price, firstname, lastname, email, phone);
       emit(PaymentOrderIDSuccessState());
     }).catchError((error) {
@@ -39,35 +42,38 @@ class PaymentCubit extends Cubit<PaymentState> {
   }
 
   Future getFinalTokenCard(String price,String firstname,String lastname,String email,String phone) async {
+
     DioHelperPayment.postData(url: "acceptance/payment_keys", data: {
-        "auth_token": PayMobFirstToken,
-        "amount_cents": price,
-        "expiration": 3600,
-        "order_id": PayMobOrderID,
-        "billing_data": {
-          "apartment": "na",
-          "email": email,
-          "floor": "na",
-          "first_name": firstname,
-          "street": "na",
-          "building": "na",
-          "phone_number": phone,
-          "shipping_method": "na",
-          "postal_code": "na",
-          "city": "na",
-          "country": "na",
-          "last_name": lastname,
-          "state": "na"
-        },
-        "currency": "EGP",
-        "integration_id": IntgrationIDCard,
+      "auth_token": PayMobFirstToken,
+      "amount_cents": price,
+      "expiration": 3600,
+      "order_id": PayMobOrderID,
+      "billing_data": {
+        "apartment": "NA",
+        "email": email,
+        "floor": "NA",
+        "first_name": firstname,
+        "street": "NA",
+        "building": "NA",
+        "phone_number": phone,
+        "shipping_method": "NA",
+        "postal_code": "NA",
+        "city": "NA",
+        "country": "CR",
+        "last_name": lastname,
+        "state": "Utah"
+      },
+      "currency": "EGP",
+      "integration_id": IntgrationIDCard,
+      "lock_order_when_paid": "false"
 
 
     }).then((value) {
       PaymobCardFinalToken = value.data['token'].toString();
-      print(PaymobCardFinalToken);
+      print('Final token: $PaymobCardFinalToken');
       emit(PaymentRequestSuccessState());
     }).catchError((error) {
+      print('error final token :$error');
       emit(PaymentRequestErrorState(error));
     });
   }

@@ -1,5 +1,6 @@
 import UIKit
 import Flutter
+import flutter_downloader
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -10,8 +11,10 @@ import Flutter
 
     self.window.makeSecure()
     GeneratedPluginRegistrant.register(with: self)
+    FlutterDownloaderPlugin.setPluginRegistrantCallback(registerPlugins)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
+
   override func applicationWillResignActive(
       _ application: UIApplication
     ) {
@@ -23,6 +26,11 @@ import Flutter
       self.window.isHidden = false;
     }
 }
+private func registerPlugins(registry: FlutterPluginRegistry) {
+      if (!registry.hasPlugin("FlutterDownloaderPlugin")) {
+         FlutterDownloaderPlugin.register(with: registry.registrar(forPlugin: "FlutterDownloaderPlugin")!)
+      }
+  }
 extension UIWindow {
 func makeSecure() {
     let field = UITextField()

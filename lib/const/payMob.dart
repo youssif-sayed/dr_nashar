@@ -1,12 +1,15 @@
 
-//to be changed
-String PayMobApiKey='ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2TmpjeE5EUXhMQ0p1WVcxbElqb2lhVzVwZEdsaGJDSjkuVGI0ZWhnbUp2Y3RYVFFGUmRqZWo5Qy1ITGNMLXVtOHp6M2tXTnhxMjJjTmFnZEw5cEhzUFNmTXBadFFldWxENUwzc0Zpdk5vNkt1UjJDTkg4aU1fRUE=';
+
+String PayMobApiKey='ZXlKMGVYQWlPaUpLVjFRaUxDSmhiR2NpT2lKSVV6VXhNaUo5LmV5SndjbTltYVd4bFgzQnJJam8yT0RnME56Y3NJbU5zWVhOeklqb2lUV1Z5WTJoaGJuUWlMQ0p1WVcxbElqb2lhVzVwZEdsaGJDSjkuM0l6dWpyQ2ZWYU1sLXZnS0t2cXBTdVB1Tk5Kbng3Y01OT0pqMk13VG9KQmJOQVY3Zi1RUlNKUDJINDB6U1hMaHBtUWhoVjBRYkNWVHdIbUJBcFpvZHc=';
 String PayMobFirstToken='';
 String PayMobOrderID='';
 String PaymobCardFinalToken='';
-// to be changed
-String IntgrationIDCard = '3277853';
+
+String IntgrationIDCard = '3358862';
 //to be changed
 String IntgrationIDKiosk ='';
 String KioskFinalToken= '';
 String RefCode='';
+
+
+String IFrameLink = 'https://accept.paymob.com/api/acceptance/iframes/727981?payment_token=';

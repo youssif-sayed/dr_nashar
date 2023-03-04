@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dr_nashar/user/yearsData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -33,21 +34,22 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
         print('User is signed in!');
         if (UserID.userID!=null) {
           final docRef =  FirebaseFirestore.instance.collection("userData").doc("${UserID.userID?.uid}");
-
           docRef.get().then(
-                (DocumentSnapshot doc)  {
-
+                (DocumentSnapshot doc)  async {
               var data =  doc.data() as Map<String, dynamic>;
               if (data!=null) {
                 print('data:$data');
                 UserID.userdata = data;
+                YearsData.set_defult_year();
+                bool isyears = await YearsData.get_years_data();
+                print(isyears);
+                if (isyears)
                 Navigator.of(context).pushReplacementNamed('HomeScreen');
               }
 
             },
             onError: (e) => print("Error getting document: $e"),
           );
-
 
 
 

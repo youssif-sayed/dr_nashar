@@ -4,8 +4,14 @@ import 'dart:async';
 import 'package:dr_nashar/screens/home.dart';
 import 'package:dr_nashar/screens/intro.dart';
 import 'package:dr_nashar/screens/loadingHome.dart';
+import 'package:dr_nashar/screens/loadingPay.dart';
+import 'package:dr_nashar/screens/loadingSubject.dart';
+import 'package:dr_nashar/screens/payScreen.dart';
+import 'package:dr_nashar/screens/profileScreen.dart';
 import 'package:dr_nashar/screens/signin.dart';
 import 'package:dr_nashar/screens/signup.dart';
+import 'package:dr_nashar/screens/subjectScreen.dart';
+import 'package:dr_nashar/screens/videoScreen.dart';
 import 'package:dr_nashar/shared/network/dio.dart';
 import 'package:dr_nashar/user/UserID.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,6 +20,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:chewie/chewie.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
@@ -31,6 +38,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FlutterDownloader.initialize();
   if(Platform.isAndroid)
   FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
 
@@ -61,22 +69,26 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
-    return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => UserID())],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-      initialRoute: FirebaseAuth.instance.currentUser!=null ?'LoadingHomeScreen':'Intro',
-      home: IntroScreen(),
-      routes: {
-        'Intro':(context) =>IntroScreen(),
-        'SignInScreen':(context) =>SignIn(),
-        'SignUpScreen' :(context)=>SignUpScreen(),
-        'RestPasswordScreen':(context)=>ResetPassword(),
-        'LoadingHomeScreen':(context)=>LoadingHomeScreen(),
-        'HomeScreen' :(context)=>HomeScreen(),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+    initialRoute: FirebaseAuth.instance.currentUser!=null ?'LoadingHomeScreen':'Intro',
+    home: IntroScreen(),
+    routes: {
+      'Intro':(context) =>IntroScreen(),
+      'SignInScreen':(context) =>SignIn(),
+      'SignUpScreen' :(context)=>SignUpScreen(),
+      'RestPasswordScreen':(context)=>ResetPassword(),
+      'LoadingHomeScreen':(context)=>LoadingHomeScreen(),
+      'HomeScreen' :(context)=>HomeScreen(),
+      'LoadingPayScreen':(context)=>LoadingPayScreen(),
+      'PayScreen' :(context)=>PayScreen(),
+      'ProfileScreen':(context)=>ProfileScreen(),
+      'SubjectScreen':(context)=>SubjectScreen(),
+      'LoadingSubjectScreen':(context)=>LoadingSubjectScreen(),
+      'VideoScreen':(context)=>VideoScreen(),
+
 
 },
-      ),
     );
   }
 
