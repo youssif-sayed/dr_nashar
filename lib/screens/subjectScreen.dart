@@ -64,7 +64,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                       style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold,color: Colors.blueGrey),
                       maxLines: 3,
                     ),
-                    InkWell(
+                    /*InkWell(
                       onTap: (){
                         showDialog(
                           context: context,
@@ -110,7 +110,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                         decoration: BoxDecoration(color: Colors.blueAccent,borderRadius: BorderRadius.circular(50)),
                         child: Text('Buy ${YearsData.subjectData[index]['price']}EGP',style: TextStyle(color: Colors.white),),
                       ),
-                    ),
+                    ),*/
                   ],
                 ),
               ),
@@ -137,7 +137,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                                     children: [
                                       Gaps.gap32,
                                       TextField(
-                                        keyboardType: TextInputType.number,
+                                        keyboardType: TextInputType.text,
                                         decoration: InputDecoration(
                                           border: OutlineInputBorder(),
                                           labelText: 'code',
@@ -150,11 +150,13 @@ class _SubjectScreenState extends State<SubjectScreen> {
                                 ),
                                 Column(
                                   children: [
-                                    MaterialButton(onPressed: (){
+                                    MaterialButton(onPressed: () async {
                                       bool iscode=false;
                                       int i=0;
                                       DateTime nowDate =DateTime.now();
-                                    YearsData.get_lecture_codes(index);
+                                    final codesData= await YearsData.get_lecture_codes(index);
+                                    if  (codesData)
+                                      print('');
 
                                     for (;i<YearsData.lectureCodes.length;i++)
                                       {
@@ -216,7 +218,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                       maxLines: 3,
                     ),
                   ),
-                  Divider(thickness: 1,
+                  /*Divider(thickness: 1,
                   indent: 20,
                     endIndent: 20,
                   ),
@@ -230,7 +232,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                       ,style: TextStyle(fontSize: 20,color: Colors.teal,fontWeight: FontWeight.w700),
                       maxLines: 3,
                     ),
-                  ),
+                  ),*/
                 ],
               ),
             ),

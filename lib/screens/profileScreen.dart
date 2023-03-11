@@ -9,23 +9,6 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          ShaderMask(
-              blendMode: BlendMode.srcIn,
-              shaderCallback: (Rect bounds) => LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xff08CE5D),
-                  Color(0xff098FEA),
-                ],
-              ).createShader(bounds),
-              child: IconButton(onPressed: (){
-                Navigator.pushNamed(context, 'ProfileScreen');
-              }, icon: Icon(Icons.account_circle_rounded),iconSize: 35,)
-          ),
-
-        ],
         centerTitle: true,
         backgroundColor: Colors.black,
         title: Container(

@@ -363,6 +363,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Image.network(
                       '${fetchedyear[index]['image']}',
                       fit: BoxFit.cover,
+                      width: MediaQuery.of(context).size.width,
                     ),
                   ]),
                   Container(

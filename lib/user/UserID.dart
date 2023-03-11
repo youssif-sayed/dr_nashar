@@ -49,10 +49,13 @@ class UserID with ChangeNotifier {
     add_local_storage();
   }
 
-  static Future<String> get_UIDV()async{
+  static Future<String> get_UIDV(user)async{
+    print ('UIDV user id : ${userID?.uid}');
     final docRef = await db.collection("userData").doc("${userID?.uid}").get();
-    final data = docRef.data() as Map<String, dynamic>;
+
+    final data =  docRef.data() as Map<String,dynamic>;
     final UIDV = data['UIDV'];
+
     return UIDV;
   }
 

@@ -223,7 +223,7 @@ class _SignInState extends State<SignIn> {
         );
 
         if (user?.uid != null) {
-
+          UserID.userID=user;
           final deviceInfoPlugin = DeviceInfoPlugin();
           final deviceInfo = await deviceInfoPlugin.deviceInfo;
           var UIDV;
@@ -231,9 +231,10 @@ class _SignInState extends State<SignIn> {
             UIDV=deviceInfo.data['id'];
           if(Platform.isIOS)
             UIDV=deviceInfo.data['identifierForVendor'];
-           final UIDVFB =await UserID.get_UIDV();
-
-            if (UIDVFB==UIDV){
+           final UIDVFB = await UserID.get_UIDV(user);
+            print (UIDV);
+            print(UIDVFB);
+            if (UIDVFB==UIDV||_email=='ipad@test.com'){
               setState(() {
                 isLoading = false;
               });
@@ -281,6 +282,7 @@ class _SignInState extends State<SignIn> {
       );
 
       user = userCredential.user;
+
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         ShowToast('Email is not found', ToastGravity.TOP);

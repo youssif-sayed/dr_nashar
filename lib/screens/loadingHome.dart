@@ -23,6 +23,8 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
     super.initState();
     loadData();
   }
+
+
   Future<void> loadData() async {
     user=  FirebaseAuth.instance.authStateChanges().listen((user) async {
       if (user == null) {
