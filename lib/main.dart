@@ -1,6 +1,7 @@
 // Flutter imports:
 import 'dart:async';
 
+import 'package:dr_nashar/modules/payment/toggle.dart';
 import 'package:dr_nashar/screens/home.dart';
 import 'package:dr_nashar/screens/intro.dart';
 import 'package:dr_nashar/screens/loadingHome.dart';
@@ -86,6 +87,8 @@ class _MyAppState extends State<MyApp> {
       'SubjectScreen':(context)=>SubjectScreen(),
       'LoadingSubjectScreen':(context)=>LoadingSubjectScreen(),
       'VideoScreen':(context)=>VideoScreen(),
+
+
 
 
 },

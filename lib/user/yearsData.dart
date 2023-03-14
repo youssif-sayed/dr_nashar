@@ -9,7 +9,7 @@ class YearsData{
   static var  defultYear;
   static var sec1,sec2,sec3,prep1,prep2,prep3;
   static var selectedSubject,selectedYear,subjectData;
-  static var lectureNumber,lectureCodes;
+  static var lectureNumber,lectureCodes,lectureID;
 
   static void set_defult_year (){
     switch (UserID.userdata['grade']){

@@ -5,7 +5,7 @@ String PayMobFirstToken='';
 String PayMobOrderID='';
 String PaymobCardFinalToken='';
 
-String IntgrationIDCard = '3358862';
+String IntgrationIDCard = '3404049';
 //to be changed
 String IntgrationIDKiosk ='';
 String KioskFinalToken= '';

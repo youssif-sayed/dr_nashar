@@ -64,7 +64,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                       style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold,color: Colors.blueGrey),
                       maxLines: 3,
                     ),
-                    /*InkWell(
+                    InkWell(
                       onTap: (){
                         showDialog(
                           context: context,
@@ -97,6 +97,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                                   ),
                                   onPressed: () async {
                                     YearsData.lectureNumber=index;
+                                    YearsData.lectureID=YearsData.subjectData[index]['id'];
                                     Navigator.of(context).pushReplacementNamed('LoadingPayScreen');
                                   },
                                 )
@@ -110,7 +111,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                         decoration: BoxDecoration(color: Colors.blueAccent,borderRadius: BorderRadius.circular(50)),
                         child: Text('Buy ${YearsData.subjectData[index]['price']}EGP',style: TextStyle(color: Colors.white),),
                       ),
-                    ),*/
+                    ),
                   ],
                 ),
               ),
