@@ -16,6 +16,7 @@ import 'package:dr_nashar/screens/videoScreen.dart';
 import 'package:dr_nashar/shared/network/dio.dart';
 import 'package:dr_nashar/user/UserID.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -71,6 +72,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
 
     return MaterialApp(
+
       debugShowCheckedModeBanner: false,
     initialRoute: FirebaseAuth.instance.currentUser!=null ?'LoadingHomeScreen':'Intro',
     home: IntroScreen(),

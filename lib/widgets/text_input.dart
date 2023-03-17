@@ -31,6 +31,8 @@ class _TextInputState extends State<TextInput> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+
+      keyboardAppearance: Brightness.dark,
     style: TextStyle(color: Colors.black),
     obscureText: widget.inputType == TextInputType.visiblePassword && _obscured,
     keyboardType: widget.inputType,

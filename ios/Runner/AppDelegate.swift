@@ -15,16 +15,16 @@ import flutter_downloader
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
-  override func applicationWillResignActive(
-      _ application: UIApplication
-    ) {
-      self.window.isHidden = true;
-    }
-    override func applicationDidBecomeActive(
-      _ application: UIApplication
-    ) {
-      self.window.isHidden = false;
-    }
+//   override func applicationWillResignActive(
+//       _ application: UIApplication
+//     ) {
+//       self.window.isHidden = true;
+//     }
+//     override func applicationDidBecomeActive(
+//       _ application: UIApplication
+//     ) {
+//       self.window.isHidden = false;
+//     }
 }
 private func registerPlugins(registry: FlutterPluginRegistry) {
       if (!registry.hasPlugin("FlutterDownloaderPlugin")) {
