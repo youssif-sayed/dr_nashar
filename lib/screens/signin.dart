@@ -87,13 +87,7 @@ class _SignInState extends State<SignIn> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              ElevatedButton(onPressed: (){
-                                FocusScope.of(context).unfocus();
-                                print(MediaQuery.of(context).viewInsets.bottom);
 
-
-
-                              }, child: Text('press')),
 
                               TextInput(
 
