@@ -5,6 +5,7 @@ import 'package:dr_nashar/user/yearsData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:rive/rive.dart';
 
 import '../user/UserID.dart';
 
@@ -69,11 +70,22 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
     user.cancel;
   }
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return  Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: Center(
-          child: SpinKitDoubleBounce(color: Colors.amber,size: 100.0,),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(),
+            Container(
+              height: 200,
+              child: Hero(tag: 'logo',
+                  child: RiveAnimation.asset('images/animatedLogo.riv',)),),
+            Container(),
+            Container(),
+            SpinKitRing(color: Colors.amber,size: 30.0,lineWidth: 3,),
+            Container(),
+          ],
         ),
       ),
     );

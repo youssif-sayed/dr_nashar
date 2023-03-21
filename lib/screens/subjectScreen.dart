@@ -20,6 +20,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.black,
@@ -34,10 +35,20 @@ class _SubjectScreenState extends State<SubjectScreen> {
       ),
       body: Container(
         padding: EdgeInsets.all(12),
-        child: ListView.builder(
+        child: YearsData.subjectData.length==0?Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('The course is currently empty',style: TextStyle(fontSize: 20),),
+            SizedBox(height: 10,),
+            Image.asset('images/empty_list.png',color: Colors.white.withOpacity(0.5), colorBlendMode: BlendMode.modulate,),
+
+
+          ],
+        ):ListView.builder(
             itemCount: YearsData.subjectData.length,
             itemBuilder: (context,index){
-          return listItem(index);}
+          return listItem(index);
+                }
         ),
       ),
     );
@@ -155,7 +166,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                                       bool iscode=false;
                                       int i=0;
                                       DateTime nowDate =DateTime.now();
-                                    final codesData= await YearsData.get_lecture_codes(index);
+                                    final codesData= await YearsData.get_lecture_codes();
                                     if  (codesData)
                                       print('');
 
@@ -166,7 +177,8 @@ class _SubjectScreenState extends State<SubjectScreen> {
                                           break;
                                           }
                                       }
-                                    if (iscode){
+                                    if (iscode&&YearsData.lectureCodes.values.elementAt(i)['price']==YearsData.subjectData[index]['price']){
+
                                       if (YearsData.lectureCodes.values.elementAt(i)['used']){
 
                                         if (YearsData.lectureCodes.values.elementAt(i)['UID']==UserID.userID?.uid)
