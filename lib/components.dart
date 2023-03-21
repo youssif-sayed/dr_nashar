@@ -79,6 +79,33 @@ Widget defaultFormField({
       ),
     );
 
+Widget userInfo(IconData icon, String data, Color color, onPressed) {
+  return GestureDetector(
+    onTap: onPressed,
+    child: Row(
+      children: [
+        CircleAvatar(
+          backgroundColor: color,
+          child: Icon(icon, color: Colors.white,),
+        ),
+        const SizedBox(
+          width: 10.0,
+        ),
+        Text(
+          data,
+          style: const TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+
+        const Spacer(),
+
+        const Icon(Icons.arrow_forward_ios_rounded,color: Colors.grey,),
+      ],
+    ),
+  );
+}
 
 void NavigateTo(context, widget) => Navigator.push(
     context,
@@ -93,3 +120,20 @@ void NavigateAndFinish(context, widget) => Navigator.pushAndRemoveUntil(
     ),
       (Route<dynamic> route) => false,
 );
+
+showLoadingDialog(context) {
+  showDialog(
+    context: context,
+    builder: (context) => SimpleDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      children: const [
+        Center(
+          child: CircularProgressIndicator(color: Colors.green),
+        ),
+      ],
+    ),
+    barrierDismissible: false,
+  );
+}

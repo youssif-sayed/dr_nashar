@@ -1,12 +1,11 @@
 // Flutter imports:
-import 'package:flutter/material.dart';
-
-// Package imports:
-import 'package:firebase_auth/firebase_auth.dart';
-
 // Project imports:
 import 'package:dr_nashar/utils/gaps.dart';
 import 'package:dr_nashar/widgets/text_input.dart';
+
+// Package imports:
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../widgets/ShowToast.dart';
@@ -48,7 +47,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     height: 30,
                   ),
                   Container(
-                    constraints: BoxConstraints(maxWidth: 600),
+                    constraints: const BoxConstraints(maxWidth: 600),
                     child: TextInput(
                       hint: 'Email',
                       prefixIcon: Icons.email,
@@ -87,9 +86,12 @@ class _ResetPasswordState extends State<ResetPassword> {
                       style: TextStyle(fontSize: 20),
                     ),
                   ),
-                  if (msg!=null)...[
+                  if (msg != null) ...[
                     Gaps.gap16,
-                    Text(msg!,style: TextStyle(color: Colors.red),),
+                    Text(
+                      msg!,
+                      style: const TextStyle(color: Colors.red),
+                    ),
                   ]
                 ],
               ),
@@ -101,13 +103,9 @@ class _ResetPasswordState extends State<ResetPassword> {
   }
 
   Future<void> rest_password(BuildContext context) async {
-
-
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: _email);
       ShowToast('password rest sent to email', ToastGravity.TOP);
-
-
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         setState(() {

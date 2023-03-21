@@ -8,7 +8,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../user/UserID.dart';
 
-
 class LoadingHomeScreen extends StatefulWidget {
   const LoadingHomeScreen({Key? key}) : super(key: key);
 
@@ -19,14 +18,14 @@ class LoadingHomeScreen extends StatefulWidget {
 class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
   @override
   late StreamSubscription<User?> user;
+
   void initState() {
     super.initState();
     loadData();
   }
 
-
   Future<void> loadData() async {
-    user=  FirebaseAuth.instance.authStateChanges().listen((user) async {
+    user = FirebaseAuth.instance.authStateChanges().listen((user) async {
       if (user == null) {
         print('User is currently signed out!');
       } else {
@@ -34,46 +33,45 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
 
         print(UserID.userID?.uid);
         print('User is signed in!');
-        if (UserID.userID!=null) {
-          final docRef =  FirebaseFirestore.instance.collection("userData").doc("${UserID.userID?.uid}");
+        if (UserID.userID != null) {
+          final docRef = FirebaseFirestore.instance
+              .collection("userData")
+              .doc("${UserID.userID?.uid}");
           docRef.get().then(
-                (DocumentSnapshot doc)  async {
-              var data =  doc.data() as Map<String, dynamic>;
-              if (data!=null) {
+            (DocumentSnapshot doc) async {
+              var data = doc.data() as Map<String, dynamic>;
+              if (data != null) {
                 print('data:$data');
                 UserID.userdata = data;
                 YearsData.set_defult_year();
                 bool isyears = await YearsData.get_years_data();
                 print(isyears);
                 if (isyears)
-                Navigator.of(context).pushReplacementNamed('HomeScreen');
+                  Navigator.of(context).pushReplacementNamed('LayoutScreen');
               }
-
             },
             onError: (e) => print("Error getting document: $e"),
           );
-
-
-
-
         }
       }
     });
-
-
   }
+
   @override
   void dispose() {
-
     super.dispose();
     user.cancel;
   }
+
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Center(
-          child: SpinKitDoubleBounce(color: Colors.amber,size: 100.0,),
+          child: SpinKitDoubleBounce(
+            color: Colors.amber,
+            size: 100.0,
+          ),
         ),
       ),
     );

@@ -1,19 +1,15 @@
 // Flutter imports:
-import 'package:device_info_plus/device_info_plus.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'dart:io' show Platform;
+
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:dr_nashar/utils/gaps.dart';
+import 'package:dr_nashar/widgets/text_input.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
 
 // Package imports:
 import 'package:rive/rive.dart';
-
-// Project imports:
-import 'package:dr_nashar/components.dart';
-import 'package:dr_nashar/utils/gaps.dart';
-import 'package:dr_nashar/widgets/text_input.dart';
 
 import '../user/UserID.dart';
 import '../utils/colors_palette.dart';
@@ -29,38 +25,38 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
-  bool isLoading= false;
+  bool isLoading = false;
   String _email = '';
   String _password = '';
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? _errorText;
 
   @override
-
   Widget build(BuildContext context) {
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: Stack(
-          children: [Padding(
+        child: Stack(children: [
+          Padding(
             padding: const EdgeInsets.all(20.0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-
-                   Column(
-                     children: [
-                       Container(
-                          height: 200,
-                           child: Hero(tag: 'logo',
-                           child: RiveAnimation.asset('images/animatedLogo.riv',)),),
-
-                  Column(
-                        children: const [
+                  const Column(
+                    children: [
+                      SizedBox(
+                        height: 200,
+                        child: Hero(
+                            tag: 'logo',
+                            child: RiveAnimation.asset(
+                              'images/animatedLogo.riv',
+                            )),
+                      ),
+                      Column(
+                        children: [
                           Text('Welcome',
                               style: TextStyle(
                                   color: Colors.white,
@@ -72,16 +68,16 @@ class _SignInState extends State<SignIn> {
                                   fontWeight: FontWeight.w500,
                                   fontSize: 25.0)),
                         ],
+                      ),
+                    ],
                   ),
-                     ],
-                   ),
-                   Gaps.gap32,
+                  Gaps.gap32,
                   Form(
                     key: _formKey,
                     child: Column(
                       children: [
                         Container(
-                          constraints: BoxConstraints(maxWidth: 600),
+                          constraints: const BoxConstraints(maxWidth: 600),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
@@ -119,10 +115,10 @@ class _SignInState extends State<SignIn> {
                                   _password = password!.trim();
                                 },
                               ),
-
                               TextButton(
                                 onPressed: () {
-                                  Navigator.of(context).pushNamed("RestPasswordScreen");
+                                  Navigator.of(context)
+                                      .pushNamed("RestPasswordScreen");
                                 },
                                 child: const Text(
                                   'Forget password?',
@@ -136,7 +132,6 @@ class _SignInState extends State<SignIn> {
                           height: 30,
                         ),
                         Column(
-
                           children: [
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -175,7 +170,8 @@ class _SignInState extends State<SignIn> {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.of(context).pushReplacementNamed('SignUpScreen');
+                                    Navigator.of(context)
+                                        .pushReplacementNamed('SignUpScreen');
                                   },
                                   child: const Text(
                                     'Register',
@@ -189,22 +185,26 @@ class _SignInState extends State<SignIn> {
                       ],
                     ),
                   ),
-                  SizedBox(),
+                  const SizedBox(),
                 ],
               ),
             ),
           ),
-            isLoading?Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              color: Color(0x80000000),
-              child: Center(child: CircularProgressIndicator(),),
-            ):Container(),
-          ]
-        ),
+          isLoading
+              ? Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  color: const Color(0x80000000),
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : Container(),
+        ]),
       ),
     );
   }
+
   void _login(BuildContext context) async {
     final formState = _formKey.currentState;
     setState(() => _errorText = null);
@@ -213,7 +213,7 @@ class _SignInState extends State<SignIn> {
       if (formState.validate()) {
         formState.save();
         setState(() {
-          isLoading=true;
+          isLoading = true;
         });
 
         User? user = await signInUsingEmailPassword(
@@ -223,45 +223,42 @@ class _SignInState extends State<SignIn> {
         );
 
         if (user?.uid != null) {
-          UserID.userID=user;
+          UserID.userID = user;
           final deviceInfoPlugin = DeviceInfoPlugin();
           final deviceInfo = await deviceInfoPlugin.deviceInfo;
           var UIDV;
-          if(Platform.isAndroid)
-            UIDV=deviceInfo.data['id'];
-          if(Platform.isIOS)
-            UIDV=deviceInfo.data['identifierForVendor'];
-           final UIDVFB = await UserID.get_UIDV(user);
-            print (UIDV);
-            print(UIDVFB);
-            if (UIDVFB==UIDV||_email=='ipad@test.com'){
-              setState(() {
-                isLoading = false;
-              });
-              Navigator.of(context).pushNamedAndRemoveUntil('LoadingHomeScreen',(Route<dynamic> route) => false);
-            }
-            else{
-              setState(() {
-                isLoading =false;
-              });
-              ShowToast('phone not authorized to this email', ToastGravity.TOP);
-              setState(() => _errorText = 'phone not authorized to this email');
-               FirebaseAuth.instance.signOut();
-
-            }
-
-
-
-
+          if (Platform.isAndroid) {
+            UIDV = deviceInfo.data['id'];
+          }
+          if (Platform.isIOS) {
+            UIDV = deviceInfo.data['identifierForVendor'];
+          }
+          final UIDVFB = await UserID.get_UIDV(user);
+          print(UIDV);
+          print(UIDVFB);
+          if (UIDVFB == UIDV || _email == 'ipad@test.com') {
+            setState(() {
+              isLoading = false;
+            });
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                'LoadingHomeScreen', (Route<dynamic> route) => false);
+          } else {
+            setState(() {
+              isLoading = false;
+            });
+            ShowToast('phone not authorized to this email', ToastGravity.TOP);
+            setState(() => _errorText = 'phone not authorized to this email');
+            FirebaseAuth.instance.signOut();
+          }
         } else {
           setState(() {
-            isLoading =false;
+            isLoading = false;
           });
           setState(() => _errorText = 'Email or Password is incorrect');
         }
 
         setState(() {
-          isLoading =false;
+          isLoading = false;
         });
       }
     }
@@ -282,7 +279,6 @@ class _SignInState extends State<SignIn> {
       );
 
       user = userCredential.user;
-
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         ShowToast('Email is not found', ToastGravity.TOP);
