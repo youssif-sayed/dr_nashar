@@ -43,9 +43,9 @@ class IntroScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 40.0),
-                  GradientText(
+                  const GradientText(
                     'Start studying math today',
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontSize: 30, fontWeight: FontWeight.bold),
                     gradient: LinearGradient(colors: [
                       Color(0xff08CE5D),
@@ -77,7 +77,7 @@ class IntroScreen extends StatelessWidget {
                           onPressed: () {
                             Navigator.of(context).pushNamed('SignUpScreen');
                           },
-                          child: Text(
+                          child: const Text(
                             'Sign up',
                             style: TextStyle(fontSize: 20),
                           ))

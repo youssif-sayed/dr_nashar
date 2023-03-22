@@ -47,7 +47,6 @@ class _SignInState extends State<SignIn> {
           children: [Padding(
             padding: const EdgeInsets.all(20.0),
             child: SingleChildScrollView(
-
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,7 +76,6 @@ class _SignInState extends State<SignIn> {
                      ],
                    ),
                    Gaps.gap32,
-
                   Form(
                     key: _formKey,
                     child: Column(
@@ -87,10 +85,7 @@ class _SignInState extends State<SignIn> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-
-
                               TextInput(
-
                                 hint: 'Enter your email',
                                 prefixIcon: Icons.email,
                                 inputType: TextInputType.emailAddress,

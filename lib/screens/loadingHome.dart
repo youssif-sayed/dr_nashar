@@ -47,7 +47,7 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
                 bool isyears = await YearsData.get_years_data();
                 print(isyears);
                 if (isyears)
-                Navigator.of(context).pushReplacementNamed('HomeScreen');
+                  Navigator.of(context).pushReplacementNamed('LayoutScreen');
               }
 
             },

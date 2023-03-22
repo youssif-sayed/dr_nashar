@@ -1,13 +1,8 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dr_nashar/user/yearsData.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
-import '../user/UserID.dart';
-
 
 class LoadingSubjectScreen extends StatefulWidget {
   const LoadingSubjectScreen({Key? key}) : super(key: key);
@@ -22,30 +17,23 @@ class _LoadingSubjectScreenState extends State<LoadingSubjectScreen> {
     super.initState();
     loadData();
   }
+
   Future<void> loadData() async {
-
-
-                bool issubject = await YearsData.get_subject_data();
-                if (issubject)
-                  Navigator.of(context).pushReplacementNamed('SubjectScreen');
-
-
-
-
-
+    bool issubject = await YearsData.get_subject_data();
+    if (issubject) Navigator.of(context).pushReplacementNamed('SubjectScreen');
   }
+
   @override
   void dispose() {
-
     super.dispose();
-
   }
+
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.black,
-        title: Container(
+        title: SizedBox(
           height: 50,
           child: Hero(
               tag: 'logo',
@@ -55,9 +43,12 @@ class _LoadingSubjectScreenState extends State<LoadingSubjectScreen> {
         ),
       ),
       backgroundColor: Colors.white,
-      body: SafeArea(
+      body: const SafeArea(
         child: Center(
-          child: SpinKitFadingCircle(color: Colors.blueAccent,size: 100.0,),
+          child: SpinKitFadingCircle(
+            color: Colors.blueAccent,
+            size: 100.0,
+          ),
         ),
       ),
     );

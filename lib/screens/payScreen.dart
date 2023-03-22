@@ -47,9 +47,9 @@ class _PayScreenState extends State<PayScreen> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(18.0))),
-                title: Text(
+                title: const Text(
                   'Your code :',
                   style: TextStyle(color: Colors.blueAccent),
                 ),
@@ -58,17 +58,17 @@ class _PayScreenState extends State<PayScreen> {
                   children: [
                     Text(
                       code,
-                      style: TextStyle(color: Colors.black,fontSize: 30),
+                      style: const TextStyle(color: Colors.black,fontSize: 30),
                     ),
                     IconButton(onPressed: () async {
                       await Clipboard.setData(ClipboardData(text: code));
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("code copied to clipboard")));
-                    }, icon: Icon(Icons.copy_rounded),color: Colors.grey,iconSize: 20,)
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("code copied to clipboard")));
+                    }, icon: const Icon(Icons.copy_rounded),color: Colors.grey,iconSize: 20,)
                   ],
                 ),
                 actions: [
                   TextButton(
-                    child: Text(
+                    child: const Text(
                       'OK',
                       style: TextStyle(color: Colors.blueAccent,fontSize: 20),
                     ),
