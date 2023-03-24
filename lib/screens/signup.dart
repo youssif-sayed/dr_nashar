@@ -49,9 +49,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String _grade = 'first secondary';
   String _place = 'center';
   final List<String> _gradeList = [
-    'first perportry',
-    'second perportry',
-    'third perportry',
+    'first preparatory',
+    'second preparatory',
+    'third preparatory',
     'first secondary',
     'second secondary',
     'third secondary'
@@ -99,7 +99,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Column(
+                   Column(
                     children: [
                       SizedBox(
                         height: 200,
@@ -697,7 +697,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 375),
                       child: progress == 100.0
-                          ? const Row(
+                          ?  Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(

@@ -14,17 +14,17 @@ class YearsData {
 
   static void set_defult_year() {
     switch (UserID.userdata['grade']) {
-      case 'first perportry':
+      case 'first preparatory':
         {
           defultYear = 'prep1';
           break;
         }
-      case 'second perportry':
+      case 'second preparatory':
         {
           defultYear = 'prep2';
           break;
         }
-      case 'third perportry':
+      case 'third preparatory':
         {
           defultYear = 'prep3';
           break;
@@ -228,7 +228,7 @@ class YearsData {
   static Future<bool> get_lecture_codes(index) async {
     await FirebaseFirestore.instance
         .collection("codes")
-        .doc('${subjectData[index]['id']}')
+        .doc('general')
         .get()
         .then((value) {
       lectureCodes = value.data() as Map<String, dynamic>;
@@ -250,7 +250,7 @@ class YearsData {
     updatedmap['startDate'] = timeStamp;
     await FirebaseFirestore.instance
         .collection('codes')
-        .doc('${subjectData[index]['id']}')
+        .doc('general')
         .update({'$code': updatedmap});
   }
 

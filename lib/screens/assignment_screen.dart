@@ -209,7 +209,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                 });
               }
                   : null,
-              child:  const Row(
+              child:   Row(
                 children: [
                   Icon(Icons.arrow_back_ios, size: 20.0,),
                   Text('Back', style: TextStyle(
@@ -434,7 +434,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                                   style: TextStyle(
                                     fontSize: 15.0,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.redAccent,
+                                    color: Colors.green,
                                   ),
                                 ),
                               ),

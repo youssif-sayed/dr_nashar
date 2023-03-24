@@ -11,6 +11,7 @@ import 'package:dr_nashar/screens/loadingHome.dart';
 import 'package:dr_nashar/screens/loadingPay.dart';
 import 'package:dr_nashar/screens/loadingSubject.dart';
 import 'package:dr_nashar/screens/payScreen.dart';
+import 'package:dr_nashar/screens/payVFcashScreen.dart';
 import 'package:dr_nashar/screens/profileScreen.dart';
 import 'package:dr_nashar/screens/quiz_screen.dart';
 
@@ -123,6 +124,7 @@ class _MyAppState extends State<MyApp> {
         'HomeScreen': (context) => HomeScreen(),
         'LoadingPayScreen': (context) => LoadingPayScreen(),
         'PayScreen': (context) => PayScreen(),
+        'PayVFCashScreen':(context)=>PayVFCashScreen(),
         'ProfileScreen': (context) => ProfileScreen(),
         'SubjectScreen': (context) => SubjectScreen(),
         'LoadingSubjectScreen': (context) => LoadingSubjectScreen(),

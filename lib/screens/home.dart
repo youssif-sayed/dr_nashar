@@ -68,14 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xff08CE5D),
-                      Color(0xff098FEA),
-                    ],
-                  ),
+                  color: Color(0xff098FEA),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -355,7 +348,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 borderRadius: BorderRadius.circular(18),
                                 border: Border.all(width: 2)),
                             padding: const EdgeInsets.all(15),
-                            child: const Row(
+                            child:  Row(
                               children: [
                                 Text(
                                   'Start',

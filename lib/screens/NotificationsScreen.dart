@@ -29,7 +29,7 @@ class NotificationsScreen extends StatelessWidget {
           separatorBuilder: (context, index) {
             return notificationItem(title: 'Notification $index', body: 'This is body number $index',);
           },
-          itemCount: 5,
+          itemCount: 0,
         ),
       ),
     );

@@ -79,7 +79,7 @@ Widget defaultFormField({
       ),
     );
 
-Widget userInfo(IconData icon, String data, Color color, onPressed) {
+Widget userInfo(IconData icon, String data, Color color, onPressed ,isExpanded) {
   return GestureDetector(
     onTap: onPressed,
     child: Row(
@@ -101,7 +101,7 @@ Widget userInfo(IconData icon, String data, Color color, onPressed) {
 
         const Spacer(),
 
-        const Icon(Icons.arrow_forward_ios_rounded,color: Colors.grey,),
+         isExpanded?Icon(Icons.arrow_forward_ios_rounded,color: Colors.grey,):Container(),
       ],
     ),
   );

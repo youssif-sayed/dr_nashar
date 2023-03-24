@@ -4,6 +4,7 @@ import 'package:dr_nashar/screens/student_marks_screen.dart';
 import 'package:dr_nashar/user/UserID.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../widgets/ShowToast.dart';
 import '../user/yearsData.dart';
@@ -40,18 +41,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 80,
                   width: 150,
                   decoration: BoxDecoration(
-                      gradient: const LinearGradient(
+                      gradient:  LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        colors: [
+                        colors: UserID.userdata['gender']=='male'? [
                           Color(0xff08CE5D),
                           Color(0xff098FEA),
+                        ]:[
+                          Color(0xfff953c6),
+                          Color(0xffb91d73),
                         ],
                       ),
                       borderRadius: BorderRadius.circular(15.0)),
-                  child: Image.asset(UserID.userdata['gender'] == 'male'
-                      ? 'images/male.png'
-                      : 'images/female.png'),
+                  child: Icon(Icons.person_rounded,size: 75,color: Colors.white,),
                 ),
                 const SizedBox(width: 15.0),
                 Column(
@@ -62,6 +64,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       UserID.userdata['firstName'] +
                           ' ' +
                           UserID.userdata['lastName'],
+                      maxLines: 3,
+                      softWrap: true,
                       style: const TextStyle(
                         fontSize: 30.0,
                         fontWeight: FontWeight.bold,
@@ -109,32 +113,126 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const StudentMarksScreen()));
                 });
-              },
+              },true,
             ),
 
             const SizedBox(height: 15.0),
 
-            userInfo(
-              Icons.language,
-              'Language',
-              Colors.green,
-              () {},
-            ),
+            // userInfo(
+            //   Icons.language,
+            //   'Language',
+            //   Colors.green,
+            //   () {
+            //
+            //   },true
+            // ),
+            //
+            // const SizedBox(height: 15.0),
 
-            const SizedBox(height: 15.0),
-
             userInfo(
-              Icons.phone_android_outlined,
-              'Logout',
+              Icons.delete_rounded,
+              'Delete Account',
               Colors.red,
               () async {
-                await FirebaseAuth.instance.signOut();
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    'Intro', (Route<dynamic> route) => false);
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return StatefulBuilder(
+                        builder: (context,setState) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                            title: const Text(
+                              'Enter password to confirm',
+                              style: TextStyle(color: Colors.blueAccent),
+                            ),
+                            content: TextField(
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Password',
+                              ),
+                              onChanged: (value){password=value;},),
+                            actions: [
+                              TextButton(
+                                child: const Text(
+                                  'cancel',
+                                  style: TextStyle(color: Colors.grey,fontSize: 20),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              isLoading?Container(
+                                height: 25,
+                                width: 25,
+                                child: CircularProgressIndicator(color: Colors.red,),
+                              ):TextButton(
+                                  child: const Text(
+                                    'Delete',
+                                    style: TextStyle(color: Colors.red,fontSize: 20),
+                                  ),
+                                  onPressed: () async {
+                                    setState(() {
+                                      isLoading=true;
+                                    });
+                                    if (password!=''){
+                                      try {
+                                        final logedUserEmail= FirebaseAuth.instance.currentUser?.email;
+                                        final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                                            email: logedUserEmail!,
+                                            password: password
+                                        );
+                                        final user = credential.user;
+                                        //await FirebaseFirestore.instance.collection('userData').doc('${user?.uid}').delete();
+                                        await user?.delete();
+                                        await FirebaseAuth.instance.signOut();
+                                        setState(() {
+                                          isLoading=false;
+                                        });
+                                        Navigator.of(context).pushNamedAndRemoveUntil('Intro',(Route<dynamic> route) => false);
+                                      } on FirebaseAuthException catch (e) {
+                                        if (e.code == 'wrong-password') {
+                                          setState(() {
+                                            isLoading=false;
+                                          });
+                                          ShowToast('wrong password', ToastGravity.TOP);
+                                        }
+                                      }
+
+
+                                    }
+                                    else{
+                                      setState(() {
+                                        isLoading=false;
+                                      });
+                                      ShowToast('enter password', ToastGravity.TOP);
+                                    }
+                                  }
+                              ),
+                            ],
+                          );
+                        }
+                    );
+                  },
+                );
               },
+              false
             ),
 
             const SizedBox(height: 15.0),
+
+            userInfo(
+                Icons.logout_rounded,
+                'Logout',
+                Colors.red,
+                    () async {
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      'Intro', (Route<dynamic> route) => false);
+                },
+                false
+            ),
 
             // userInfo(
             //   Icons.place_rounded,

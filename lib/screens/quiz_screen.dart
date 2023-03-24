@@ -207,7 +207,7 @@ class _QuizScreenState extends State<QuizScreen> {
                       });
                     }
                   : null,
-              child: const Row(
+              child:  Row(
                 children: [
                   Icon(
                     Icons.arrow_back_ios,
@@ -295,6 +295,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                               quizQuestions[i].rightAnswer)) {
                                         quizMark += quizQuestions[i].mark;
                                         rightAnswers += 1;
+
                                       } else {
                                         wrongAnswers += 1;
                                       }
@@ -328,7 +329,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                       finalAnswers[UserID.userID!.uid]
                                               ['total_marks'] =
                                           '$quizMark / $total';
-
+                                      print(finalAnswers);
                                       showLoadingDialog(context);
                                       YearsData.sendQuiz(quiz: finalAnswers);
                                       Navigator.of(context).pop();
@@ -428,11 +429,11 @@ class _QuizScreenState extends State<QuizScreen> {
                                   }
                                 },
                                 child: const Text(
-                                  'Finish NOW!',
+                                  'Finish now!',
                                   style: TextStyle(
                                     fontSize: 15.0,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.redAccent,
+                                    color: Colors.green,
                                   ),
                                 ),
                               ),
