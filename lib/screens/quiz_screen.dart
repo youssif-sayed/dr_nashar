@@ -7,6 +7,8 @@ import '../models/question_model.dart';
 import '../user/UserID.dart';
 import '../user/yearsData.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class QuizScreen extends StatefulWidget {
   const QuizScreen({Key? key}) : super(key: key);
 
@@ -77,6 +79,8 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -87,16 +91,16 @@ class _QuizScreenState extends State<QuizScreen> {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: const Text(
-                  'Close the quiz',
-                  style: TextStyle(
+                title: Text(
+                  localization.close_quiz,
+                  style: const TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                content: const Text(
-                  'are you sure you want to exit from this quiz?',
-                  style: TextStyle(
+                content: Text(
+                  localization.close_quiz_alert_message,
+                  style: const TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.normal,
                   ),
@@ -110,9 +114,9 @@ class _QuizScreenState extends State<QuizScreen> {
                           Navigator.of(context).pop();
                           Navigator.of(context).pop();
                         },
-                        child: const Text(
-                          'Close',
-                          style: TextStyle(
+                        child: Text(
+                          localization.close,
+                          style: const TextStyle(
                             fontSize: 15.0,
                             fontWeight: FontWeight.bold,
                             color: Colors.redAccent,
@@ -124,9 +128,9 @@ class _QuizScreenState extends State<QuizScreen> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: const Text(
-                          'cancel',
-                          style: TextStyle(
+                        child: Text(
+                          localization.cancel,
+                          style: const TextStyle(
                             fontSize: 15.0,
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
@@ -207,15 +211,15 @@ class _QuizScreenState extends State<QuizScreen> {
                       });
                     }
                   : null,
-              child:  Row(
+              child: Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.arrow_back_ios,
                     size: 20.0,
                   ),
                   Text(
-                    'Back',
-                    style: TextStyle(
+                    localization.back,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20.0,
                     ),
@@ -263,9 +267,9 @@ class _QuizScreenState extends State<QuizScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        content: const Text(
-                          'are you sure you want to finish this quiz?',
-                          style: TextStyle(
+                        content: Text(
+                          localization.quiz_submission_alert_message,
+                          style: const TextStyle(
                             fontSize: 15.0,
                             fontWeight: FontWeight.normal,
                           ),
@@ -295,14 +299,13 @@ class _QuizScreenState extends State<QuizScreen> {
                                               quizQuestions[i].rightAnswer)) {
                                         quizMark += quizQuestions[i].mark;
                                         rightAnswers += 1;
-
                                       } else {
                                         wrongAnswers += 1;
                                       }
                                     }
 
-                                    finalAnswers['right_answer'] = rightAnswers;
-                                    finalAnswers['wrong_answer'] = wrongAnswers;
+                                    finalAnswers[UserID.userID!.uid]['right_answers'] = rightAnswers;
+                                    finalAnswers[UserID.userID!.uid]['wrong_answers'] = wrongAnswers;
 
                                     Navigator.of(context).pop();
 
@@ -338,9 +341,9 @@ class _QuizScreenState extends State<QuizScreen> {
                                       showDialog(
                                         context: context,
                                         builder: (context) => AlertDialog(
-                                          title: const Text(
-                                            'Quiz mark',
-                                            style: TextStyle(
+                                          title: Text(
+                                            localization.quiz_mark,
+                                            style: const TextStyle(
                                               fontSize: 20.0,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -358,7 +361,8 @@ class _QuizScreenState extends State<QuizScreen> {
                                               alignment: AlignmentDirectional
                                                   .centerEnd,
                                               child: TextButton(
-                                                  child: const Text('Okay'),
+                                                  child:
+                                                      Text(localization.okay),
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
                                                     Navigator.of(context).pop();
@@ -400,15 +404,14 @@ class _QuizScreenState extends State<QuizScreen> {
                                     } catch (error) {
                                       print(error.toString());
                                     }
-
                                   } else {
                                     Navigator.of(context).pop();
                                     showDialog(
                                       context: context,
                                       builder: (context) => AlertDialog(
-                                        content: const Text(
-                                          'Please finish all the questions first.',
-                                          style: TextStyle(
+                                        content: Text(
+                                          localization.questions_not_done,
+                                          style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20.0,
                                           ),
@@ -418,7 +421,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                             alignment:
                                                 AlignmentDirectional.centerEnd,
                                             child: TextButton(
-                                                child: const Text('Okay'),
+                                                child: Text(localization.okay),
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
                                                 }),
@@ -428,9 +431,9 @@ class _QuizScreenState extends State<QuizScreen> {
                                     );
                                   }
                                 },
-                                child: const Text(
-                                  'Finish now!',
-                                  style: TextStyle(
+                                child: Text(
+                                  localization.finish_assignment,
+                                  style: const TextStyle(
                                     fontSize: 15.0,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.green,
@@ -442,8 +445,8 @@ class _QuizScreenState extends State<QuizScreen> {
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: const Text(
-                                  'cancel',
+                                child: Text(
+                                  localization.cancel,
                                   style: TextStyle(
                                     fontSize: 15.0,
                                     fontWeight: FontWeight.bold,
@@ -462,7 +465,9 @@ class _QuizScreenState extends State<QuizScreen> {
               child: Row(
                 children: [
                   Text(
-                    currentStep < quizQuestions.length ? 'Next' : 'Finish',
+                    currentStep < quizQuestions.length
+                        ? localization.next
+                        : localization.finish_assignment,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20.0,
@@ -482,6 +487,8 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   Widget quizQuestion({required QuestionModel question}) {
+    var localization = AppLocalizations.of(context)!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -516,7 +523,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     ),
                   ),
                   Text(
-                    'Marks: ${question.mark} ',
+                    '${localization.marks}: ${question.mark} ',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20.0,

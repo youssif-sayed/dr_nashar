@@ -10,6 +10,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import '../widgets/ShowToast.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class ResetPassword extends StatefulWidget {
   const ResetPassword({Key? key}) : super(key: key);
 
@@ -25,6 +27,7 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context)!;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.black,
@@ -38,8 +41,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                   const SizedBox(
                     height: 150,
                   ),
-                  const Text('Please enter your E-mail',
-                      style: TextStyle(
+                  Text(localization.enter_email_address,
+                      style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w500,
                           fontSize: 25.0)),
@@ -49,17 +52,17 @@ class _ResetPasswordState extends State<ResetPassword> {
                   Container(
                     constraints: const BoxConstraints(maxWidth: 600),
                     child: TextInput(
-                      hint: 'Email',
+                      hint: localization.email_address,
                       prefixIcon: Icons.email,
                       inputType: TextInputType.emailAddress,
                       validator: (String? email) {
                         if (email == null || email.isEmpty) {
-                          return 'Email is required';
+                          return localization.email_address_is_required;
                         }
                         if (!RegExp(
                                 r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
                             .hasMatch(email)) {
-                          return 'Email is invalid';
+                          return localization.email_address_is_invalid;
                         }
                         return null;
                       },
@@ -81,9 +84,9 @@ class _ResetPasswordState extends State<ResetPassword> {
                     onPressed: () async {
                       await rest_password(context);
                     },
-                    child: const Text(
-                      'Rest password',
-                      style: TextStyle(fontSize: 20),
+                    child: Text(
+                      localization.reset_password,
+                      style: const TextStyle(fontSize: 20),
                     ),
                   ),
                   if (msg != null) ...[
@@ -103,9 +106,11 @@ class _ResetPasswordState extends State<ResetPassword> {
   }
 
   Future<void> rest_password(BuildContext context) async {
+    var localization = AppLocalizations.of(context)!;
+
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: _email);
-      ShowToast('password rest sent to email', ToastGravity.TOP);
+      ShowToast(localization.password_reset_message, ToastGravity.TOP);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         setState(() {

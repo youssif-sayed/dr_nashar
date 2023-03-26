@@ -41,7 +41,14 @@ import 'package:video_player/video_player.dart';
 import 'package:dr_nashar/screens/resetpassword.dart';
 
 import 'firebase_options.dart';
-import 'dart:io'show Platform;
+import 'dart:io' show Platform;
+
+// Localization imports
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:dr_nashar/l10n/l10n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+ValueNotifier<String> language = ValueNotifier<String>('en');
 
 Future<void> _messageHandler(RemoteMessage message) async {
   print('background message ${message.notification!.body}');
@@ -57,16 +64,12 @@ Future<void> main() async {
   if (Platform.isAndroid)
     FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
 
-
   FirebaseMessaging.onBackgroundMessage(_messageHandler);
 
   runApp(MyApp());
 }
 
-
 class MyApp extends StatefulWidget {
-
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -80,7 +83,6 @@ class _MyAppState extends State<MyApp> {
       print('Token = $value');
       print('------------------------------');
       token = value ?? '';
-
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
@@ -98,7 +100,6 @@ class _MyAppState extends State<MyApp> {
     });
 
     super.initState();
-
   }
 
   @override
@@ -108,37 +109,44 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: FirebaseAuth.instance.currentUser != null
-          ? 'LoadingHomeScreen'
-          : 'Intro',
-      home: IntroScreen(),
-      routes: {
-        'Intro': (context) => IntroScreen(),
-        'SignInScreen': (context) => SignIn(),
-        'SignUpScreen': (context) => SignUpScreen(),
-        'RestPasswordScreen': (context) => ResetPassword(),
-        'LoadingHomeScreen': (context) => LoadingHomeScreen(),
-        'HomeScreen': (context) => HomeScreen(),
-        'LoadingPayScreen': (context) => LoadingPayScreen(),
-        'PayScreen': (context) => PayScreen(),
-        'PayVFCashScreen':(context)=>PayVFCashScreen(),
-        'ProfileScreen': (context) => ProfileScreen(),
-        'SubjectScreen': (context) => SubjectScreen(),
-        'LoadingSubjectScreen': (context) => LoadingSubjectScreen(),
-        'VideoScreen': (context) => VideoScreen(),
-        'LayoutScreen': (context) => LayoutScreen(),
-        'NotificationsScreen': (context) => NotificationsScreen(),
-        'QuizScreen': (context) => QuizScreen(),
-        'AssignmentScreen': (context) => AssignmentScreen(),
+    return ValueListenableBuilder(
+      valueListenable: language,
+      builder: (context, lang, __) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          supportedLocales: L10n.all,
+          locale: Locale(lang),
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate
+          ],
+          initialRoute: FirebaseAuth.instance.currentUser != null
+              ? 'LoadingHomeScreen'
+              : 'Intro',
+          home: IntroScreen(),
+          routes: {
+            'Intro': (context) => IntroScreen(),
+            'SignInScreen': (context) => SignIn(),
+            'SignUpScreen': (context) => SignUpScreen(),
+            'RestPasswordScreen': (context) => ResetPassword(),
+            'LoadingHomeScreen': (context) => LoadingHomeScreen(),
+            'HomeScreen': (context) => HomeScreen(),
+            'LoadingPayScreen': (context) => LoadingPayScreen(),
+            'PayScreen': (context) => PayScreen(),
+            'PayVFCashScreen': (context) => PayVFCashScreen(),
+            'ProfileScreen': (context) => ProfileScreen(),
+            'SubjectScreen': (context) => SubjectScreen(),
+            'LoadingSubjectScreen': (context) => LoadingSubjectScreen(),
+            'VideoScreen': (context) => VideoScreen(),
+            'LayoutScreen': (context) => LayoutScreen(),
+            'NotificationsScreen': (context) => NotificationsScreen(),
+            'QuizScreen': (context) => QuizScreen(),
+            'AssignmentScreen': (context) => AssignmentScreen(),
+          },
+        );
       },
     );
   }
-
-
 }
-
-
-

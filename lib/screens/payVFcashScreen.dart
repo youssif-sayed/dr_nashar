@@ -3,11 +3,15 @@ import 'package:flutter/services.dart';
 
 import '../user/yearsData.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class PayVFCashScreen extends StatelessWidget {
   const PayVFCashScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -21,45 +25,57 @@ class PayVFCashScreen extends StatelessWidget {
               )),
         ),
       ),
-      backgroundColor: Color(0xffe61e25),
+      backgroundColor: const Color(0xffe61e25),
       body: Center(
-
         child: Column(
-
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Image.asset('images/VF Cash.png',height: 150,),
-            Text('VF Cash',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30,color: Colors.white),),
-            SizedBox(height: 30,),
-
-            Text(
-              '1. Please Pay ',
-              style: TextStyle(color: Colors.white,fontSize: 20),
+            Image.asset(
+              'images/VF Cash.png',
+              height: 150,
             ),
-            SizedBox(height: 10,),
+            const Text(
+              'VF Cash',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                  color: Colors.white),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            const Text(
+              '1. Please Pay ',
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
             Text(
               '${YearsData.subjectData[YearsData.lectureNumber]['price']} EGP',
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 35),
             ),
-            SizedBox(height: 10,),
-
-            Container(
+            const SizedBox(
+              height: 10,
+            ),
+            const SizedBox(
               width: 300,
               child: Text(
-                'from VFCash app or from nearest Branch of Vodafone to this number:',textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20
-                ),
+                'from VFCash app or from nearest Branch of Vodafone to this number:',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
-            SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             Container(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12)),
@@ -68,21 +84,21 @@ class PayVFCashScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       '01094100040',
                       style:
                           TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     IconButton(
                       onPressed: () async {
                         await Clipboard.setData(
-                            ClipboardData(text: '01094100040'));
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text("code copied to clipboard")));
+                            const ClipboardData(text: '01094100040'));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content:
+                                Text(localization.code_copied_to_clipboard)));
                       },
                       icon: const Icon(Icons.copy_rounded),
                       color: Colors.grey,
@@ -90,17 +106,15 @@ class PayVFCashScreen extends StatelessWidget {
                     ),
                   ],
                 )),
-
-            SizedBox(height: 20,),
-
-            Container(
+            const SizedBox(
+              height: 20,
+            ),
+            const SizedBox(
               width: 300,
-              child: const Text(
-                '2. contact the number on whatsapp with verified transaction picture to get the code.',textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20
-                ),
+              child: Text(
+                '2. contact the number on whatsapp with verified transaction picture to get the code.',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
           ],

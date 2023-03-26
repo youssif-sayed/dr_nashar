@@ -8,12 +8,13 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:dr_nashar/utils/gaps.dart';
 import 'package:dr_nashar/utils/gredientText.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class IntroScreen extends StatelessWidget {
   const IntroScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -43,16 +44,15 @@ class IntroScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 40.0),
-                  const GradientText(
-                    'Start studying math today',
-                    style: TextStyle(
+                  GradientText(
+                    AppLocalizations.of(context)!.intro_screen_text,
+                    style: const TextStyle(
                         fontSize: 30, fontWeight: FontWeight.bold),
-                    gradient: LinearGradient(colors: [
+                    gradient: const LinearGradient(colors: [
                       Color(0xff08CE5D),
                       Color(0xff098DEF),
                     ]),
                   ),
-
                   const SizedBox(height: 40.0),
                   Column(
                     children: [
@@ -68,18 +68,18 @@ class IntroScreen extends StatelessWidget {
                           onPressed: () {
                             Navigator.of(context).pushNamed('SignInScreen');
                           },
-                          child: const Text(
-                            'Sign in',
-                            style: TextStyle(fontSize: 20),
+                          child: Text(
+                            AppLocalizations.of(context)!.sign_in,
+                            style: const TextStyle(fontSize: 20),
                           )),
                       Gaps.gap12,
                       TextButton(
                           onPressed: () {
                             Navigator.of(context).pushNamed('SignUpScreen');
                           },
-                          child: const Text(
-                            'Sign up',
-                            style: TextStyle(fontSize: 20),
+                          child: Text(
+                            AppLocalizations.of(context)!.sign_up,
+                            style: const TextStyle(fontSize: 20),
                           ))
                     ],
                   ),

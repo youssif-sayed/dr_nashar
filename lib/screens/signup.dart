@@ -19,6 +19,8 @@ import '../utils/gaps.dart';
 import '../widgets/ShowToast.dart';
 import '../widgets/text_input.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
@@ -88,6 +90,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -99,9 +103,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                   Column(
+                  Column(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 200,
                         child: RiveAnimation.asset(
                           'images/animatedLogo.riv',
@@ -109,12 +113,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       Column(
                         children: [
-                          Text('Welcome',
-                              style: TextStyle(
+                          Text(localization.welcome,
+                              style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w300,
                                   fontSize: 25.0)),
-                          Text('Dr.Nashar',
+                          const Text('Dr.Nashar',
                               style: TextStyle(
                                   color: Colors.blueAccent,
                                   fontWeight: FontWeight.w500,
@@ -133,9 +137,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'Personal Information',
-                                style: TextStyle(
+                              Text(
+                                localization.personal_information,
+                                style: const TextStyle(
                                     color: Colors.lightBlueAccent,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20),
@@ -147,12 +151,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 inputType: TextInputType.emailAddress,
                                 validator: (String? email) {
                                   if (email == null || email.isEmpty) {
-                                    return 'Email is required';
+                                    return localization
+                                        .email_address_is_required;
                                   }
                                   if (!RegExp(
                                           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
                                       .hasMatch(email)) {
-                                    return 'Email is invalid';
+                                    return localization
+                                        .email_address_is_required;
                                   }
                                   return null;
                                 },
@@ -162,12 +168,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ), //email
                               Gaps.gap12,
                               TextInput(
-                                hint: 'Password',
+                                hint: localization.password,
                                 prefixIcon: Icons.lock,
                                 inputType: TextInputType.visiblePassword,
                                 validator: (String? password) {
                                   if (password == null || password.isEmpty) {
-                                    return 'Password is required';
+                                    return localization.password_is_required;
                                   }
                                   return null;
                                 },
@@ -180,10 +186,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 children: [
                                   Expanded(
                                     child: TextInput(
-                                      hint: 'First name',
+                                      hint: localization.first_name,
                                       validator: (String? name) {
                                         if (name == null || name.isEmpty) {
-                                          return 'first name is required';
+                                          return localization
+                                              .first_name_is_required;
                                         }
                                         return null;
                                       },
@@ -198,10 +205,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                   Expanded(
                                     child: TextInput(
-                                      hint: 'Last name',
+                                      hint: localization.last_name,
                                       validator: (String? name) {
                                         if (name == null || name.isEmpty) {
-                                          return 'last name is required';
+                                          return localization
+                                              .last_name_is_required;
                                         }
                                         return null;
                                       },
@@ -215,10 +223,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ), // first ans last name
                               Gaps.gap12,
                               TextInput(
-                                hint: 'Full name (arabic)',
+                                hint: localization.full_name_in_arabic,
                                 validator: (String? name) {
                                   if (name == null || name.isEmpty) {
-                                    return 'Full name is required';
+                                    return localization.full_name_is_required;
                                   }
                                   return null;
                                 },
@@ -229,10 +237,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ), //full name
                               Gaps.gap12,
                               TextInput(
-                                hint: 'Mobile number',
+                                hint: localization.mobile_number,
                                 validator: (String? name) {
                                   if (name == null || name.isEmpty) {
-                                    return 'mobile number is required';
+                                    return localization
+                                        .mobile_number_is_required;
                                   }
                                   return null;
                                 },
@@ -270,7 +279,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         ),
                                         Gaps.gap4,
                                         Text(
-                                          'Male',
+                                          localization.male,
                                           style: TextStyle(
                                               color: _ismale
                                                   ? Colors.amberAccent
@@ -304,7 +313,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         ),
                                         Gaps.gap4,
                                         Text(
-                                          'Female',
+                                          localization.female,
                                           style: TextStyle(
                                               color: _ismale
                                                   ? Colors.grey
@@ -317,9 +326,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ],
                               ), //gender
                               Gaps.gap12,
-                              const Text(
-                                'student picture :',
-                                style: TextStyle(
+                              Text(
+                                '${localization.student_picture} :',
+                                style: const TextStyle(
                                   color: Colors.white,
                                 ),
                               ),
@@ -347,15 +356,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                 result = pickedfile;
                                               });
                                             },
-                                            icon: const Icon(Icons.image_rounded),
+                                            icon:
+                                                const Icon(Icons.image_rounded),
                                           )
                                         : Container(
                                             width: MediaQuery.of(context)
                                                     .size
                                                     .width -
                                                 75,
-                                            constraints:
-                                                const BoxConstraints(maxWidth: 300),
+                                            constraints: const BoxConstraints(
+                                                maxWidth: 300),
                                             decoration: BoxDecoration(
                                               color: Colors.white,
                                               borderRadius:
@@ -387,19 +397,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ],
                               ), //picture
                               Gaps.gap24,
-                              const Text(
-                                'parents information',
-                                style: TextStyle(
+                              Text(
+                                localization.parents_information,
+                                style: const TextStyle(
                                     color: Colors.lightBlueAccent,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20),
                               ),
                               Gaps.gap16,
                               TextInput(
-                                hint: 'parent\'s job',
+                                hint: localization.parents_job,
                                 validator: (String? name) {
                                   if (name == null || name.isEmpty) {
-                                    return 'Job is required';
+                                    return localization.parents_job_is_required;
                                   }
                                   return null;
                                 },
@@ -413,9 +423,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 children: [
                                   Expanded(
                                     child: TextInput(
-                                      hint: 'Father\'s number',
+                                      hint: localization.fathers_number,
                                       validator: (String? name) {
                                         if (name == null || name.isEmpty) {
+                                          // #TODO
                                           return 'number is required';
                                         }
                                         return null;
@@ -431,9 +442,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                   Expanded(
                                     child: TextInput(
-                                      hint: 'Mother\'s number',
+                                      hint: localization.mothers_number,
                                       validator: (String? name) {
                                         if (name == null || name.isEmpty) {
+                                          // #TODO
                                           return 'number is required';
                                         }
                                         return null;
@@ -447,18 +459,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ],
                               ),
                               Gaps.gap24,
-                              const Text(
-                                'Education information',
-                                style: TextStyle(
+                              Text(
+                                localization.education_information,
+                                style: const TextStyle(
                                     color: Colors.lightBlueAccent,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20),
                               ),
                               Gaps.gap12,
                               TextInput(
-                                hint: 'School name',
+                                hint: localization.school_name,
                                 validator: (String? name) {
                                   if (name == null || name.isEmpty) {
+                                    // #TODO
                                     return 'School name is required';
                                   }
                                   return null;
@@ -469,13 +482,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 },
                               ), //school
                               Gaps.gap12,
-                              const Text(
-                                'Government :',
-                                style: TextStyle(color: Colors.white),
+                              Text(
+                                '${localization.government} :',
+                                style: const TextStyle(color: Colors.white),
                               ),
                               Gaps.gap8,
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(90)),
@@ -505,13 +519,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                               ),
                               Gaps.gap12,
-                              const Text(
-                                'Grade :',
-                                style: TextStyle(color: Colors.white),
+                              Text(
+                                '${localization.grade} :',
+                                style: const TextStyle(color: Colors.white),
                               ),
                               Gaps.gap8,
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(90)),
@@ -557,8 +572,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                             });
                                           },
                                           child: Container(
-                                            constraints:
-                                                const BoxConstraints(maxWidth: 150),
+                                            constraints: const BoxConstraints(
+                                                maxWidth: 150),
                                             decoration: BoxDecoration(
                                                 color: _isonsite
                                                     ? Colors.green
@@ -572,7 +587,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         ),
                                         Gaps.gap4,
                                         Text(
-                                          'Center',
+                                          localization.center,
                                           style: TextStyle(
                                               color: _isonsite
                                                   ? Colors.green
@@ -593,8 +608,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                             });
                                           },
                                           child: Container(
-                                            constraints:
-                                                const BoxConstraints(maxWidth: 150),
+                                            constraints: const BoxConstraints(
+                                                maxWidth: 150),
                                             decoration: BoxDecoration(
                                                 color: _isonsite
                                                     ? Colors.grey
@@ -608,7 +623,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         ),
                                         Gaps.gap4,
                                         Text(
-                                          'Online',
+                                          localization.online,
                                           style: TextStyle(
                                               color: _isonsite
                                                   ? Colors.grey
@@ -640,9 +655,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               onPressed: () async {
                                 await _signUp(context);
                               },
-                              child: const Text(
-                                'Sign up',
-                                style: TextStyle(fontSize: 20),
+                              child: Text(
+                                localization.sign_up,
+                                style: const TextStyle(fontSize: 20),
                               ),
                             ),
                             if (_errorText != null) ...[
@@ -659,18 +674,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text(
-                                  'have an account?',
-                                  style: TextStyle(color: Colors.white),
+                                Text(
+                                  localization.have_an_account,
+                                  style: const TextStyle(color: Colors.white),
                                 ),
                                 TextButton(
                                   onPressed: () {
                                     Navigator.of(context)
                                         .pushReplacementNamed('SignInScreen');
                                   },
-                                  child: const Text(
-                                    'Login',
-                                    style: TextStyle(color: Colors.pinkAccent),
+                                  child: Text(
+                                    localization.sign_in,
+                                    style: const TextStyle(
+                                        color: Colors.pinkAccent),
                                   ),
                                 ),
                               ],
@@ -697,18 +713,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 375),
                       child: progress == 100.0
-                          ?  Row(
+                          ? Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.check_rounded,
                                   color: Colors.green,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 5.0,
                                 ),
-                                Text('user created',
-                                    style: TextStyle(color: Colors.green)),
+                                Text(localization.user_created,
+                                    style:
+                                        const TextStyle(color: Colors.green)),
                               ],
                             )
                           : const CircularProgressIndicator(),

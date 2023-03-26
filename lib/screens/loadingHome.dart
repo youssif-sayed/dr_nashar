@@ -9,7 +9,6 @@ import 'package:rive/rive.dart';
 
 import '../user/UserID.dart';
 
-
 class LoadingHomeScreen extends StatefulWidget {
   const LoadingHomeScreen({Key? key}) : super(key: key);
 
@@ -25,9 +24,8 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
     loadData();
   }
 
-
   Future<void> loadData() async {
-    user=  FirebaseAuth.instance.authStateChanges().listen((user) async {
+    user = FirebaseAuth.instance.authStateChanges().listen((user) async {
       if (user == null) {
         print('User is currently signed out!');
       } else {
@@ -35,42 +33,39 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
 
         print(UserID.userID?.uid);
         print('User is signed in!');
-        if (UserID.userID!=null) {
-          final docRef =  FirebaseFirestore.instance.collection("userData").doc("${UserID.userID?.uid}");
+        if (UserID.userID != null) {
+          final docRef = FirebaseFirestore.instance
+              .collection("userData")
+              .doc("${UserID.userID?.uid}");
           docRef.get().then(
-                (DocumentSnapshot doc)  async {
-              var data =  doc.data() as Map<String, dynamic>;
-              if (data!=null) {
+            (DocumentSnapshot doc) async {
+              var data = doc.data() as Map<String, dynamic>;
+              if (data != null) {
                 print('data:$data');
                 UserID.userdata = data;
                 YearsData.set_defult_year();
                 bool isyears = await YearsData.get_years_data();
                 print(isyears);
-                if (isyears)
-                  Navigator.of(context).pushReplacementNamed('LayoutScreen');
+                if (mounted) {
+                  if (isyears) Navigator.of(context).pushReplacementNamed('LayoutScreen');
+                }
               }
-
             },
             onError: (e) => print("Error getting document: $e"),
           );
-
-
-
-
         }
       }
     });
-
-
   }
+
   @override
   void dispose() {
-
     super.dispose();
     user.cancel;
   }
+
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Column(
@@ -79,11 +74,19 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
             Container(),
             Container(
               height: 200,
-              child: Hero(tag: 'logo',
-                  child: RiveAnimation.asset('images/animatedLogo.riv',)),),
+              child: const Hero(
+                  tag: 'logo',
+                  child: RiveAnimation.asset(
+                    'images/animatedLogo.riv',
+                  )),
+            ),
             Container(),
             Container(),
-            SpinKitRing(color: Colors.amber,size: 30.0,lineWidth: 3,),
+            const SpinKitRing(
+              color: Colors.amber,
+              size: 30.0,
+              lineWidth: 3,
+            ),
             Container(),
           ],
         ),

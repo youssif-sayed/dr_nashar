@@ -19,6 +19,8 @@ import '../user/UserID.dart';
 import '../utils/colors_palette.dart';
 import '../widgets/ShowToast.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
 
@@ -29,74 +31,77 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
-  bool isLoading= false;
+  bool isLoading = false;
   String _email = '';
   String _password = '';
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? _errorText;
 
   @override
-
   Widget build(BuildContext context) {
-
+    var localization = AppLocalizations.of(context)!;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: Stack(
-          children: [Padding(
+        child: Stack(children: [
+          Padding(
             padding: const EdgeInsets.all(20.0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-
-                   Column(
-                     children: [
-                       Container(
-                          height: 200,
-                           child: Hero(tag: 'logo',
-                           child: RiveAnimation.asset('images/animatedLogo.riv',)),),
-
                   Column(
-                        children: const [
-                          Text('Welcome',
-                              style: TextStyle(
+                    children: [
+                      Container(
+                        height: 200,
+                        child: const Hero(
+                            tag: 'logo',
+                            child: RiveAnimation.asset(
+                              'images/animatedLogo.riv',
+                            )),
+                      ),
+                      Column(
+                        children: [
+                          Text(localization.welcome,
+                              style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w300,
                                   fontSize: 25.0)),
-                          Text('Dr.Nashar',
+                          const Text('Dr.Nashar',
                               style: TextStyle(
                                   color: Colors.blueAccent,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 25.0)),
                         ],
+                      ),
+                    ],
                   ),
-                     ],
-                   ),
-                   Gaps.gap32,
+                  Gaps.gap32,
                   Form(
                     key: _formKey,
                     child: Column(
                       children: [
                         Container(
-                          constraints: BoxConstraints(maxWidth: 600),
+                          constraints: const BoxConstraints(maxWidth: 600),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               TextInput(
-                                hint: 'Enter your email',
+                                hint: localization.enter_email_address,
                                 prefixIcon: Icons.email,
                                 inputType: TextInputType.emailAddress,
                                 validator: (String? email) {
                                   if (email == null || email.isEmpty) {
-                                    return 'Email is required';
+                                    return localization
+                                        .email_address_is_required;
                                   }
                                   if (!RegExp(
                                           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
                                       .hasMatch(email)) {
-                                    return 'Email is invalid';
+                                    return localization
+                                        .email_address_is_invalid;
                                   }
                                   return null;
                                 },
@@ -106,12 +111,12 @@ class _SignInState extends State<SignIn> {
                               ),
                               Gaps.gap12,
                               TextInput(
-                                hint: 'Password',
+                                hint: localization.password,
                                 prefixIcon: Icons.lock,
                                 inputType: TextInputType.visiblePassword,
                                 validator: (String? password) {
                                   if (password == null || password.isEmpty) {
-                                    return 'Password is required';
+                                    return localization.password_is_required;
                                   }
                                   return null;
                                 },
@@ -119,14 +124,14 @@ class _SignInState extends State<SignIn> {
                                   _password = password!.trim();
                                 },
                               ),
-
                               TextButton(
                                 onPressed: () {
-                                  Navigator.of(context).pushNamed("RestPasswordScreen");
+                                  Navigator.of(context)
+                                      .pushNamed("RestPasswordScreen");
                                 },
-                                child: const Text(
-                                  'Forget password?',
-                                  style: TextStyle(color: Colors.yellow),
+                                child: Text(
+                                  localization.forget_password,
+                                  style: const TextStyle(color: Colors.yellow),
                                 ),
                               ),
                             ],
@@ -136,7 +141,6 @@ class _SignInState extends State<SignIn> {
                           height: 30,
                         ),
                         Column(
-
                           children: [
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -150,9 +154,9 @@ class _SignInState extends State<SignIn> {
                               onPressed: () {
                                 _login(context);
                               },
-                              child: const Text(
-                                'Sign in',
-                                style: TextStyle(fontSize: 20),
+                              child: Text(
+                                localization.sign_in,
+                                style: const TextStyle(fontSize: 20),
                               ),
                             ),
                             if (_errorText != null) ...[
@@ -170,14 +174,17 @@ class _SignInState extends State<SignIn> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const Text(
+                                  // #TODO
                                   'Don\'t have an account?',
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.of(context).pushReplacementNamed('SignUpScreen');
+                                    Navigator.of(context)
+                                        .pushReplacementNamed('SignUpScreen');
                                   },
                                   child: const Text(
+                                    // #TODO
                                     'Register',
                                     style: TextStyle(color: Colors.pinkAccent),
                                   ),
@@ -189,22 +196,26 @@ class _SignInState extends State<SignIn> {
                       ],
                     ),
                   ),
-                  SizedBox(),
+                  const SizedBox(),
                 ],
               ),
             ),
           ),
-            isLoading?Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              color: Color(0x80000000),
-              child: Center(child: CircularProgressIndicator(),),
-            ):Container(),
-          ]
-        ),
+          isLoading
+              ? Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  color: const Color(0x80000000),
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : Container(),
+        ]),
       ),
     );
   }
+
   void _login(BuildContext context) async {
     final formState = _formKey.currentState;
     setState(() => _errorText = null);
@@ -213,7 +224,7 @@ class _SignInState extends State<SignIn> {
       if (formState.validate()) {
         formState.save();
         setState(() {
-          isLoading=true;
+          isLoading = true;
         });
 
         User? user = await signInUsingEmailPassword(
@@ -223,45 +234,38 @@ class _SignInState extends State<SignIn> {
         );
 
         if (user?.uid != null) {
-          UserID.userID=user;
+          UserID.userID = user;
           final deviceInfoPlugin = DeviceInfoPlugin();
           final deviceInfo = await deviceInfoPlugin.deviceInfo;
           var UIDV;
-          if(Platform.isAndroid)
-            UIDV=deviceInfo.data['id'];
-          if(Platform.isIOS)
-            UIDV=deviceInfo.data['identifierForVendor'];
-           final UIDVFB = await UserID.get_UIDV(user);
-            print (UIDV);
-            print(UIDVFB);
-            if (UIDVFB==UIDV||_email=='ipad@test.com'){
-              setState(() {
-                isLoading = false;
-              });
-              Navigator.of(context).pushNamedAndRemoveUntil('LoadingHomeScreen',(Route<dynamic> route) => false);
-            }
-            else{
-              setState(() {
-                isLoading =false;
-              });
-              ShowToast('phone not authorized to this email', ToastGravity.TOP);
-              setState(() => _errorText = 'phone not authorized to this email');
-               FirebaseAuth.instance.signOut();
-
-            }
-
-
-
-
+          if (Platform.isAndroid) UIDV = deviceInfo.data['id'];
+          if (Platform.isIOS) UIDV = deviceInfo.data['identifierForVendor'];
+          final UIDVFB = await UserID.get_UIDV(user);
+          print(UIDV);
+          print(UIDVFB);
+          if (UIDVFB == UIDV || _email == 'ipad@test.com') {
+            setState(() {
+              isLoading = false;
+            });
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                'LoadingHomeScreen', (Route<dynamic> route) => false);
+          } else {
+            setState(() {
+              isLoading = false;
+            });
+            ShowToast('phone not authorized to this email', ToastGravity.TOP);
+            setState(() => _errorText = 'phone not authorized to this email');
+            FirebaseAuth.instance.signOut();
+          }
         } else {
           setState(() {
-            isLoading =false;
+            isLoading = false;
           });
           setState(() => _errorText = 'Email or Password is incorrect');
         }
 
         setState(() {
-          isLoading =false;
+          isLoading = false;
         });
       }
     }
@@ -282,7 +286,6 @@ class _SignInState extends State<SignIn> {
       );
 
       user = userCredential.user;
-
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         ShowToast('Email is not found', ToastGravity.TOP);

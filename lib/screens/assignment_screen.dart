@@ -7,6 +7,8 @@ import '../models/question_model.dart';
 import '../user/UserID.dart';
 import '../user/yearsData.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class AssignmentScreen extends StatefulWidget {
   const AssignmentScreen({Key? key}) : super(key: key);
 
@@ -35,7 +37,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   @override
   void initState() {
     var assignment = YearsData.subjectAssignment[0]
-    ['${YearsData.selectedYear}-${YearsData.selectedSubject}-assignment'];
+        ['${YearsData.selectedYear}-${YearsData.selectedSubject}-assignment'];
     //var question in assignment
     for (int i = 0; i < assignment.length; i++) {
       assignmentQuestions.add(
@@ -77,6 +79,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -87,16 +90,16 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: const Text(
-                  'Close the assignment',
-                  style: TextStyle(
+                title: Text(
+                  localization.close_assignment,
+                  style: const TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                content: const Text(
-                  'are you sure you want to exit from this assignment?',
-                  style: TextStyle(
+                content: Text(
+                  localization.close_assignment_alert_message,
+                  style: const TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.normal,
                   ),
@@ -110,9 +113,9 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                           Navigator.of(context).pop();
                           Navigator.of(context).pop();
                         },
-                        child: const Text(
-                          'Close',
-                          style: TextStyle(
+                        child: Text(
+                          localization.close,
+                          style: const TextStyle(
                             fontSize: 15.0,
                             fontWeight: FontWeight.bold,
                             color: Colors.redAccent,
@@ -124,9 +127,9 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: const Text(
-                          'cancel',
-                          style: TextStyle(
+                        child: Text(
+                          localization.cancel,
+                          style: const TextStyle(
                             fontSize: 15.0,
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
@@ -159,7 +162,6 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               StepProgressIndicator(
                 totalSteps: assignmentQuestions.length,
                 currentStep: currentStep,
@@ -176,7 +178,8 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                 height: 10.0,
               ),
               // assignment questions
-              assignmentQuestion(question: assignmentQuestions[currentStep - 1]),
+              assignmentQuestion(
+                  question: assignmentQuestions[currentStep - 1]),
               const SizedBox(
                 height: 100.0,
               ),
@@ -185,7 +188,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
         ),
       ),
       floatingActionButtonLocation:
-      FloatingActionButtonLocation.miniCenterDocked,
+          FloatingActionButtonLocation.miniCenterDocked,
       floatingActionButton: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
@@ -200,22 +203,27 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 shape: const StadiumBorder(),
-
               ),
               onPressed: (currentStep > 1)
                   ? () {
-                setState(() {
-                  currentStep -= 1;
-                });
-              }
+                      setState(() {
+                        currentStep -= 1;
+                      });
+                    }
                   : null,
-              child:   Row(
+              child: Row(
                 children: [
-                  Icon(Icons.arrow_back_ios, size: 20.0,),
-                  Text('Back', style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                  ),),
+                  const Icon(
+                    Icons.arrow_back_ios,
+                    size: 20.0,
+                  ),
+                  Text(
+                    localization.back,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -231,6 +239,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
               ),
               onPressed: () {
                 setState(() {
+                  print('anybody here');
                   if (selectedAnswer != null) {
                     answers[assignmentQuestions[currentStep - 1].questionID] =
                         assignmentQuestions[currentStep - 1]
@@ -252,16 +261,16 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: const Text(
-                          'Assignment submission',
-                          style: TextStyle(
+                        title: Text(
+                          localization.assignment_submission,
+                          style: const TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        content: const Text(
-                          'are you sure you want to finish this assignment?',
-                          style: TextStyle(
+                        content: Text(
+                          localization.assignment_submission_alert_message,
+                          style: const TextStyle(
                             fontSize: 15.0,
                             fontWeight: FontWeight.normal,
                           ),
@@ -282,63 +291,69 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
 
                                     // Evaluate the assignment marks
                                     for (int i = 0;
-                                    i < answersIndexes.length;
-                                    i++) {
+                                        i < answersIndexes.length;
+                                        i++) {
                                       if (answersIndexes[assignmentQuestions[i]
-                                          .questionID]! +
-                                          1 ==
-                                          int.parse(
-                                              assignmentQuestions[i].rightAnswer)) {
-                                        assignmentMark += assignmentQuestions[i].mark;
+                                                  .questionID]! +
+                                              1 ==
+                                          int.parse(assignmentQuestions[i]
+                                              .rightAnswer)) {
+                                        assignmentMark +=
+                                            assignmentQuestions[i].mark;
                                         rightAnswers += 1;
                                       } else {
                                         wrongAnswers += 1;
                                       }
                                     }
 
-                                    finalAnswers['right_answer'] = rightAnswers;
-                                    finalAnswers['wrong_answer'] = wrongAnswers;
+                                    finalAnswers[UserID.userID!.uid]
+                                        ['right_answers'] = rightAnswers;
+                                    finalAnswers[UserID.userID!.uid]
+                                        ['wrong_answers'] = wrongAnswers;
 
                                     Navigator.of(context).pop();
-
 
                                     try {
                                       //Submission
                                       for (int i = 0;
-                                      i < assignmentQuestions.length;
-                                      i++) {
+                                          i < assignmentQuestions.length;
+                                          i++) {
                                         finalAnswers[UserID.userID!.uid]
-                                        ['assignment']
+                                                ['assignment']
                                             .add({
                                           'question ${i + 1}':
-                                          assignmentQuestions[i].questionText,
-                                          'right_answer':
-                                          assignmentQuestions[i].rightAnswer,
+                                              assignmentQuestions[i]
+                                                  .questionText,
+                                          'right_answer': assignmentQuestions[i]
+                                              .rightAnswer,
                                           'student_answer': answersIndexes[
-                                          assignmentQuestions[i]
-                                              .questionID]! +
+                                                  assignmentQuestions[i]
+                                                      .questionID]! +
                                               1,
                                           'mark': assignmentQuestions[i].mark,
                                         });
-
                                       }
+
+                                      print(finalAnswers['right_answers']);
+                                      print(finalAnswers['wrong_answers']);
 
                                       // student total marks
                                       finalAnswers[UserID.userID!.uid]
-                                      ['total_marks'] = '$assignmentMark / $total';
-
+                                              ['total_marks'] =
+                                          '$assignmentMark / $total';
 
                                       showLoadingDialog(context);
-                                      YearsData.sendAssignment(assignment: finalAnswers);
+                                      YearsData.sendAssignment(
+                                          assignment: finalAnswers);
                                       Navigator.of(context).pop();
 
                                       //get score
                                       showDialog(
                                         context: context,
                                         builder: (context) => AlertDialog(
-                                          title: const Text(
-                                            'Assignment mark',
-                                            style: TextStyle(
+                                          title: Text(
+                                            localization.assignment_mark,
+                                            style: const TextStyle(
                                               fontSize: 20.0,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -356,7 +371,8 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                                               alignment: AlignmentDirectional
                                                   .centerEnd,
                                               child: TextButton(
-                                                  child: const Text('Okay'),
+                                                  child:
+                                                      Text(localization.okay),
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
                                                     Navigator.of(context).pop();
@@ -395,31 +411,27 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                                       //     ),
                                       //   );
                                       // }
-
-
-
                                     } catch (error) {
                                       print(error.toString());
                                     }
-
                                   } else {
                                     Navigator.of(context).pop();
                                     showDialog(
                                       context: context,
                                       builder: (context) => AlertDialog(
-                                        content: const Text(
-                                          'Please finish all the questions first.',
-                                          style: TextStyle(
+                                        content: Text(
+                                          localization.questions_not_done,
+                                          style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20.0,
                                           ),
                                         ),
                                         actions: [
                                           Align(
-                                            alignment: AlignmentDirectional
-                                                .centerEnd,
+                                            alignment:
+                                                AlignmentDirectional.centerEnd,
                                             child: TextButton(
-                                                child: const Text('Okay'),
+                                                child: Text(localization.okay),
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
                                                 }),
@@ -429,9 +441,9 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                                     );
                                   }
                                 },
-                                child: const Text(
-                                  'Finish NOW!',
-                                  style: TextStyle(
+                                child: Text(
+                                  localization.finish_assignment,
+                                  style: const TextStyle(
                                     fontSize: 15.0,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.green,
@@ -443,9 +455,9 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: const Text(
-                                  'cancel',
-                                  style: TextStyle(
+                                child: Text(
+                                  localization.cancel,
+                                  style: const TextStyle(
                                     fontSize: 15.0,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.grey,
@@ -462,10 +474,19 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
               },
               child: Row(
                 children: [
-
                   Text(
-                    currentStep < assignmentQuestions.length ? 'Next' : 'Finish', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0,),),
-                  const Icon(Icons.arrow_forward_ios, size: 15.0,),
+                    currentStep < assignmentQuestions.length
+                        ? localization.next
+                        : localization.finish_assignment,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0,
+                    ),
+                  ),
+                  const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 15.0,
+                  ),
                 ],
               ),
             ),
@@ -476,6 +497,8 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   }
 
   Widget assignmentQuestion({required QuestionModel question}) {
+    var localization = AppLocalizations.of(context)!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -483,7 +506,6 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
           width: double.infinity,
           padding: const EdgeInsets.all(10.0),
           decoration: BoxDecoration(
-
             borderRadius: BorderRadius.circular(10),
             color: Colors.black,
           ),
@@ -511,7 +533,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                     ),
                   ),
                   Text(
-                    'Marks: ${question.mark} ',
+                    '${localization.marks}: ${question.mark} ',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20.0,
@@ -525,21 +547,21 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
               ),
               question.questionImage.isNotEmpty
                   ? Center(
-                child: Column(
-                  children: [
-                    Image.network(
-                      question.questionImage,
-                      fit: BoxFit.cover,
-                    ),
-                    const SizedBox(
+                      child: Column(
+                        children: [
+                          Image.network(
+                            question.questionImage,
+                            fit: BoxFit.cover,
+                          ),
+                          const SizedBox(
+                            height: 15.0,
+                          ),
+                        ],
+                      ),
+                    )
+                  : const SizedBox(
                       height: 15.0,
                     ),
-                  ],
-                ),
-              )
-                  : const SizedBox(
-                height: 15.0,
-              ),
             ],
           ),
         ),
@@ -559,9 +581,10 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
               onTap: () {
                 setState(() {
                   selectedAnswer = index;
-                  answersIndexes[assignmentQuestions[currentStep - 1].questionID] =
-                      selectedAnswer;
+                  answersIndexes[assignmentQuestions[currentStep - 1]
+                      .questionID] = selectedAnswer;
                 });
+                print(answersIndexes);
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(
@@ -578,12 +601,12 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                   //         .questionID])
                   //     .first ==
                   //     index
-                  color: answersIndexes[
-                  assignmentQuestions[currentStep - 1].questionID] ==
-                      index &&
-                      answersIndexes[
-                      assignmentQuestions[currentStep - 1].questionID] !=
-                          null
+                  color: answersIndexes[assignmentQuestions[currentStep - 1]
+                                  .questionID] ==
+                              index &&
+                          answersIndexes[assignmentQuestions[currentStep - 1]
+                                  .questionID] !=
+                              null
                       ? const Color(0xff08CE5D)
                       : Colors.black,
                   borderRadius: BorderRadius.circular(10.0),
@@ -596,21 +619,24 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                       child: Text(
                         (index + 1).toString(),
                         style: TextStyle(
-                          color: answersIndexes[assignmentQuestions[currentStep - 1]
-                              .questionID] ==
-                              index &&
-                              answersIndexes[assignmentQuestions[currentStep - 1]
-                                  .questionID] !=
-                                  null
+                          color: answersIndexes[
+                                          assignmentQuestions[currentStep - 1]
+                                              .questionID] ==
+                                      index &&
+                                  answersIndexes[
+                                          assignmentQuestions[currentStep - 1]
+                                              .questionID] !=
+                                      null
                               ? Colors.white
                               : Colors.white,
                           fontWeight: answersIndexes[
-                          assignmentQuestions[currentStep - 1]
-                              .questionID] ==
-                              index &&
-                              answersIndexes[assignmentQuestions[currentStep - 1]
-                                  .questionID] !=
-                                  null
+                                          assignmentQuestions[currentStep - 1]
+                                              .questionID] ==
+                                      index &&
+                                  answersIndexes[
+                                          assignmentQuestions[currentStep - 1]
+                                              .questionID] !=
+                                      null
                               ? FontWeight.bold
                               : FontWeight.normal,
                         ),
@@ -621,21 +647,24 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                       child: Text(
                         question.answers[index].answerText,
                         style: TextStyle(
-                          color: answersIndexes[assignmentQuestions[currentStep - 1]
-                              .questionID] ==
-                              index &&
-                              answersIndexes[assignmentQuestions[currentStep - 1]
-                                  .questionID] !=
-                                  null
+                          color: answersIndexes[
+                                          assignmentQuestions[currentStep - 1]
+                                              .questionID] ==
+                                      index &&
+                                  answersIndexes[
+                                          assignmentQuestions[currentStep - 1]
+                                              .questionID] !=
+                                      null
                               ? Colors.white
                               : Colors.white,
                           fontWeight: answersIndexes[
-                          assignmentQuestions[currentStep - 1]
-                              .questionID] ==
-                              index &&
-                              answersIndexes[assignmentQuestions[currentStep - 1]
-                                  .questionID] !=
-                                  null
+                                          assignmentQuestions[currentStep - 1]
+                                              .questionID] ==
+                                      index &&
+                                  answersIndexes[
+                                          assignmentQuestions[currentStep - 1]
+                                              .questionID] !=
+                                      null
                               ? FontWeight.bold
                               : FontWeight.normal,
                         ),

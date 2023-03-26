@@ -12,6 +12,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../user/UserID.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -24,8 +25,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   var selectedYear = YearsData.defultYear;
   var fetchedyear;
-  Widget build(BuildContext context) {
 
+  @override
+  Widget build(BuildContext context) {
     switch (selectedYear) {
       case 'sec1':
         {
@@ -68,43 +70,52 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: Color(0xff098FEA),
+                  color: const Color(0xff098FEA),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
+                      width: MediaQuery.of(context).size.width * .5,
                       height: 150,
                       padding: const EdgeInsets.only(top: 30, left: 10),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Welcome,',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 35,
-                                fontWeight: FontWeight.bold),
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              AppLocalizations.of(context)!.welcome,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 35,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
-                          Text(
-                            '${UserID.userdata['firstName']}',
-                            maxLines: 3,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 35,
-                                fontWeight: FontWeight.bold),
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              '${UserID.userdata['firstName']}',
+                              maxLines: 3,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 35,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ],
                       ),
                     ),
-                    Center(
-                      child: QrImage(
-                        data: "${UserID.userID?.uid}",
-                        version: QrVersions.auto,
-                        foregroundColor: Colors.white,
-                        size: 150.0,
+                    Expanded(
+                      child: Center(
+                        child: QrImage(
+                          data: "${UserID.userID?.uid}",
+                          version: QrVersions.auto,
+                          foregroundColor: Colors.white,
+                          size: 150.0,
+                        ),
                       ),
                     ),
                   ],
@@ -124,8 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                            color:
-                            selectedYear == 'sec1' ? Colors.black : null,
+                            color: selectedYear == 'sec1' ? Colors.black : null,
                             borderRadius: BorderRadius.circular(50),
                             border: selectedYear == 'sec1'
                                 ? null
@@ -151,8 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                            color:
-                            selectedYear == 'sec2' ? Colors.black : null,
+                            color: selectedYear == 'sec2' ? Colors.black : null,
                             borderRadius: BorderRadius.circular(50),
                             border: selectedYear == 'sec2'
                                 ? null
@@ -178,8 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                            color:
-                            selectedYear == 'sec3' ? Colors.black : null,
+                            color: selectedYear == 'sec3' ? Colors.black : null,
                             borderRadius: BorderRadius.circular(50),
                             border: selectedYear == 'sec3'
                                 ? null
@@ -203,10 +211,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         });
                       },
                       child: Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                             color:
-                            selectedYear == 'prep1' ? Colors.black : null,
+                                selectedYear == 'prep1' ? Colors.black : null,
                             borderRadius: BorderRadius.circular(50),
                             border: selectedYear == 'prep1'
                                 ? null
@@ -233,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                             color:
-                            selectedYear == 'prep2' ? Colors.black : null,
+                                selectedYear == 'prep2' ? Colors.black : null,
                             borderRadius: BorderRadius.circular(50),
                             border: selectedYear == 'prep2'
                                 ? null
@@ -260,7 +268,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                             color:
-                            selectedYear == 'prep3' ? Colors.black : null,
+                                selectedYear == 'prep3' ? Colors.black : null,
                             borderRadius: BorderRadius.circular(50),
                             border: selectedYear == 'prep3'
                                 ? null
@@ -280,8 +288,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-
-
               ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -289,7 +295,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemBuilder: (BuildContext context, int index) {
                     return Subject(index);
                   }),
-
             ],
           ),
         ),
@@ -337,26 +342,26 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontSize: 25, fontWeight: FontWeight.bold),
                         ),
                         InkWell(
-                          onTap: (){
-                            YearsData.selectedSubject=fetchedyear[index].id;
-                            YearsData.selectedYear=selectedYear;
-                            Navigator.pushNamed(context, 'LoadingSubjectScreen');
-
+                          onTap: () {
+                            YearsData.selectedSubject = fetchedyear[index].id;
+                            YearsData.selectedYear = selectedYear;
+                            Navigator.pushNamed(
+                                context, 'LoadingSubjectScreen');
                           },
                           child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(18),
                                 border: Border.all(width: 2)),
                             padding: const EdgeInsets.all(15),
-                            child:  Row(
+                            child: Row(
                               children: [
                                 Text(
-                                  'Start',
-                                  style: TextStyle(
+                                  AppLocalizations.of(context)!.start,
+                                  style: const TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                Icon(Icons.arrow_forward_ios_rounded),
+                                const Icon(Icons.arrow_forward_ios_rounded),
                               ],
                             ),
                           ),

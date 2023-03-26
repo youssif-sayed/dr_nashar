@@ -1,3 +1,4 @@
+import 'package:dr_nashar/main.dart';
 import 'package:dr_nashar/screens/home.dart';
 import 'package:dr_nashar/screens/profileScreen.dart';
 import 'package:flutter/material.dart';
@@ -100,20 +101,20 @@ class _LayoutScreenState extends State<LayoutScreen> {
                 blendMode: BlendMode.srcIn,
                 shaderCallback: (Rect bounds) => currentIndex == 1
                     ? const LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color(0xff08CE5D),
-                    Color(0xff098FEA),
-                  ],
-                ).createShader(bounds)
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color(0xff08CE5D),
+                          Color(0xff098FEA),
+                        ],
+                      ).createShader(bounds)
                     : const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Colors.white,
-                      Colors.white,
-                    ]).createShader(bounds),
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                            Colors.white,
+                            Colors.white,
+                          ]).createShader(bounds),
                 child: const Icon(Icons.person)),
             label: 'Profile',
           ),

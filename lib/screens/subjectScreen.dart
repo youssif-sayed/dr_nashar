@@ -8,6 +8,8 @@ import '../user/UserID.dart';
 import '../utils/gaps.dart';
 import '../widgets/ShowToast.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class SubjectScreen extends StatefulWidget {
   const SubjectScreen({Key? key}) : super(key: key);
 
@@ -20,11 +22,13 @@ class _SubjectScreenState extends State<SubjectScreen> {
   String code = '';
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.black,
-        title: Container(
+        title: SizedBox(
           height: 50,
           child: Hero(
               tag: 'logo',
@@ -35,17 +39,18 @@ class _SubjectScreenState extends State<SubjectScreen> {
       ),
       backgroundColor: Colors.white,
       body: Container(
-        padding: EdgeInsets.all(12),
+        padding: const EdgeInsets.all(12),
         child: YearsData.subjectData.length == 0
             ? SingleChildScrollView(
-              child: Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
+                      // #TODO
                       'The course is currently empty',
                       style: TextStyle(fontSize: 20),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Image.asset(
@@ -55,7 +60,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                     ),
                   ],
                 ),
-            )
+              )
             : ListView.builder(
                 itemCount: YearsData.subjectData.length,
                 itemBuilder: (context, index) {
@@ -66,79 +71,91 @@ class _SubjectScreenState extends State<SubjectScreen> {
   }
 
   Widget listItem(int index) {
+    var localization = AppLocalizations.of(context)!;
+    var width = MediaQuery.of(context).size.width;
     return Column(
       children: [
-
         Gaps.gap24,
         ListTile(
           title: Container(
-            padding: EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.only(top: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  '${YearsData.subjectData[index]['name']}',
-                  style: const TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueGrey),
-                  maxLines: 3,
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    '${YearsData.subjectData[index]['name']}',
+                    style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blueGrey),
+                    maxLines: 3,
+                  ),
                 ),
-                InkWell(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(18.0))),
-                          title: Text(
-                            'Confirmation',
-                            style: TextStyle(color: Colors.blueAccent),
-                          ),
-                          content: const Text(
-                            'Are you sure you want to buy this lesson',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          actions: [
-                            TextButton(
-                              child: const Text(
-                                'NO',
-                                style: TextStyle(
-                                    color: Colors.red, fontSize: 20),
-                              ),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
+                const SizedBox(width: 20),
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(18.0))),
+                            title: Text(
+                              localization.buy_confirmation,
+                              style: const TextStyle(color: Colors.blueAccent),
                             ),
-                            TextButton(
-                              child: const Text(
-                                'YES',
-                                style: TextStyle(
-                                    color: Colors.green, fontSize: 20),
+                            content: Text(
+                              localization.buy_confirmation_alert_message,
+                              style: const TextStyle(color: Colors.black),
+                            ),
+                            actions: [
+                              TextButton(
+                                child: const Text(
+                                  // #TODO
+                                  'NO',
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 20),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
                               ),
-                              onPressed: () async {
-                                YearsData.lectureNumber = index;
-                                YearsData.lectureID =
-                                YearsData.subjectData[index]['id'];
-                                Navigator.of(context)
-                                    .pushReplacementNamed('LoadingPayScreen');
-                              },
-                            )
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Colors.blueAccent,
-                        borderRadius: BorderRadius.circular(50)),
-                    child: Text(
-                      'Buy ${YearsData.subjectData[index]['price']}EGP',
-                      style: const TextStyle(color: Colors.white),
+                              TextButton(
+                                child: const Text(
+                                  // #TODO
+                                  'YES',
+                                  style: TextStyle(
+                                      color: Colors.green, fontSize: 20),
+                                ),
+                                onPressed: () async {
+                                  YearsData.lectureNumber = index;
+                                  YearsData.lectureID =
+                                      YearsData.subjectData[index]['id'];
+                                  Navigator.of(context)
+                                      .pushReplacementNamed('LoadingPayScreen');
+                                },
+                              )
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: Colors.blueAccent,
+                          borderRadius: BorderRadius.circular(50)),
+                      child: Text(
+                        '${localization.buy} ${YearsData.subjectData[index]['price']}${localization.egp}',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -161,26 +178,25 @@ class _SubjectScreenState extends State<SubjectScreen> {
                           padding: EdgeInsets.only(
                             bottom: MediaQuery.of(context).viewInsets.bottom,
                           ),
-                          child: Container(
+                          child: SizedBox(
                             height: 200,
                             child: Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 18.0),
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Gaps.gap32,
                                       TextField(
                                         keyboardType: TextInputType.text,
-                                        decoration: const InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          labelText: 'code',
-                                          hintText: 'Enter Your code',
+                                        decoration: InputDecoration(
+                                          border: const OutlineInputBorder(),
+                                          labelText: localization.code,
+                                          hintText: localization.enter_code,
                                         ),
                                         onChanged: (value) {
                                           code = value;
@@ -202,48 +218,52 @@ class _SubjectScreenState extends State<SubjectScreen> {
                                         int i = 0;
                                         DateTime nowDate = DateTime.now();
                                         final codesData =
-                                        await YearsData.get_lecture_codes(
-                                            index);
+                                            await YearsData.get_lecture_codes(
+                                                index);
                                         if (codesData) print('');
 
                                         for (;
-                                        i < YearsData.lectureCodes.length;
-                                        i++) {
+                                            i < YearsData.lectureCodes.length;
+                                            i++) {
                                           if (YearsData.lectureCodes.keys
-                                              .elementAt(i) ==
+                                                  .elementAt(i) ==
                                               code) {
                                             iscode = true;
                                             break;
                                           }
                                         }
-                                        if (iscode &&YearsData.lectureCodes.values.elementAt(i)['price']==YearsData.subjectData[index]['price']) {
+                                        if (iscode &&
+                                            YearsData.lectureCodes.values
+                                                    .elementAt(i)['price'] ==
+                                                YearsData.subjectData[index]
+                                                    ['price']) {
                                           if (YearsData.lectureCodes.values
                                               .elementAt(i)['used']) {
                                             if (YearsData.lectureCodes.values
-                                                .elementAt(i)['UID'] ==
+                                                    .elementAt(i)['UID'] ==
                                                 UserID.userID?.uid) {
                                               DateTime codeDate = YearsData
                                                   .lectureCodes.values
                                                   .elementAt(i)['startDate']
                                                   .toDate();
                                               final dateDifrance =
-                                              YearsData.daysBetween(
-                                                  codeDate, nowDate);
+                                                  YearsData.daysBetween(
+                                                      codeDate, nowDate);
                                               if (dateDifrance <=
-                                                  YearsData
-                                                      .lectureCodes.values
+                                                  YearsData.lectureCodes.values
                                                       .elementAt(
-                                                      i)['expireDate']) {
-                                                YearsData.lectureNumber =
-                                                    index;
+                                                          i)['expireDate']) {
+                                                YearsData.lectureNumber = index;
                                                 Navigator.of(context)
                                                     .pushReplacementNamed(
-                                                    'VideoScreen');
+                                                        'VideoScreen');
                                               } else {
-                                                ShowToast('code expired',
+                                                ShowToast(
+                                                    localization.code_expired,
                                                     ToastGravity.TOP);
                                               }
                                             } else {
+                                              // #TODO
                                               ShowToast('not allowed user',
                                                   ToastGravity.TOP);
                                             }
@@ -258,23 +278,24 @@ class _SubjectScreenState extends State<SubjectScreen> {
                                             YearsData.lectureNumber = index;
                                             Navigator.of(context)
                                                 .pushReplacementNamed(
-                                                'VideoScreen');
+                                                    'VideoScreen');
                                           }
                                         } else {
-                                          ShowToast('code not valid',
+                                          ShowToast(localization.code_invalid,
                                               ToastGravity.TOP);
                                         }
                                       },
                                       child: Container(
                                         width:
-                                        MediaQuery.of(context).size.width,
+                                            MediaQuery.of(context).size.width,
                                         decoration: BoxDecoration(
                                             color: Colors.blueAccent,
                                             borderRadius:
-                                            BorderRadius.circular(50)),
+                                                BorderRadius.circular(50)),
                                         height: 50,
                                         child: const Center(
                                           child: Text(
+                                            // #TODO
                                             'Enter',
                                             style: TextStyle(
                                                 color: Colors.white,
@@ -306,7 +327,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                   ),
                 ),
                 title: Text(
-                  '${YearsData.subjectData[index]['videos'].length} videos, ${YearsData.subjectData[index]['docs'].length} documents',
+                  '${YearsData.subjectData[index]['videos'].length} ${localization.videos}, ${YearsData.subjectData[index]['docs'].length} ${localization.documents}',
                   style: const TextStyle(
                       fontSize: 20,
                       color: Colors.teal,
@@ -335,9 +356,9 @@ class _SubjectScreenState extends State<SubjectScreen> {
                     size: 25,
                   ),
                 ),
-                title: const Text(
-                  'Assignment',
-                  style: TextStyle(
+                title: Text(
+                  localization.assignments,
+                  style: const TextStyle(
                       fontSize: 20,
                       color: Colors.teal,
                       fontWeight: FontWeight.w700),
@@ -353,147 +374,146 @@ class _SubjectScreenState extends State<SubjectScreen> {
               ListTile(
                 onTap: () {
                   showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      builder: (context) {
-                        return Padding(
-                          padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom,
-                          ),
-                          child: SizedBox(
-                            height: 200,
-                            child: Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 18.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Gaps.gap32,
-                                      TextField(
-                                        keyboardType: TextInputType.text,
-                                        decoration: const InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          labelText: 'code',
-                                          hintText: 'Enter Your code',
-                                        ),
-                                        onChanged: (value) {
-                                          code = value;
-                                        },
-                                      ),
-                                      Text(
-                                        errtxt,
-                                        style: const TextStyle(
-                                            color: Colors.red, fontSize: 20),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Column(
+                    context: context,
+                    isScrollControlled: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    builder: (context) {
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom,
+                        ),
+                        child: SizedBox(
+                          height: 200,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 18.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    MaterialButton(
-                                      onPressed: () async {
-                                        bool iscode = false;
-                                        int i = 0;
-                                        DateTime nowDate = DateTime.now();
-                                        final codesData =
-                                        await YearsData.get_lecture_codes(
-                                            index);
-                                        if (codesData) print('');
+                                    Gaps.gap32,
+                                    TextField(
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                        border: const OutlineInputBorder(),
+                                        labelText: localization.code,
+                                        hintText: localization.enter_code,
+                                      ),
+                                      onChanged: (value) {
+                                        code = value;
+                                      },
+                                    ),
+                                    Text(
+                                      errtxt,
+                                      style: const TextStyle(
+                                          color: Colors.red, fontSize: 20),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Column(
+                                children: [
+                                  MaterialButton(
+                                    onPressed: () async {
+                                      bool iscode = false;
+                                      int i = 0;
+                                      DateTime nowDate = DateTime.now();
+                                      final codesData =
+                                          await YearsData.get_lecture_codes(
+                                              index);
+                                      if (codesData) print('');
 
-                                        for (;
-                                        i < YearsData.lectureCodes.length;
-                                        i++) {
-                                          if (YearsData.lectureCodes.keys
-                                              .elementAt(i) ==
-                                              code) {
-                                            iscode = true;
-                                            break;
-                                          }
+                                      for (;
+                                          i < YearsData.lectureCodes.length;
+                                          i++) {
+                                        if (YearsData.lectureCodes.keys
+                                                .elementAt(i) ==
+                                            code) {
+                                          iscode = true;
+                                          break;
                                         }
-                                        if (iscode) {
+                                      }
+                                      if (iscode) {
+                                        if (YearsData.lectureCodes.values
+                                            .elementAt(i)['used']) {
                                           if (YearsData.lectureCodes.values
-                                              .elementAt(i)['used']) {
-                                            if (YearsData.lectureCodes.values
-                                                .elementAt(i)['UID'] ==
-                                                UserID.userID?.uid) {
-                                              DateTime codeDate = YearsData
-                                                  .lectureCodes.values
-                                                  .elementAt(i)['startDate']
-                                                  .toDate();
-                                              final dateDifrance =
-                                              YearsData.daysBetween(
-                                                  codeDate, nowDate);
-                                              if (dateDifrance <=
-                                                  YearsData
-                                                      .lectureCodes.values
-                                                      .elementAt(
-                                                      i)['expireDate']) {
-                                                YearsData.lectureNumber =
-                                                    index;
-                                                Navigator.of(context)
-                                                    .pushReplacementNamed(
-                                                    'QuizScreen');
-                                              } else {
-                                                ShowToast('code expired',
-                                                    ToastGravity.TOP);
-                                              }
+                                                  .elementAt(i)['UID'] ==
+                                              UserID.userID?.uid) {
+                                            DateTime codeDate = YearsData
+                                                .lectureCodes.values
+                                                .elementAt(i)['startDate']
+                                                .toDate();
+                                            final dateDifrance =
+                                                YearsData.daysBetween(
+                                                    codeDate, nowDate);
+                                            if (dateDifrance <=
+                                                YearsData.lectureCodes.values
+                                                    .elementAt(
+                                                        i)['expireDate']) {
+                                              YearsData.lectureNumber = index;
+                                              Navigator.of(context)
+                                                  .pushReplacementNamed(
+                                                      'QuizScreen');
                                             } else {
-                                              ShowToast('not allowed user',
+                                              ShowToast(
+                                                  localization.code_expired,
                                                   ToastGravity.TOP);
                                             }
                                           } else {
-                                            YearsData.update_code_data(
-                                                nowDate,
-                                                UserID.userID?.uid,
-                                                code,
-                                                index,
-                                                YearsData.lectureCodes.values
-                                                    .elementAt(i));
-                                            YearsData.lectureNumber = index;
-                                            Navigator.of(context)
-                                                .pushReplacementNamed(
-                                                'QuizScreen');
+                                            // #TODO
+                                            ShowToast('not allowed user',
+                                                ToastGravity.TOP);
                                           }
                                         } else {
-                                          ShowToast('code not valid',
-                                              ToastGravity.TOP);
+                                          YearsData.update_code_data(
+                                              nowDate,
+                                              UserID.userID?.uid,
+                                              code,
+                                              index,
+                                              YearsData.lectureCodes.values
+                                                  .elementAt(i));
+                                          YearsData.lectureNumber = index;
+                                          Navigator.of(context)
+                                              .pushReplacementNamed(
+                                                  'QuizScreen');
                                         }
-                                      },
-                                      child: Container(
-                                        width:
-                                        MediaQuery.of(context).size.width,
-                                        decoration: BoxDecoration(
-                                            color: Colors.blueAccent,
-                                            borderRadius:
-                                            BorderRadius.circular(50)),
-                                        height: 50,
-                                        child: const Center(
-                                          child: Text(
-                                            'Enter',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 25),
-                                          ),
+                                      } else {
+                                        ShowToast(localization.code_invalid,
+                                            ToastGravity.TOP);
+                                      }
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
+                                          color: Colors.blueAccent,
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      height: 50,
+                                      child: const Center(
+                                        child: Text(
+                                          // #TODO
+                                          'Enter',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 25),
                                         ),
                                       ),
                                     ),
-                                    Gaps.gap32,
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  ),
+                                  Gaps.gap32,
+                                ],
+                              ),
+                            ],
                           ),
-                        );
-                      });
+                        ),
+                      );
+                    },
+                  );
                 },
                 leading: Container(
                   padding: const EdgeInsets.all(4),
@@ -506,9 +526,9 @@ class _SubjectScreenState extends State<SubjectScreen> {
                     size: 25,
                   ),
                 ),
-                title: const Text(
-                  'Quiz',
-                  style: TextStyle(
+                title: Text(
+                  localization.quizzes,
+                  style: const TextStyle(
                       fontSize: 20,
                       color: Colors.teal,
                       fontWeight: FontWeight.w700),

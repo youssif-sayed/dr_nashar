@@ -12,6 +12,8 @@ import 'package:video_player/video_player.dart';
 
 import '../utils/gaps.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class VideoScreen extends StatefulWidget {
   const VideoScreen({Key? key}) : super(key: key);
 
@@ -61,6 +63,8 @@ class _VideoScreenState extends State<VideoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -108,7 +112,7 @@ class _VideoScreenState extends State<VideoScreen> {
                             : Colors.deepPurpleAccent,
                         child: Center(
                           child: Text(
-                            'Videos',
+                            localization.videos,
                             style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold,
@@ -134,7 +138,7 @@ class _VideoScreenState extends State<VideoScreen> {
                             : Colors.deepPurpleAccent,
                         child: Center(
                           child: Text(
-                            'Documents',
+                            localization.documents,
                             style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold,

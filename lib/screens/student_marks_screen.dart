@@ -1,14 +1,16 @@
-
 import 'package:conditional_builder_rec/conditional_builder_rec.dart';
 import 'package:dr_nashar/user/yearsData.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StudentMarksScreen extends StatelessWidget {
   const StudentMarksScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context)!;
     YearsData.getStudentMarks();
 
     return ConditionalBuilderRec(
@@ -22,19 +24,19 @@ class StudentMarksScreen extends StatelessWidget {
         ),
       ),
       builder: (context) {
-
         return Scaffold(
           backgroundColor: CupertinoColors.lightBackgroundGray,
           appBar: AppBar(
             centerTitle: true,
             backgroundColor: Colors.black,
-            title: Container(
+            title: SizedBox(
               height: 50,
               child: Hero(
-                  tag: 'logo',
-                  child: Image.asset(
-                    'images/Icon/appIcon.png',
-                  )),
+                tag: 'logo',
+                child: Image.asset(
+                  'images/Icon/appIcon.png',
+                ),
+              ),
             ),
           ),
           body: SingleChildScrollView(
@@ -43,9 +45,9 @@ class StudentMarksScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Assignments',
-                    style: TextStyle(
+                  Text(
+                    localization.assignments,
+                    style: const TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.grey,
@@ -59,7 +61,8 @@ class StudentMarksScreen extends StatelessWidget {
                         const SizedBox(height: 10.0),
                     itemBuilder: (context, index) {
                       return Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15.0, vertical: 10.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15.0),
                           color: Colors.white,
@@ -79,14 +82,17 @@ class StudentMarksScreen extends StatelessWidget {
                                 maxLines: 2,
                               ),
                             ),
-
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Icon(Icons.check, color: Colors.green,),
+                                const Icon(
+                                  Icons.check,
+                                  color: Colors.green,
+                                ),
                                 Text(
                                   YearsData.studentAssignments[index]
-                                  ['right_answers'].toString(),
+                                          ['right_answers']
+                                      .toString(),
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20.0,
@@ -96,16 +102,18 @@ class StudentMarksScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-
                             const SizedBox(width: 10.0),
-
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Icon(Icons.close, color: Colors.red,),
+                                const Icon(
+                                  Icons.close,
+                                  color: Colors.red,
+                                ),
                                 Text(
                                   YearsData.studentAssignments[index]
-                                  ['wrong_answers'].toString(),
+                                          ['wrong_answers']
+                                      .toString(),
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20.0,
@@ -115,9 +123,7 @@ class StudentMarksScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-
                             const SizedBox(width: 10.0),
-
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -130,7 +136,9 @@ class StudentMarksScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 10.0),
                                 Text(
-                                  YearsData.studentAssignments[index]['total_marks'],
+                                  YearsData.studentAssignments[index]
+                                      ['total_marks'],
+                                  textDirection: TextDirection.ltr,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15.0,
@@ -145,13 +153,11 @@ class StudentMarksScreen extends StatelessWidget {
                     itemCount: YearsData.studentAssignments.length,
                   ),
                   const SizedBox(height: 20.0),
-
                   const Divider(),
-
                   const SizedBox(height: 20.0),
-                  const Text(
-                    'Quizzes',
-                    style: TextStyle(
+                  Text(
+                    localization.quizzes,
+                    style: const TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.grey,
@@ -162,10 +168,11 @@ class StudentMarksScreen extends StatelessWidget {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     separatorBuilder: (context, index) =>
-                    const SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                     itemBuilder: (context, index) {
                       return Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15.0, vertical: 10.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15.0),
                           color: Colors.white,
@@ -175,8 +182,7 @@ class StudentMarksScreen extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                YearsData.studentQuizzes[index]
-                                ['quiz_name'],
+                                YearsData.studentQuizzes[index]['quiz_name'],
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20.0,
@@ -185,14 +191,17 @@ class StudentMarksScreen extends StatelessWidget {
                                 maxLines: 2,
                               ),
                             ),
-
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Icon(Icons.check, color: Colors.green,),
+                                const Icon(
+                                  Icons.check,
+                                  color: Colors.green,
+                                ),
                                 Text(
                                   YearsData.studentQuizzes[index]
-                                  ['right_answers'].toString(),
+                                          ['right_answers']
+                                      .toString(),
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20.0,
@@ -202,16 +211,18 @@ class StudentMarksScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-
                             const SizedBox(width: 10.0),
-
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Icon(Icons.close, color: Colors.red,),
+                                const Icon(
+                                  Icons.close,
+                                  color: Colors.red,
+                                ),
                                 Text(
                                   YearsData.studentQuizzes[index]
-                                  ['wrong_answers'].toString(),
+                                          ['wrong_answers']
+                                      .toString(),
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20.0,
@@ -221,21 +232,21 @@ class StudentMarksScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-
                             const SizedBox(width: 10.0),
-
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Text(
-                                  'Mark',
-                                  style: TextStyle(
+                                Text(
+                                  localization.marks,
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15.0,
                                   ),
                                 ),
                                 Text(
-                                  YearsData.studentQuizzes[index]['total_marks'],
+                                  YearsData.studentQuizzes[index]
+                                      ['total_marks'],
+                                  textDirection: TextDirection.ltr,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15.0,
