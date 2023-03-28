@@ -53,7 +53,7 @@ class PayVFCashScreen extends StatelessWidget {
               height: 10,
             ),
             Text(
-              '${YearsData.subjectData[YearsData.lectureNumber]['price']} EGP',
+              '${YearsData.subjectData[YearsData.lectureNumber].price} EGP',
               style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

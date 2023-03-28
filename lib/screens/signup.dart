@@ -857,7 +857,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (user != null) {
       await FirebaseFirestore.instance
           .collection("userData")
-          .doc('${user?.uid}')
+          .doc(user.uid)
           .set(UserID.userdata)
           .onError((e, _) => print("Error writing document: $e"));
     }

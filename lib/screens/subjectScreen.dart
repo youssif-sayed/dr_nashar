@@ -1,4 +1,5 @@
 import 'package:dr_nashar/modules/payment/cubit/cubit.dart';
+import 'package:dr_nashar/screens/quiz_screen.dart';
 import 'package:dr_nashar/user/yearsData.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,6 +10,8 @@ import '../utils/gaps.dart';
 import '../widgets/ShowToast.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'assignment_screen.dart';
 
 class SubjectScreen extends StatefulWidget {
   const SubjectScreen({Key? key}) : super(key: key);
@@ -73,6 +76,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
   Widget listItem(int index) {
     var localization = AppLocalizations.of(context)!;
     var width = MediaQuery.of(context).size.width;
+    var subject = YearsData.subjectData[index];
     return Column(
       children: [
         Gaps.gap24,
@@ -85,7 +89,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                 Expanded(
                   flex: 2,
                   child: Text(
-                    '${YearsData.subjectData[index]['name']}',
+                    subject.name,
                     style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -133,8 +137,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                                 ),
                                 onPressed: () async {
                                   YearsData.lectureNumber = index;
-                                  YearsData.lectureID =
-                                      YearsData.subjectData[index]['id'];
+                                  YearsData.lectureID = subject.id;
                                   Navigator.of(context)
                                       .pushReplacementNamed('LoadingPayScreen');
                                 },
@@ -150,7 +153,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                           color: Colors.blueAccent,
                           borderRadius: BorderRadius.circular(50)),
                       child: Text(
-                        '${localization.buy} ${YearsData.subjectData[index]['price']}${localization.egp}',
+                        '${localization.buy} ${subject.price} ${localization.egp}',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Colors.white,
@@ -235,8 +238,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                                         if (iscode &&
                                             YearsData.lectureCodes.values
                                                     .elementAt(i)['price'] ==
-                                                YearsData.subjectData[index]
-                                                    ['price']) {
+                                                subject.price) {
                                           if (YearsData.lectureCodes.values
                                               .elementAt(i)['used']) {
                                             if (YearsData.lectureCodes.values
@@ -327,7 +329,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                   ),
                 ),
                 title: Text(
-                  '${YearsData.subjectData[index]['videos'].length} ${localization.videos}, ${YearsData.subjectData[index]['docs'].length} ${localization.documents}',
+                  '${subject.videos.length} ${localization.videos}, ${subject.documents.length} ${localization.documents}',
                   style: const TextStyle(
                       fontSize: 20,
                       color: Colors.teal,
@@ -343,7 +345,17 @@ class _SubjectScreenState extends State<SubjectScreen> {
               // Assignment
               ListTile(
                 onTap: () {
-                  Navigator.of(context).pushNamed('AssignmentScreen');
+                  if (subject.assignment != null) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => AssignmentScreen(
+                          lecture: subject,
+                        ),
+                      ),
+                    );
+                  } else {
+                    ShowToast('Assignment is not availabe', ToastGravity.TOP);
+                  }
                 },
                 leading: Container(
                   padding: const EdgeInsets.all(4),
@@ -419,71 +431,84 @@ class _SubjectScreenState extends State<SubjectScreen> {
                                 children: [
                                   MaterialButton(
                                     onPressed: () async {
-                                      bool iscode = false;
-                                      int i = 0;
-                                      DateTime nowDate = DateTime.now();
-                                      final codesData =
-                                          await YearsData.get_lecture_codes(
-                                              index);
-                                      if (codesData) print('');
+                                      if (subject.quiz == null) {
+                                      } else {
+                                        bool iscode = false;
+                                        int i = 0;
+                                        DateTime nowDate = DateTime.now();
+                                        final codesData =
+                                            await YearsData.get_lecture_codes(
+                                                index);
+                                        if (codesData) print('');
 
-                                      for (;
-                                          i < YearsData.lectureCodes.length;
-                                          i++) {
-                                        if (YearsData.lectureCodes.keys
-                                                .elementAt(i) ==
-                                            code) {
-                                          iscode = true;
-                                          break;
+                                        for (;
+                                            i < YearsData.lectureCodes.length;
+                                            i++) {
+                                          if (YearsData.lectureCodes.keys
+                                                  .elementAt(i) ==
+                                              code) {
+                                            iscode = true;
+                                            break;
+                                          }
                                         }
-                                      }
-                                      if (iscode) {
-                                        if (YearsData.lectureCodes.values
-                                            .elementAt(i)['used']) {
+                                        if (iscode) {
                                           if (YearsData.lectureCodes.values
-                                                  .elementAt(i)['UID'] ==
-                                              UserID.userID?.uid) {
-                                            DateTime codeDate = YearsData
-                                                .lectureCodes.values
-                                                .elementAt(i)['startDate']
-                                                .toDate();
-                                            final dateDifrance =
-                                                YearsData.daysBetween(
-                                                    codeDate, nowDate);
-                                            if (dateDifrance <=
-                                                YearsData.lectureCodes.values
-                                                    .elementAt(
-                                                        i)['expireDate']) {
-                                              YearsData.lectureNumber = index;
-                                              Navigator.of(context)
-                                                  .pushReplacementNamed(
-                                                      'QuizScreen');
+                                              .elementAt(i)['used']) {
+                                            if (YearsData.lectureCodes.values
+                                                    .elementAt(i)['UID'] ==
+                                                UserID.userID?.uid) {
+                                              DateTime codeDate = YearsData
+                                                  .lectureCodes.values
+                                                  .elementAt(i)['startDate']
+                                                  .toDate();
+                                              final dateDifrance =
+                                                  YearsData.daysBetween(
+                                                      codeDate, nowDate);
+                                              if (dateDifrance <=
+                                                  YearsData.lectureCodes.values
+                                                      .elementAt(
+                                                          i)['expireDate']) {
+                                                YearsData.lectureNumber = index;
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        QuizScreen(
+                                                      lecture: subject,
+                                                    ),
+                                                  ),
+                                                );
+                                              } else {
+                                                ShowToast(
+                                                    localization.code_expired,
+                                                    ToastGravity.TOP);
+                                              }
                                             } else {
-                                              ShowToast(
-                                                  localization.code_expired,
+                                              // #TODO
+                                              ShowToast('not allowed user',
                                                   ToastGravity.TOP);
                                             }
                                           } else {
-                                            // #TODO
-                                            ShowToast('not allowed user',
-                                                ToastGravity.TOP);
+                                            YearsData.update_code_data(
+                                                nowDate,
+                                                UserID.userID?.uid,
+                                                code,
+                                                index,
+                                                YearsData.lectureCodes.values
+                                                    .elementAt(i));
+                                            YearsData.lectureNumber = index;
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    QuizScreen(
+                                                  lecture: subject,
+                                                ),
+                                              ),
+                                            );
                                           }
                                         } else {
-                                          YearsData.update_code_data(
-                                              nowDate,
-                                              UserID.userID?.uid,
-                                              code,
-                                              index,
-                                              YearsData.lectureCodes.values
-                                                  .elementAt(i));
-                                          YearsData.lectureNumber = index;
-                                          Navigator.of(context)
-                                              .pushReplacementNamed(
-                                                  'QuizScreen');
+                                          ShowToast(localization.code_invalid,
+                                              ToastGravity.TOP);
                                         }
-                                      } else {
-                                        ShowToast(localization.code_invalid,
-                                            ToastGravity.TOP);
                                       }
                                     },
                                     child: Container(

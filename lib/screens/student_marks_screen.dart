@@ -60,6 +60,14 @@ class StudentMarksScreen extends StatelessWidget {
                     separatorBuilder: (context, index) =>
                         const SizedBox(height: 10.0),
                     itemBuilder: (context, index) {
+                      bool stepsMarksExists() {
+                        return !YearsData.studentAssignments[index]
+                                .data()
+                                .containsKey('steps_marks')
+                            ? false
+                            : true;
+                      }
+
                       return Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15.0, vertical: 10.0),
@@ -67,85 +75,112 @@ class StudentMarksScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(15.0),
                           color: Colors.white,
                         ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Column(
                           children: [
-                            Expanded(
-                              child: Text(
-                                YearsData.studentAssignments[index]
-                                    ['assignment_name'],
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20.0,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                maxLines: 2,
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Icon(
-                                  Icons.check,
-                                  color: Colors.green,
-                                ),
-                                Text(
-                                  YearsData.studentAssignments[index]
-                                          ['right_answers']
-                                      .toString(),
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
-                                    overflow: TextOverflow.ellipsis,
+                                Expanded(
+                                  child: Text(
+                                    YearsData.studentAssignments[index]
+                                        ['assignment_name'],
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.0,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    maxLines: 2,
                                   ),
-                                  maxLines: 2,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.check,
+                                      color: Colors.green,
+                                    ),
+                                    Text(
+                                      YearsData.studentAssignments[index]
+                                              ['right_answers']
+                                          .toString(),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      maxLines: 2,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 10.0),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.close,
+                                      color: Colors.red,
+                                    ),
+                                    Text(
+                                      YearsData.studentAssignments[index]
+                                              ['wrong_answers']
+                                          .toString(),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      maxLines: 2,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 10.0),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      'Mark',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15.0,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10.0),
+                                    Text(
+                                      YearsData.studentAssignments[index]
+                                          ['assignment_marks'],
+                                      textDirection: TextDirection.ltr,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15.0,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                            const SizedBox(width: 10.0),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.close,
-                                  color: Colors.red,
-                                ),
-                                Text(
-                                  YearsData.studentAssignments[index]
-                                          ['wrong_answers']
-                                      .toString(),
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  maxLines: 2,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(width: 10.0),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  'Mark',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15.0,
-                                  ),
-                                ),
-                                const SizedBox(height: 10.0),
-                                Text(
-                                  YearsData.studentAssignments[index]
-                                      ['total_marks'],
-                                  textDirection: TextDirection.ltr,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15.0,
-                                  ),
-                                ),
-                              ],
-                            ),
+                            stepsMarksExists()
+                                ? Row(
+                                    children: [
+                                      const Text(
+                                        'Steps Marks',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      Text(
+                                        YearsData.studentAssignments[index]
+                                            ['steps_marks'],
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : const SizedBox()
                           ],
                         ),
                       );
@@ -170,6 +205,14 @@ class StudentMarksScreen extends StatelessWidget {
                     separatorBuilder: (context, index) =>
                         const SizedBox(height: 10.0),
                     itemBuilder: (context, index) {
+                      bool stepsMarksExists() {
+                        return !YearsData.studentQuizzes[index]
+                                .data()
+                                .containsKey('steps_marks')
+                            ? false
+                            : true;
+                      }
+
                       return Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15.0, vertical: 10.0),
@@ -177,83 +220,113 @@ class StudentMarksScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(15.0),
                           color: Colors.white,
                         ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Column(
                           children: [
-                            Expanded(
-                              child: Text(
-                                YearsData.studentQuizzes[index]['quiz_name'],
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20.0,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                maxLines: 2,
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Icon(
-                                  Icons.check,
-                                  color: Colors.green,
-                                ),
-                                Text(
-                                  YearsData.studentQuizzes[index]
-                                          ['right_answers']
-                                      .toString(),
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
-                                    overflow: TextOverflow.ellipsis,
+                                Expanded(
+                                  child: Text(
+                                    YearsData.studentQuizzes[index]
+                                        ['quiz_name'],
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.0,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    maxLines: 2,
                                   ),
-                                  maxLines: 2,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.check,
+                                      color: Colors.green,
+                                    ),
+                                    Text(
+                                      YearsData.studentQuizzes[index]
+                                              ['right_answers']
+                                          .toString(),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      maxLines: 2,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 10.0),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.close,
+                                      color: Colors.red,
+                                    ),
+                                    Text(
+                                      YearsData.studentQuizzes[index]
+                                              ['wrong_answers']
+                                          .toString(),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      maxLines: 2,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 10.0),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      localization.marks,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15.0,
+                                      ),
+                                    ),
+                                    Text(
+                                      YearsData.studentQuizzes[index]
+                                          ['quiz_marks'],
+                                      textDirection: TextDirection.ltr,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15.0,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                            const SizedBox(width: 10.0),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.close,
-                                  color: Colors.red,
-                                ),
-                                Text(
-                                  YearsData.studentQuizzes[index]
-                                          ['wrong_answers']
-                                      .toString(),
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  maxLines: 2,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(width: 10.0),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  localization.marks,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15.0,
-                                  ),
-                                ),
-                                Text(
-                                  YearsData.studentQuizzes[index]
-                                      ['total_marks'],
-                                  textDirection: TextDirection.ltr,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15.0,
-                                  ),
-                                ),
-                              ],
-                            ),
+                            stepsMarksExists()
+                                ? Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'Steps Marks',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      Text(
+                                        YearsData.studentQuizzes[index]
+                                            ['steps_marks'],
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : const SizedBox()
                           ],
                         ),
                       );

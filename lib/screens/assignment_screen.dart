@@ -1,6 +1,9 @@
 import 'package:dr_nashar/components.dart';
+import 'package:dr_nashar/models/video_model.dart';
+import 'package:dr_nashar/widgets/ShowToast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 import '../models/question_model.dart';
@@ -10,7 +13,8 @@ import '../user/yearsData.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AssignmentScreen extends StatefulWidget {
-  const AssignmentScreen({Key? key}) : super(key: key);
+  const AssignmentScreen({Key? key, required this.lecture}) : super(key: key);
+  final LectureModel lecture;
 
   @override
   State<AssignmentScreen> createState() => _AssignmentScreenState();
@@ -19,61 +23,26 @@ class AssignmentScreen extends StatefulWidget {
 class _AssignmentScreenState extends State<AssignmentScreen> {
   int currentStep = 1;
   int? selectedAnswer;
-  Map<int, int?> answers = {}; // question id : answer id
-  Map<int, int?> answersIndexes = {};
+  Map<dynamic, dynamic> answers = {}; // question id : answer id
+  Map<dynamic, dynamic> answersIndexes = {};
   List<QuestionModel> assignmentQuestions = [];
   int rightAnswers = 0;
   int wrongAnswers = 0;
-  Map<String, dynamic> finalAnswers = {
+  late Map<String, dynamic> finalAnswers = {
     UserID.userID!.uid: {
       'assignment_name': '${YearsData.selectedSubject} assignment',
       'assignment': [],
       'right_answers': 0,
       'wrong_answers': 0,
+      'quiz_marks': '',
       'total_marks': '',
     },
   };
 
   @override
   void initState() {
-    var assignment = YearsData.subjectAssignment[0]
-        ['${YearsData.selectedYear}-${YearsData.selectedSubject}-assignment'];
-    //var question in assignment
-    for (int i = 0; i < assignment.length; i++) {
-      assignmentQuestions.add(
-        QuestionModel(
-          questionID: assignment[i]['question_id'],
-          questionText: assignment[i]['question_text'],
-          questionImage: assignment[i]['question_image'],
-          mark: assignment[i]['mark'],
-          answers: [
-            Answer(
-                answerID: assignment[i]['answer'][0]['answer_id'],
-                answerText: assignment[i]['answer'][0]['answer_text']),
-            Answer(
-                answerID: assignment[i]['answer'][1]['answer_id'],
-                answerText: assignment[i]['answer'][1]['answer_text']),
-            Answer(
-                answerID: assignment[i]['answer'][2]['answer_id'],
-                answerText: assignment[i]['answer'][2]['answer_text']),
-            Answer(
-                answerID: assignment[i]['answer'][3]['answer_id'],
-                answerText: assignment[i]['answer'][3]['answer_text']),
-          ],
-          rightAnswer: assignment[i]['right_answer'],
-        ),
-      );
-    }
-
-    for (var question in assignmentQuestions) {
-      answers.addAll({
-        question.questionID: null,
-      });
-      answersIndexes.addAll({
-        question.questionID: null,
-      });
-    }
-
+    var assignment = widget.lecture.assignment!;
+    assignmentQuestions = assignment.questions;
     super.initState();
   }
 
@@ -238,239 +207,255 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                     : const Color(0xff08CE5D),
               ),
               onPressed: () {
-                setState(() {
-                  print('anybody here');
-                  if (selectedAnswer != null) {
-                    answers[assignmentQuestions[currentStep - 1].questionID] =
-                        assignmentQuestions[currentStep - 1]
-                            .answers[selectedAnswer!]
-                            .answerID;
+                setState(
+                  () {
+                    if (selectedAnswer != null) {
+                      answers[assignmentQuestions[currentStep - 1].id] =
+                          assignmentQuestions[currentStep - 1]
+                              .choices[selectedAnswer!];
 
-                    answersIndexes[assignmentQuestions[currentStep - 1]
-                        .questionID] = selectedAnswer;
-                  }
+                      answersIndexes[assignmentQuestions[currentStep - 1].id] =
+                          selectedAnswer;
+                    }
 
-                  if (currentStep < assignmentQuestions.length) {
-                    // Going to the next question
-                    currentStep += 1;
+                    if (currentStep < assignmentQuestions.length) {
+                      // Going to the next question
+                      currentStep += 1;
 
-                    // resetting selected answer
-                    selectedAnswer = null;
-                  } else {
-                    // assignment is finished
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: Text(
-                          localization.assignment_submission,
-                          style: const TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        content: Text(
-                          localization.assignment_submission_alert_message,
-                          style: const TextStyle(
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                        actions: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  if (!answersIndexes.containsValue(null)) {
-                                    int assignmentMark = 0;
-                                    int total = 0;
+                      // resetting selected answer
+                      selectedAnswer = null;
+                    } else {
+                      // assignment is finished
+                      if (assignmentQuestions.length != answers.length) {
+                        ShowToast('finish The last one', ToastGravity.CENTER);
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text(
+                              localization.assignment_submission,
+                              style: const TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            content: Text(
+                              localization.assignment_submission_alert_message,
+                              style: const TextStyle(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            actions: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      if (!answersIndexes.containsValue(null)) {
+                                        int assignmentMark = 0;
+                                        int total = 0;
 
-                                    for (var question in assignmentQuestions) {
-                                      total += question.mark;
-                                    }
+                                        for (var question
+                                            in assignmentQuestions) {
+                                          total += question.mark;
+                                        }
 
-                                    // Evaluate the assignment marks
-                                    for (int i = 0;
-                                        i < answersIndexes.length;
-                                        i++) {
-                                      if (answersIndexes[assignmentQuestions[i]
-                                                  .questionID]! +
-                                              1 ==
-                                          int.parse(assignmentQuestions[i]
-                                              .rightAnswer)) {
-                                        assignmentMark +=
-                                            assignmentQuestions[i].mark;
-                                        rightAnswers += 1;
-                                      } else {
-                                        wrongAnswers += 1;
-                                      }
-                                    }
+                                        // Evaluate the assignment marks
+                                        for (int i = 0;
+                                            i < answersIndexes.length;
+                                            i++) {
+                                          if (answersIndexes[
+                                                  assignmentQuestions[i].id] ==
+                                              (int.parse(assignmentQuestions[i]
+                                                      .answer) -
+                                                  1)) {
+                                            assignmentMark +=
+                                                assignmentQuestions[i].mark;
+                                            rightAnswers += 1;
+                                            print('right');
+                                          } else {
+                                            wrongAnswers += 1;
+                                            print('wrong');
+                                          }
+                                        }
 
-                                    finalAnswers[UserID.userID!.uid]
-                                        ['right_answers'] = rightAnswers;
-                                    finalAnswers[UserID.userID!.uid]
-                                        ['wrong_answers'] = wrongAnswers;
-
-                                    Navigator.of(context).pop();
-
-                                    try {
-                                      //Submission
-                                      for (int i = 0;
-                                          i < assignmentQuestions.length;
-                                          i++) {
                                         finalAnswers[UserID.userID!.uid]
-                                                ['assignment']
-                                            .add({
-                                          'question ${i + 1}':
-                                              assignmentQuestions[i]
-                                                  .questionText,
-                                          'right_answer': assignmentQuestions[i]
-                                              .rightAnswer,
-                                          'student_answer': answersIndexes[
-                                                  assignmentQuestions[i]
-                                                      .questionID]! +
-                                              1,
-                                          'mark': assignmentQuestions[i].mark,
-                                        });
+                                            ['right_answers'] = rightAnswers;
+                                        finalAnswers[UserID.userID!.uid]
+                                            ['wrong_answers'] = wrongAnswers;
+
+                                        Navigator.of(context).pop();
+                                        print(answersIndexes);
+                                        try {
+                                          //Submission
+                                          for (int i = 0;
+                                              i < assignmentQuestions.length;
+                                              i++) {
+                                            print(answersIndexes[
+                                                assignmentQuestions[i].id]);
+                                            finalAnswers[UserID.userID!.uid]
+                                                    ['assignment']
+                                                .add({
+                                              'question ${i + 1}':
+                                                  assignmentQuestions[i].text,
+                                              'right_answer':
+                                                  assignmentQuestions[i].answer,
+                                              'student_answer': answersIndexes[
+                                                      assignmentQuestions[i]
+                                                          .id]! +
+                                                  1,
+                                              'mark':
+                                                  assignmentQuestions[i].mark,
+                                            });
+                                          }
+
+                                          // student assignment marks
+                                          finalAnswers[UserID.userID!.uid]
+                                                  ['assignment_marks'] =
+                                              '$assignmentMark / $total';
+
+                                          finalAnswers[UserID.userID!.uid]
+                                                  ['total_marks'] =
+                                              '${total + widget.lecture.assignment!.stepsMarks}';
+
+                                          showLoadingDialog(context);
+                                          YearsData.sendAssignment(
+                                              assignment: finalAnswers);
+                                          Navigator.of(context).pop();
+
+                                          //get score
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              title: Text(
+                                                localization.assignment_mark,
+                                                style: const TextStyle(
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              content: Text(
+                                                '$assignmentMark / $total',
+                                                style: const TextStyle(
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.green,
+                                                ),
+                                              ),
+                                              actions: [
+                                                Align(
+                                                  alignment:
+                                                      AlignmentDirectional
+                                                          .centerEnd,
+                                                  child: TextButton(
+                                                      child: Text(
+                                                          localization.okay),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      }),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+
+                                          // if (!YearsData.checkAssignmentExistence()) {
+                                          //
+                                          // } else {
+                                          //   showDialog(
+                                          //     context: context,
+                                          //     builder: (context) => AlertDialog(
+                                          //       content: const Text(
+                                          //         'Sorry!, you already took this assignment!',
+                                          //         style: TextStyle(
+                                          //           fontSize: 20.0,
+                                          //           fontWeight: FontWeight.bold,
+                                          //           color: Colors.green,
+                                          //         ),
+                                          //       ),
+                                          //       actions: [
+                                          //         Align(
+                                          //           alignment: AlignmentDirectional
+                                          //               .centerEnd,
+                                          //           child: TextButton(
+                                          //               child: const Text('Okay'),
+                                          //               onPressed: () {
+                                          //                 Navigator.of(context).pop();
+                                          //                 Navigator.of(context).pop();
+                                          //               }),
+                                          //         ),
+                                          //       ],
+                                          //     ),
+                                          //   );
+                                          // }
+                                        } catch (error) {
+                                          print(error.toString());
+                                          print(answersIndexes);
+                                        }
+                                      } else {
+                                        Navigator.of(context).pop();
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                            content: Text(
+                                              localization.questions_not_done,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20.0,
+                                              ),
+                                            ),
+                                            actions: [
+                                              Align(
+                                                alignment: AlignmentDirectional
+                                                    .centerEnd,
+                                                child: TextButton(
+                                                    child:
+                                                        Text(localization.okay),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    }),
+                                              ),
+                                            ],
+                                          ),
+                                        );
                                       }
-
-                                      print(finalAnswers['right_answers']);
-                                      print(finalAnswers['wrong_answers']);
-
-                                      // student total marks
-                                      finalAnswers[UserID.userID!.uid]
-                                              ['total_marks'] =
-                                          '$assignmentMark / $total';
-
-                                      showLoadingDialog(context);
-                                      YearsData.sendAssignment(
-                                          assignment: finalAnswers);
-                                      Navigator.of(context).pop();
-
-                                      //get score
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                          title: Text(
-                                            localization.assignment_mark,
-                                            style: const TextStyle(
-                                              fontSize: 20.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          content: Text(
-                                            '$assignmentMark / $total',
-                                            style: const TextStyle(
-                                              fontSize: 20.0,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.green,
-                                            ),
-                                          ),
-                                          actions: [
-                                            Align(
-                                              alignment: AlignmentDirectional
-                                                  .centerEnd,
-                                              child: TextButton(
-                                                  child:
-                                                      Text(localization.okay),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                    Navigator.of(context).pop();
-                                                  }),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-
-                                      // if (!YearsData.checkAssignmentExistence()) {
-                                      //
-                                      // } else {
-                                      //   showDialog(
-                                      //     context: context,
-                                      //     builder: (context) => AlertDialog(
-                                      //       content: const Text(
-                                      //         'Sorry!, you already took this assignment!',
-                                      //         style: TextStyle(
-                                      //           fontSize: 20.0,
-                                      //           fontWeight: FontWeight.bold,
-                                      //           color: Colors.green,
-                                      //         ),
-                                      //       ),
-                                      //       actions: [
-                                      //         Align(
-                                      //           alignment: AlignmentDirectional
-                                      //               .centerEnd,
-                                      //           child: TextButton(
-                                      //               child: const Text('Okay'),
-                                      //               onPressed: () {
-                                      //                 Navigator.of(context).pop();
-                                      //                 Navigator.of(context).pop();
-                                      //               }),
-                                      //         ),
-                                      //       ],
-                                      //     ),
-                                      //   );
-                                      // }
-                                    } catch (error) {
-                                      print(error.toString());
-                                    }
-                                  } else {
-                                    Navigator.of(context).pop();
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                        content: Text(
-                                          localization.questions_not_done,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20.0,
-                                          ),
-                                        ),
-                                        actions: [
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional.centerEnd,
-                                            child: TextButton(
-                                                child: Text(localization.okay),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                }),
-                                          ),
-                                        ],
+                                    },
+                                    child: Text(
+                                      localization.finish_assignment,
+                                      style: const TextStyle(
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green,
                                       ),
-                                    );
-                                  }
-                                },
-                                child: Text(
-                                  localization.finish_assignment,
-                                  style: const TextStyle(
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.green,
+                                    ),
                                   ),
-                                ),
-                              ),
-                              const SizedBox(width: 20.0),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text(
-                                  localization.cancel,
-                                  style: const TextStyle(
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey,
+                                  const SizedBox(width: 20.0),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      localization.cancel,
+                                      style: const TextStyle(
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
+                                ],
+                              )
                             ],
-                          )
-                        ],
-                      ),
-                    );
-                  }
-                });
+                          ),
+                        );
+                      }
+                    }
+                  },
+                );
               },
               child: Row(
                 children: [
@@ -524,7 +509,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                   ),
                   Expanded(
                     child: Text(
-                      question.questionText,
+                      question.text,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20.0,
@@ -545,12 +530,12 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
               const SizedBox(
                 height: 15.0,
               ),
-              question.questionImage.isNotEmpty
+              question.image != null
                   ? Center(
                       child: Column(
                         children: [
                           Image.network(
-                            question.questionImage,
+                            question.image!,
                             fit: BoxFit.cover,
                           ),
                           const SizedBox(
@@ -581,8 +566,8 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
               onTap: () {
                 setState(() {
                   selectedAnswer = index;
-                  answersIndexes[assignmentQuestions[currentStep - 1]
-                      .questionID] = selectedAnswer;
+                  answersIndexes[assignmentQuestions[currentStep - 1].id] =
+                      selectedAnswer;
                 });
                 print(answersIndexes);
               },
@@ -598,17 +583,18 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                   //     .where((answerID) =>
                   // answerID ==
                   //     answers[quizQuestions[currentStep - 1]
-                  //         .questionID])
+                  //         .id])
                   //     .first ==
                   //     index
-                  color: answersIndexes[assignmentQuestions[currentStep - 1]
-                                  .questionID] ==
-                              index &&
-                          answersIndexes[assignmentQuestions[currentStep - 1]
-                                  .questionID] !=
-                              null
-                      ? const Color(0xff08CE5D)
-                      : Colors.black,
+                  color:
+                      answersIndexes[assignmentQuestions[currentStep - 1].id] ==
+                                  index &&
+                              answersIndexes[
+                                      assignmentQuestions[currentStep - 1]
+                                          .id] !=
+                                  null
+                          ? const Color(0xff08CE5D)
+                          : Colors.black,
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Row(
@@ -621,21 +607,21 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                         style: TextStyle(
                           color: answersIndexes[
                                           assignmentQuestions[currentStep - 1]
-                                              .questionID] ==
+                                              .id] ==
                                       index &&
                                   answersIndexes[
                                           assignmentQuestions[currentStep - 1]
-                                              .questionID] !=
+                                              .id] !=
                                       null
                               ? Colors.white
                               : Colors.white,
                           fontWeight: answersIndexes[
                                           assignmentQuestions[currentStep - 1]
-                                              .questionID] ==
+                                              .id] ==
                                       index &&
                                   answersIndexes[
                                           assignmentQuestions[currentStep - 1]
-                                              .questionID] !=
+                                              .id] !=
                                       null
                               ? FontWeight.bold
                               : FontWeight.normal,
@@ -645,25 +631,25 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                     const SizedBox(width: 20.0),
                     Expanded(
                       child: Text(
-                        question.answers[index].answerText,
+                        question.choices[index],
                         style: TextStyle(
                           color: answersIndexes[
                                           assignmentQuestions[currentStep - 1]
-                                              .questionID] ==
+                                              .id] ==
                                       index &&
                                   answersIndexes[
                                           assignmentQuestions[currentStep - 1]
-                                              .questionID] !=
+                                              .id] !=
                                       null
                               ? Colors.white
                               : Colors.white,
                           fontWeight: answersIndexes[
                                           assignmentQuestions[currentStep - 1]
-                                              .questionID] ==
+                                              .id] ==
                                       index &&
                                   answersIndexes[
                                           assignmentQuestions[currentStep - 1]
-                                              .questionID] !=
+                                              .id] !=
                                       null
                               ? FontWeight.bold
                               : FontWeight.normal,
@@ -675,7 +661,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
               ),
             );
           },
-          itemCount: question.answers.length,
+          itemCount: question.choices.length,
         ),
       ],
     );

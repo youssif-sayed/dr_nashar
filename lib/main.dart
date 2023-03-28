@@ -106,7 +106,7 @@ class _MyAppState extends State<MyApp> {
   void dispose() {
     super.dispose();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -139,11 +139,11 @@ class _MyAppState extends State<MyApp> {
             'ProfileScreen': (context) => ProfileScreen(),
             'SubjectScreen': (context) => SubjectScreen(),
             'LoadingSubjectScreen': (context) => LoadingSubjectScreen(),
-            'VideoScreen': (context) => VideoScreen(),
+            // 'VideoScreen': (context) => VideoScreen(),
             'LayoutScreen': (context) => LayoutScreen(),
             'NotificationsScreen': (context) => NotificationsScreen(),
-            'QuizScreen': (context) => QuizScreen(),
-            'AssignmentScreen': (context) => AssignmentScreen(),
+            // 'QuizScreen': (context) => QuizScreen(),
+            // 'AssignmentScreen': (context) => AssignmentScreen(),
           },
         );
       },

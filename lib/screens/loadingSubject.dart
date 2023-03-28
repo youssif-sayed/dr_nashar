@@ -20,9 +20,10 @@ class _LoadingSubjectScreenState extends State<LoadingSubjectScreen> {
 
   Future<void> loadData() async {
     bool issubject = await YearsData.get_subject_data();
-    
+
     if (mounted) {
-      if (issubject) Navigator.of(context).pushReplacementNamed('SubjectScreen');
+      if (issubject)
+        Navigator.of(context).pushReplacementNamed('SubjectScreen');
     }
   }
 
@@ -31,6 +32,7 @@ class _LoadingSubjectScreenState extends State<LoadingSubjectScreen> {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

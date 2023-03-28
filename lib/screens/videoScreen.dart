@@ -38,10 +38,10 @@ class _VideoScreenState extends State<VideoScreen> {
 
   void _initPlayer() async {
     final videoUrl = await FirebaseStorage.instance.ref().child(
-        "${YearsData.subjectData[YearsData.lectureNumber]['videos'][selectedVideo]}");
+        "${YearsData.subjectData[YearsData.lectureNumber].videos[selectedVideo]}");
 
     videoPlayerController = VideoPlayerController.network(
-        '${YearsData.subjectData[YearsData.lectureNumber]['videos'][selectedVideo]}');
+        '${YearsData.subjectData[YearsData.lectureNumber].videos[selectedVideo]}');
 
     await videoPlayerController.initialize();
     setState(() {
@@ -156,8 +156,7 @@ class _VideoScreenState extends State<VideoScreen> {
               isVideo
                   ? ListView.builder(
                       itemCount: YearsData
-                          .subjectData[YearsData.lectureNumber]['videos']
-                          .length,
+                          .subjectData[YearsData.lectureNumber].videos.length,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
@@ -169,8 +168,7 @@ class _VideoScreenState extends State<VideoScreen> {
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: YearsData
-                            .subjectData[YearsData.lectureNumber]['docs']
-                            .length,
+                            .subjectData[YearsData.lectureNumber].videos.length,
                         itemBuilder: (context, index) {
                           return docBulider(index);
                         },
@@ -225,7 +223,7 @@ class _VideoScreenState extends State<VideoScreen> {
                     borderRadius: BorderRadius.circular(50)),
               ),
               index ==
-                      YearsData.subjectData[YearsData.lectureNumber]['videos']
+                      YearsData.subjectData[YearsData.lectureNumber].videos
                               .length -
                           1
                   ? Container()
@@ -240,7 +238,7 @@ class _VideoScreenState extends State<VideoScreen> {
             width: 20,
           ),
           Text(
-            '${YearsData.subjectData[YearsData.lectureNumber]['videoName'][index]}',
+            '${YearsData.subjectData[YearsData.lectureNumber].videos[index]}',
             style: TextStyle(
                 color: index == selectedVideo ? Colors.green : Colors.cyan,
                 fontSize: index == selectedVideo ? 30 : 25,
@@ -257,14 +255,14 @@ class _VideoScreenState extends State<VideoScreen> {
         setState(() {
           isLoading = true;
         });
-        final docUrl =
-            YearsData.subjectData[YearsData.lectureNumber]['docs'][index];
-        print(docUrl);
+        final doc =
+            YearsData.subjectData[YearsData.lectureNumber].documents[index];
+        print(doc);
         Uint8List? byteList =
-            await FirebaseStorage.instance.refFromURL(docUrl).getData();
+            await FirebaseStorage.instance.refFromURL(doc.src).getData();
         final output = await getTemporaryDirectory();
         var filePath =
-            "${output.path}/${YearsData.subjectData[YearsData.lectureNumber]['videoName'][index]}";
+            "${output.path}/${YearsData.subjectData[YearsData.lectureNumber].videos[index].name}";
         final file = File(filePath);
         await file.writeAsBytes(byteList!);
         setState(() {
@@ -277,7 +275,7 @@ class _VideoScreenState extends State<VideoScreen> {
         color: Colors.white,
       ),
       title: Text(
-        '${YearsData.subjectData[YearsData.lectureNumber]['docName'][index]}',
+        '${YearsData.subjectData[YearsData.lectureNumber].documents[index].name}',
         style: const TextStyle(color: Colors.white),
       ),
     );

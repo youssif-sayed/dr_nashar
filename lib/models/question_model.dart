@@ -1,53 +1,52 @@
+
 class QuestionModel {
-  int questionID;
-  String questionText;
-  String questionImage;
-  List<Answer> answers;
-  String rightAnswer;
-  int mark;
-
   QuestionModel({
-    required this.questionID,
-    required this.questionText,
-    required this.questionImage,
-    required this.answers,
-    required this.rightAnswer,
-    this.mark = 1,
+    required this.id,
+    required this.text,
+    required this.choices,
+    required this.answer,
+    required this.image,
+    required this.mark,
   });
+  final String id;
+  final String text;
+  final List<String> choices;
+  final String answer;
+  final String? image;
+  final int mark;
 
-  Map<String, dynamic> toMap() {
-    List qsAnswers = [];
+  QuestionModel copyWith({
+    String? id,
+    String? text,
+    List<String>? choices,
+    String? answer,
+    String? image,
+    int? mark,
+  }) =>
+      QuestionModel(
+        id: id ?? this.id,
+        text: text ?? this.text,
+        choices: choices ?? this.choices,
+        answer: answer ?? this.answer,
+        image: image ?? this.image,
+        mark: mark ?? this.mark,
+      );
 
-    for (int i = 0; i < answers.length; i++) {
-      qsAnswers.add(answers[i].toMap());
-    }
+  factory QuestionModel.fromJson(Map<String, dynamic> json) => QuestionModel(
+        id: json['id'],
+        text: json["text"],
+        choices: List<String>.from(json["choices"].map((x) => x)),
+        answer: json["answer"],
+        image: json["image"],
+        mark: json["mark"].toInt(),
+      );
 
-    return {
-      'question_id': questionID,
-      'question_text': questionText,
-      'question_image': questionImage,
-      'answer': qsAnswers,
-      'right_answer': rightAnswer,
-      'mark': mark,
-    };
-  }
-}
-
-class Answer {
-  int answerID;
-  String answerText;
-
-  Answer({required this.answerID, required this.answerText});
-
-  Map<String, dynamic> toMap() {
-    return {
-      'answer_id': answerID,
-      'answer_text': answerText,
-    };
-  }
-
-  static Answer fromMap(Map<String, dynamic> answer) {
-    return Answer(
-        answerID: answer['answer_id'], answerText: answer['answer_text']);
-  }
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "text": text,
+        "choices": List<dynamic>.from(choices.map((x) => x)),
+        "answer": answer,
+        "image": image,
+        "mark": mark,
+      };
 }

@@ -156,7 +156,7 @@ class _LoadingPayScreenState extends State<LoadingPayScreen> {
                             {
                               PaymentCubit.get(context).getFirstToken(
                                   YearsData.subjectData[YearsData.lectureNumber]
-                                      ['price'],
+                                      .price.toString(),
                                   UserID.userdata['firstName'],
                                   UserID.userdata['lastName'],
                                   UserID.userdata['email'],

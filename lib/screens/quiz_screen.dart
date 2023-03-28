@@ -1,4 +1,5 @@
 import 'package:dr_nashar/components.dart';
+import 'package:dr_nashar/models/video_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
@@ -10,8 +11,8 @@ import '../user/yearsData.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({Key? key}) : super(key: key);
-
+  const QuizScreen({Key? key, required this.lecture}) : super(key: key);
+  final LectureModel lecture;
   @override
   State<QuizScreen> createState() => _QuizScreenState();
 }
@@ -19,8 +20,8 @@ class QuizScreen extends StatefulWidget {
 class _QuizScreenState extends State<QuizScreen> {
   int currentStep = 1;
   int? selectedAnswer;
-  Map<int, int?> answers = {}; // question id : answer id
-  Map<int, int?> answersIndexes = {};
+  Map<dynamic, dynamic> answers = {}; // question id : answer id
+  Map<dynamic, dynamic> answersIndexes = {};
   List<QuestionModel> quizQuestions = [];
   int rightAnswers = 0;
   int wrongAnswers = 0;
@@ -36,43 +37,8 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   void initState() {
-    var quiz = YearsData.subjectQuiz[0]
-        ['${YearsData.selectedYear}-${YearsData.selectedSubject}-quiz'];
-    //var question in quiz
-    for (int i = 0; i < quiz.length; i++) {
-      quizQuestions.add(
-        QuestionModel(
-          questionID: quiz[i]['question_id'],
-          questionText: quiz[i]['question_text'],
-          questionImage: quiz[i]['question_image'],
-          mark: quiz[i]['mark'],
-          answers: [
-            Answer(
-                answerID: quiz[i]['answer'][0]['answer_id'],
-                answerText: quiz[i]['answer'][0]['answer_text']),
-            Answer(
-                answerID: quiz[i]['answer'][1]['answer_id'],
-                answerText: quiz[i]['answer'][1]['answer_text']),
-            Answer(
-                answerID: quiz[i]['answer'][2]['answer_id'],
-                answerText: quiz[i]['answer'][2]['answer_text']),
-            Answer(
-                answerID: quiz[i]['answer'][3]['answer_id'],
-                answerText: quiz[i]['answer'][3]['answer_text']),
-          ],
-          rightAnswer: quiz[i]['right_answer'],
-        ),
-      );
-    }
-
-    for (var question in quizQuestions) {
-      answers.addAll({
-        question.questionID: null,
-      });
-      answersIndexes.addAll({
-        question.questionID: null,
-      });
-    }
+    var quiz = widget.lecture.quiz!;
+    quizQuestions = quiz.questions;
 
     super.initState();
   }
@@ -240,12 +206,10 @@ class _QuizScreenState extends State<QuizScreen> {
               onPressed: () {
                 setState(() {
                   if (selectedAnswer != null) {
-                    answers[quizQuestions[currentStep - 1].questionID] =
-                        quizQuestions[currentStep - 1]
-                            .answers[selectedAnswer!]
-                            .answerID;
+                    answers[quizQuestions[currentStep - 1].id] =
+                        quizQuestions[currentStep - 1].choices[selectedAnswer!];
 
-                    answersIndexes[quizQuestions[currentStep - 1].questionID] =
+                    answersIndexes[quizQuestions[currentStep - 1].id] =
                         selectedAnswer;
                   }
 
@@ -292,11 +256,9 @@ class _QuizScreenState extends State<QuizScreen> {
                                     for (int i = 0;
                                         i < answersIndexes.length;
                                         i++) {
-                                      if (answersIndexes[quizQuestions[i]
-                                                  .questionID]! +
-                                              1 ==
-                                          int.parse(
-                                              quizQuestions[i].rightAnswer)) {
+                                      if (answersIndexes[quizQuestions[i].id] ==
+                                          int.parse(quizQuestions[i].answer) -
+                                              1) {
                                         quizMark += quizQuestions[i].mark;
                                         rightAnswers += 1;
                                       } else {
@@ -304,8 +266,10 @@ class _QuizScreenState extends State<QuizScreen> {
                                       }
                                     }
 
-                                    finalAnswers[UserID.userID!.uid]['right_answers'] = rightAnswers;
-                                    finalAnswers[UserID.userID!.uid]['wrong_answers'] = wrongAnswers;
+                                    finalAnswers[UserID.userID!.uid]
+                                        ['right_answers'] = rightAnswers;
+                                    finalAnswers[UserID.userID!.uid]
+                                        ['wrong_answers'] = wrongAnswers;
 
                                     Navigator.of(context).pop();
 
@@ -317,21 +281,25 @@ class _QuizScreenState extends State<QuizScreen> {
                                         finalAnswers[UserID.userID!.uid]['quiz']
                                             .add({
                                           'question ${i + 1}':
-                                              quizQuestions[i].questionText,
+                                              quizQuestions[i].text,
                                           'right_answer':
-                                              quizQuestions[i].rightAnswer,
+                                              quizQuestions[i].answer,
                                           'student_answer': answersIndexes[
-                                                  quizQuestions[i]
-                                                      .questionID]! +
+                                                  quizQuestions[i].id]! +
                                               1,
                                           'mark': quizQuestions[i].mark,
                                         });
                                       }
 
-                                      // student total marks
+                                      // student quiz marks
+                                      finalAnswers[UserID.userID!.uid]
+                                              ['quiz_marks'] =
+                                          '$quizMark / $total';
+
                                       finalAnswers[UserID.userID!.uid]
                                               ['total_marks'] =
-                                          '$quizMark / $total';
+                                          '${total + widget.lecture.quiz!.stepsMarks}';
+
                                       print(finalAnswers);
                                       showLoadingDialog(context);
                                       YearsData.sendQuiz(quiz: finalAnswers);
@@ -514,7 +482,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   ),
                   Expanded(
                     child: Text(
-                      question.questionText,
+                      question.text,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20.0,
@@ -535,12 +503,12 @@ class _QuizScreenState extends State<QuizScreen> {
               const SizedBox(
                 height: 15.0,
               ),
-              question.questionImage.isNotEmpty
+              question.image != null
                   ? Center(
                       child: Column(
                         children: [
                           Image.network(
-                            question.questionImage,
+                            question.image!,
                             fit: BoxFit.cover,
                           ),
                           const SizedBox(
@@ -571,7 +539,7 @@ class _QuizScreenState extends State<QuizScreen> {
               onTap: () {
                 setState(() {
                   selectedAnswer = index;
-                  answersIndexes[quizQuestions[currentStep - 1].questionID] =
+                  answersIndexes[quizQuestions[currentStep - 1].id] =
                       selectedAnswer;
                 });
               },
@@ -587,14 +555,12 @@ class _QuizScreenState extends State<QuizScreen> {
                   //     .where((answerID) =>
                   // answerID ==
                   //     answers[quizQuestions[currentStep - 1]
-                  //         .questionID])
+                  //         .id])
                   //     .first ==
                   //     index
-                  color: answersIndexes[
-                                  quizQuestions[currentStep - 1].questionID] ==
+                  color: answersIndexes[quizQuestions[currentStep - 1].id] ==
                               index &&
-                          answersIndexes[
-                                  quizQuestions[currentStep - 1].questionID] !=
+                          answersIndexes[quizQuestions[currentStep - 1].id] !=
                               null
                       ? const Color(0xff08CE5D)
                       : Colors.black,
@@ -608,20 +574,19 @@ class _QuizScreenState extends State<QuizScreen> {
                       child: Text(
                         (index + 1).toString(),
                         style: TextStyle(
-                          color: answersIndexes[quizQuestions[currentStep - 1]
-                                          .questionID] ==
+                          color: answersIndexes[
+                                          quizQuestions[currentStep - 1].id] ==
                                       index &&
-                                  answersIndexes[quizQuestions[currentStep - 1]
-                                          .questionID] !=
+                                  answersIndexes[
+                                          quizQuestions[currentStep - 1].id] !=
                                       null
                               ? Colors.white
                               : Colors.white,
                           fontWeight: answersIndexes[
-                                          quizQuestions[currentStep - 1]
-                                              .questionID] ==
+                                          quizQuestions[currentStep - 1].id] ==
                                       index &&
-                                  answersIndexes[quizQuestions[currentStep - 1]
-                                          .questionID] !=
+                                  answersIndexes[
+                                          quizQuestions[currentStep - 1].id] !=
                                       null
                               ? FontWeight.bold
                               : FontWeight.normal,
@@ -631,22 +596,21 @@ class _QuizScreenState extends State<QuizScreen> {
                     const SizedBox(width: 20.0),
                     Expanded(
                       child: Text(
-                        question.answers[index].answerText,
+                        question.choices[index],
                         style: TextStyle(
-                          color: answersIndexes[quizQuestions[currentStep - 1]
-                                          .questionID] ==
+                          color: answersIndexes[
+                                          quizQuestions[currentStep - 1].id] ==
                                       index &&
-                                  answersIndexes[quizQuestions[currentStep - 1]
-                                          .questionID] !=
+                                  answersIndexes[
+                                          quizQuestions[currentStep - 1].id] !=
                                       null
                               ? Colors.white
                               : Colors.white,
                           fontWeight: answersIndexes[
-                                          quizQuestions[currentStep - 1]
-                                              .questionID] ==
+                                          quizQuestions[currentStep - 1].id] ==
                                       index &&
-                                  answersIndexes[quizQuestions[currentStep - 1]
-                                          .questionID] !=
+                                  answersIndexes[
+                                          quizQuestions[currentStep - 1].id] !=
                                       null
                               ? FontWeight.bold
                               : FontWeight.normal,
@@ -658,7 +622,7 @@ class _QuizScreenState extends State<QuizScreen> {
               ),
             );
           },
-          itemCount: question.answers.length,
+          itemCount: question.choices.length,
         ),
       ],
     );

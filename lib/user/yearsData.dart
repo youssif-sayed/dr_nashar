@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dr_nashar/user/UserID.dart';
 
+import '../models/video_model.dart';
+
 class YearsData {
   static var defultYear;
   static var sec1, sec2, sec3, prep1, prep2, prep3;
-  static var selectedSubject,
-      selectedYear,
-      subjectData,
-      subjectQuiz,
-      subjectAssignment;
+  static var selectedSubject, selectedYear, subjectQuiz, subjectAssignment;
+
+  static List<LectureModel> subjectData = [];
+
   static var studentQuizzes, studentAssignments;
   static var lectureNumber, lectureCodes, lectureID;
 
@@ -90,68 +91,69 @@ class YearsData {
 
   static Future<bool> get_subject_data() async {
     await FirebaseFirestore.instance
-        .collection("${selectedYear}-lectures")
-        .doc('${selectedSubject}')
-        .collection('videos')
+        .collection("$selectedYear-lectures")
+        .doc('$selectedSubject')
+        .collection('lectures')
         .get()
         .then((value) {
-      subjectData = value.docs;
+      subjectData =
+          value.docs.map((e) => LectureModel.fromJson(e.data())).toList();
     });
-    await FirebaseFirestore.instance
-        .collection("${selectedYear}-lectures")
-        .doc('${selectedSubject}')
-        .collection('quiz')
-        .get()
-        .then((value) {
-      subjectQuiz = value.docs;
-    });
-    await FirebaseFirestore.instance
-        .collection("${selectedYear}-lectures")
-        .doc('${selectedSubject}')
-        .collection('assignment')
-        .get()
-        .then((value) {
-      subjectAssignment = value.docs;
-    });
+    // await FirebaseFirestore.instance
+    //     .collection("$selectedYear-lectures")
+    //     .doc('$selectedSubject')
+    //     .collection('quiz')
+    //     .get()
+    //     .then((value) {
+    //   subjectQuiz = value.docs;
+    // });
+    // await FirebaseFirestore.instance
+    //     .collection("$selectedYear-lectures")
+    //     .doc('$selectedSubject')
+    //     .collection('assignment')
+    //     .get()
+    //     .then((value) {
+    //   subjectAssignment = value.docs;
+    // });
     return true;
   }
 
   // check existence :- used to force the student to take the quiz only ONCE.
-  static bool checkQuizExistence() {
-    bool exist = false;
-    FirebaseFirestore.instance
-        .collection("${selectedYear}-lectures")
-        .doc('${selectedSubject}')
-        .collection('quiz')
-        .doc('students/${UserID.userID!.uid}')
-        .get()
-        .then((onexist) {
-      onexist.exists ? exist = true : exist = false;
-    });
-    if (exist = true) {
-      print('exist');
-    } else {
-      print('Error');
-    }
+  // static bool checkQuizExistence() {
+  //   bool exist = false;
+  //   FirebaseFirestore.instance
+  //       .collection("$selectedYear-lectures")
+  //       .doc('$selectedSubject')
+  //       .collection('quiz')
+  //       .doc('students/${UserID.userID!.uid}')
+  //       .get()
+  //       .then((onexist) {
+  //     onexist.exists ? exist = true : exist = false;
+  //   });
+  //   if (exist = true) {
+  //     print('exist');
+  //   } else {
+  //     print('Error');
+  //   }
 
-    return exist;
-  }
+  //   return exist;
+  // }
 
   // Send quiz
   static sendQuiz({required quiz}) async {
-    await FirebaseFirestore.instance
-        .collection("${selectedYear}-lectures")
-        .doc('${selectedSubject}')
-        .collection('quiz')
-        .doc('students')
-        .set(quiz)
-        .then((value) {
-      print('added successfully!');
-    }).catchError((error) {
-      {
-        print(error.toString());
-      }
-    });
+    // await FirebaseFirestore.instance
+    //     .collection("$selectedYear-lectures")
+    //     .doc('$selectedSubject')
+    //     .collection('quiz')
+    //     .doc('students')
+    //     .set(quiz)
+    //     .then((value) {
+    //   print('added successfully!');
+    // }).catchError((error) {
+    //   {
+    //     print(error.toString());
+    //   }
+    // });
 
     await FirebaseFirestore.instance
         .collection("userData")
@@ -171,41 +173,41 @@ class YearsData {
   }
 
   // check existence :- used to force the student to take the quiz only ONCE.
-  static bool checkAssignmentExistence() {
-    bool exist = false;
-    FirebaseFirestore.instance
-        .collection("${selectedYear}-lectures")
-        .doc('${selectedSubject}')
-        .collection('assignment')
-        .doc('students/${UserID.userID!.uid}')
-        .get()
-        .then((onexist) {
-      onexist.exists ? exist = true : exist = false;
-    });
-    if (exist = true) {
-      print('exist');
-    } else {
-      print('Error');
-    }
+  // static bool checkAssignmentExistence() {
+  //   bool exist = false;
+  //   FirebaseFirestore.instance
+  //       .collection("$selectedYear-lectures")
+  //       .doc('$selectedSubject')
+  //       .collection('assignment')
+  //       .doc('students/${UserID.userID!.uid}')
+  //       .get()
+  //       .then((onexist) {
+  //     onexist.exists ? exist = true : exist = false;
+  //   });
+  //   if (exist = true) {
+  //     print('exist');
+  //   } else {
+  //     print('Error');
+  //   }
 
-    return exist;
-  }
+  //   return exist;
+  // }
 
   // Send Assignment
   static sendAssignment({required assignment}) async {
-    await FirebaseFirestore.instance
-        .collection("${selectedYear}-lectures")
-        .doc('${selectedSubject}')
-        .collection('assignment')
-        .doc('students')
-        .set(assignment)
-        .then((value) {
-      print('added successfully!');
-    }).catchError((error) {
-      {
-        print(error.toString());
-      }
-    });
+    // await FirebaseFirestore.instance
+    //     .collection("$selectedYear-lectures")
+    //     .doc('$selectedSubject')
+    //     .collection('assignment')
+    //     .doc('students')
+    //     .set(assignment)
+    //     .then((value) {
+    //   print('added successfully!');
+    // }).catchError((error) {
+    //   {
+    //     print(error.toString());
+    //   }
+    // });
 
     await FirebaseFirestore.instance
         .collection("userData")
