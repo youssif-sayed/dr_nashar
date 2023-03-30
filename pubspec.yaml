@@ -45,12 +45,15 @@ dependencies:
   timeline_tile: ^2.0.0
   flutter_downloader: ^1.10.2
   path_provider: ^2.0.13
-  open_document: ^1.0.6+2
+  # open_document: ^1.0.6+2
+  open_file_plus: ^3.4.0
   percent_indicator: ^4.2.3
   step_progress_indicator: ^1.0.2
   conditional_builder_rec: ^1.0.0
   firebase_messaging: ^14.3.0
   rxdart: ^0.27.7
+  
+  flutter_local_notifications: ^13.0.0
 
   equatable:
 

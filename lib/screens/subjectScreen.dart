@@ -1,5 +1,6 @@
-import 'package:dr_nashar/modules/payment/cubit/cubit.dart';
+import 'package:dr_nashar/models/video_model.dart';
 import 'package:dr_nashar/screens/quiz_screen.dart';
+import 'package:dr_nashar/screens/lecture_screen.dart';
 import 'package:dr_nashar/user/yearsData.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -43,7 +44,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
       backgroundColor: Colors.white,
       body: Container(
         padding: const EdgeInsets.all(12),
-        child: YearsData.subjectData.length == 0
+        child: YearsData.subjectData.isEmpty
             ? SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -67,8 +68,11 @@ class _SubjectScreenState extends State<SubjectScreen> {
             : ListView.builder(
                 itemCount: YearsData.subjectData.length,
                 itemBuilder: (context, index) {
-                  return listItem(index);
-                }),
+                  var lecture = YearsData.subjectData[index];
+                  return LectureCard(lecture: lecture, index: index);
+                  // listItem(index);
+                },
+              ),
       ),
     );
   }
@@ -171,152 +175,149 @@ class _SubjectScreenState extends State<SubjectScreen> {
               ListTile(
                 onTap: () {
                   showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      builder: (context) {
-                        return Padding(
-                          padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom,
-                          ),
-                          child: SizedBox(
-                            height: 200,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 18.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Gaps.gap32,
-                                      TextField(
-                                        keyboardType: TextInputType.text,
-                                        decoration: InputDecoration(
-                                          border: const OutlineInputBorder(),
-                                          labelText: localization.code,
-                                          hintText: localization.enter_code,
-                                        ),
-                                        onChanged: (value) {
-                                          code = value;
-                                        },
-                                      ),
-                                      Text(
-                                        errtxt,
-                                        style: const TextStyle(
-                                            color: Colors.red, fontSize: 20),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Column(
+                    context: context,
+                    isScrollControlled: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    builder: (context) {
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom,
+                        ),
+                        child: SizedBox(
+                          height: 200,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 18.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    MaterialButton(
-                                      onPressed: () async {
-                                        bool iscode = false;
-                                        int i = 0;
-                                        DateTime nowDate = DateTime.now();
-                                        final codesData =
-                                            await YearsData.get_lecture_codes(
-                                                index);
-                                        if (codesData) print('');
+                                    Gaps.gap32,
+                                    TextField(
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                        border: const OutlineInputBorder(),
+                                        labelText: localization.code,
+                                        hintText: localization.enter_code,
+                                      ),
+                                      onChanged: (value) {
+                                        code = value;
+                                      },
+                                    ),
+                                    Text(
+                                      errtxt,
+                                      style: const TextStyle(
+                                          color: Colors.red, fontSize: 20),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Column(
+                                children: [
+                                  MaterialButton(
+                                    onPressed: () async {
+                                      bool iscode = false;
+                                      int i = 0;
+                                      DateTime nowDate = DateTime.now();
+                                      final codesData =
+                                          await YearsData.get_lecture_codes(
+                                              index);
+                                      if (codesData) print('');
 
-                                        for (;
-                                            i < YearsData.lectureCodes.length;
-                                            i++) {
-                                          if (YearsData.lectureCodes.keys
-                                                  .elementAt(i) ==
-                                              code) {
-                                            iscode = true;
-                                            break;
-                                          }
+                                      for (;
+                                          i < YearsData.lectureCodes.length;
+                                          i++) {
+                                        if (YearsData.lectureCodes.keys
+                                                .elementAt(i) ==
+                                            code) {
+                                          iscode = true;
+                                          break;
                                         }
-                                        if (iscode &&
-                                            YearsData.lectureCodes.values
-                                                    .elementAt(i)['price'] ==
-                                                subject.price) {
+                                      }
+                                      if (iscode &&
+                                          YearsData.lectureCodes.values
+                                                  .elementAt(i)['price'] ==
+                                              subject.price) {
+                                        if (YearsData.lectureCodes.values
+                                            .elementAt(i)['used']) {
                                           if (YearsData.lectureCodes.values
-                                              .elementAt(i)['used']) {
-                                            if (YearsData.lectureCodes.values
-                                                    .elementAt(i)['UID'] ==
-                                                UserID.userID?.uid) {
-                                              DateTime codeDate = YearsData
-                                                  .lectureCodes.values
-                                                  .elementAt(i)['startDate']
-                                                  .toDate();
-                                              final dateDifrance =
-                                                  YearsData.daysBetween(
-                                                      codeDate, nowDate);
-                                              if (dateDifrance <=
-                                                  YearsData.lectureCodes.values
-                                                      .elementAt(
-                                                          i)['expireDate']) {
-                                                YearsData.lectureNumber = index;
-                                                Navigator.of(context)
-                                                    .pushReplacementNamed(
-                                                        'VideoScreen');
-                                              } else {
-                                                ShowToast(
-                                                    localization.code_expired,
-                                                    ToastGravity.TOP);
-                                              }
+                                                  .elementAt(i)['UID'] ==
+                                              UserID.userID?.uid) {
+                                            DateTime codeDate = YearsData
+                                                .lectureCodes.values
+                                                .elementAt(i)['startDate']
+                                                .toDate();
+                                            final dateDifrance =
+                                                YearsData.daysBetween(
+                                                    codeDate, nowDate);
+                                            if (dateDifrance <=
+                                                YearsData.lectureCodes.values
+                                                    .elementAt(
+                                                        i)['expireDate']) {
+                                              YearsData.lectureNumber = index;
+                                              Navigator.of(context)
+                                                  .pushReplacementNamed(
+                                                      'VideoScreen');
                                             } else {
-                                              // #TODO
-                                              ShowToast('not allowed user',
+                                              ShowToast(
+                                                  localization.code_expired,
                                                   ToastGravity.TOP);
                                             }
                                           } else {
-                                            YearsData.update_code_data(
-                                                nowDate,
-                                                UserID.userID?.uid,
-                                                code,
-                                                index,
-                                                YearsData.lectureCodes.values
-                                                    .elementAt(i));
-                                            YearsData.lectureNumber = index;
-                                            Navigator.of(context)
-                                                .pushReplacementNamed(
-                                                    'VideoScreen');
+                                            // #TODO
+                                            ShowToast('not allowed user',
+                                                ToastGravity.TOP);
                                           }
                                         } else {
-                                          ShowToast(localization.code_invalid,
-                                              ToastGravity.TOP);
+                                          YearsData.update_code_data(
+                                              nowDate,
+                                              UserID.userID?.uid,
+                                              code,
+                                              index,
+                                              YearsData.lectureCodes.values
+                                                  .elementAt(i));
+                                          YearsData.lectureNumber = index;
+                                          Navigator.of(context)
+                                              .pushReplacementNamed(
+                                                  'VideoScreen');
                                         }
-                                      },
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        decoration: BoxDecoration(
-                                            color: Colors.blueAccent,
-                                            borderRadius:
-                                                BorderRadius.circular(50)),
-                                        height: 50,
-                                        child: const Center(
-                                          child: Text(
-                                            // #TODO
-                                            'Enter',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 25),
-                                          ),
+                                      } else {
+                                        ShowToast(localization.code_invalid,
+                                            ToastGravity.TOP);
+                                      }
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
+                                          color: Colors.blueAccent,
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      height: 50,
+                                      child: const Center(
+                                        child: Text(
+                                          // #TODO
+                                          'Enter',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 25),
                                         ),
                                       ),
                                     ),
-                                    Gaps.gap32,
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  ),
+                                  Gaps.gap32,
+                                ],
+                              ),
+                            ],
                           ),
-                        );
-                      });
-                  //YearsData.lectureNumber=index;
-                  //Navigator.of(context).pushNamed('VideoScreen');
+                        ),
+                      );
+                    },
+                  );
                 },
                 leading: Container(
                   decoration: BoxDecoration(
@@ -564,6 +565,301 @@ class _SubjectScreenState extends State<SubjectScreen> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class LectureCard extends StatelessWidget {
+  const LectureCard({Key? key, required this.lecture, required this.index})
+      : super(key: key);
+  final LectureModel lecture;
+  final int index;
+  @override
+  Widget build(BuildContext context) {
+    String errtxt = '';
+    String code = '';
+    var localization = AppLocalizations.of(context)!;
+
+    var width = MediaQuery.of(context).size.width - 24;
+    var height = width * .6;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12.0),
+      child: Stack(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey,
+              highlightColor: Colors.white70,
+              child: Container(
+                height: height,
+                width: width,
+                color: Colors.grey,
+              ),
+            ),
+          ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      builder: (context) {
+                        return Padding(
+                          padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom,
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 18.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Gaps.gap32,
+                                    TextField(
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                        border: const OutlineInputBorder(),
+                                        labelText: localization.code,
+                                        hintText: localization.enter_code,
+                                      ),
+                                      onChanged: (value) {
+                                        code = value;
+                                      },
+                                    ),
+                                    Text(
+                                      errtxt,
+                                      style: const TextStyle(
+                                          color: Colors.red, fontSize: 20),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Column(
+                                children: [
+                                  MaterialButton(
+                                    onPressed: () async {
+                                      bool iscode = false;
+                                      int i = 0;
+                                      DateTime nowDate = DateTime.now();
+                                      final codesData =
+                                          await YearsData.get_lecture_codes(
+                                              index);
+                                      if (codesData) print('');
+
+                                      for (;
+                                          i < YearsData.lectureCodes.length;
+                                          i++) {
+                                        if (YearsData.lectureCodes.keys
+                                                .elementAt(i) ==
+                                            code) {
+                                          iscode = true;
+                                          break;
+                                        }
+                                      }
+                                      if (iscode &&
+                                          YearsData.lectureCodes.values
+                                                  .elementAt(i)['price'] ==
+                                              lecture.price) {
+                                        if (YearsData.lectureCodes.values
+                                            .elementAt(i)['used']) {
+                                          if (YearsData.lectureCodes.values
+                                                  .elementAt(i)['UID'] ==
+                                              UserID.userID?.uid) {
+                                            DateTime codeDate = YearsData
+                                                .lectureCodes.values
+                                                .elementAt(i)['startDate']
+                                                .toDate();
+                                            final dateDifrance =
+                                                YearsData.daysBetween(
+                                                    codeDate, nowDate);
+                                            if (dateDifrance <=
+                                                YearsData.lectureCodes.values
+                                                    .elementAt(
+                                                        i)['expireDate']) {
+                                              YearsData.lectureNumber = index;
+                                              Navigator.of(context)
+                                                  .pushReplacementNamed(
+                                                      'VideoScreen');
+                                            } else {
+                                              ShowToast(
+                                                  localization.code_expired,
+                                                  ToastGravity.TOP);
+                                            }
+                                          } else {
+                                            // #TODO
+                                            ShowToast('not allowed user',
+                                                ToastGravity.TOP);
+                                          }
+                                        } else {
+                                          YearsData.update_code_data(
+                                              nowDate,
+                                              UserID.userID?.uid,
+                                              code,
+                                              index,
+                                              YearsData.lectureCodes.values
+                                                  .elementAt(i));
+                                          YearsData.lectureNumber = index;
+                                          Navigator.of(context)
+                                              .pushReplacementNamed(
+                                                  'VideoScreen');
+                                        }
+                                      } else {
+                                        ShowToast(localization.code_invalid,
+                                            ToastGravity.TOP);
+                                      }
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
+                                          color: Colors.blueAccent,
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      height: 50,
+                                      child: const Center(
+                                        child: Text(
+                                          // #TODO
+                                          'Enter',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 25),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Gaps.gap32,
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                    print(YearsData.subjectData);
+                    YearsData.lectureNumber = index;
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => LectureScreen(lecture: lecture),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: width,
+                    height: height * .85,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(
+                          lecture.image,
+                        ),
+                        colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(0.5),
+                          BlendMode.darken,
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                lecture.name,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              Text(
+                                '${lecture.videos.length} ${localization.videos}, ${lecture.documents.length} ${localization.documents}',
+                                style: TextStyle(
+                                  color: Colors.grey[100],
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            margin: const EdgeInsets.all(8),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8.0,
+                                horizontal: 12,
+                              ),
+                              child: Text(
+                                '${lecture.price} E£',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    if (lecture.assignment != null) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => AssignmentScreen(
+                            lecture: lecture,
+                          ),
+                        ),
+                      );
+                    } else {
+                      ShowToast('Assignment is not availabe', ToastGravity.TOP);
+                    }
+                  },
+                  child: Container(
+                    width: width,
+                    height: height * .15,
+                    color: Colors.green,
+                    child: const Padding(
+                      padding: EdgeInsetsDirectional.only(start: 6, top: 6),
+                      child: Text(
+                        'Take the free Assignment',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

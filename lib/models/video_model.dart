@@ -168,12 +168,12 @@ class Document {
 
 class Video {
   Video({
-    this.name,
-    this.url,
+    required this.name,
+    required this.url,
   });
 
-  final String? name;
-  final String? url;
+  final String name;
+  final String url;
 
   Video copyWith({
     String? name,

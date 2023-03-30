@@ -90,12 +90,15 @@ class YearsData {
   }
 
   static Future<bool> get_subject_data() async {
+    print(selectedYear);
+    print(selectedSubject);
     await FirebaseFirestore.instance
         .collection("$selectedYear-lectures")
         .doc('$selectedSubject')
         .collection('lectures')
         .get()
         .then((value) {
+          print(value.docs.length);
       subjectData =
           value.docs.map((e) => LectureModel.fromJson(e.data())).toList();
     });

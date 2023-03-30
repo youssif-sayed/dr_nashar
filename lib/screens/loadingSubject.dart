@@ -20,7 +20,7 @@ class _LoadingSubjectScreenState extends State<LoadingSubjectScreen> {
 
   Future<void> loadData() async {
     bool issubject = await YearsData.get_subject_data();
-
+    
     if (mounted) {
       if (issubject)
         Navigator.of(context).pushReplacementNamed('SubjectScreen');
