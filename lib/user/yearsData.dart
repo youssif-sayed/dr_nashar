@@ -11,7 +11,7 @@ class YearsData {
   static List<LectureModel> subjectData = [];
 
   static var studentQuizzes, studentAssignments;
-  static var lectureNumber, lectureCodes, lectureID;
+  static var lectureNumber, lectureCodes;
 
   static void set_defult_year() {
     switch (UserID.userdata['grade']) {

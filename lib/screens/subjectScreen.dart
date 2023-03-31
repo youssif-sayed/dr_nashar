@@ -141,7 +141,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                                 ),
                                 onPressed: () async {
                                   YearsData.lectureNumber = index;
-                                  YearsData.lectureID = subject.id;
+
                                   Navigator.of(context)
                                       .pushReplacementNamed('LoadingPayScreen');
                                 },
@@ -671,7 +671,7 @@ class LectureCard extends StatelessWidget {
                                       if (iscode &&
                                           YearsData.lectureCodes.values
                                                   .elementAt(i)['price'] ==
-                                              lecture.price) {
+                                              lecture.price.toString()) {
                                         if (YearsData.lectureCodes.values
                                             .elementAt(i)['used']) {
                                           if (YearsData.lectureCodes.values
@@ -689,9 +689,12 @@ class LectureCard extends StatelessWidget {
                                                     .elementAt(
                                                         i)['expireDate']) {
                                               YearsData.lectureNumber = index;
-                                              Navigator.of(context)
-                                                  .pushReplacementNamed(
-                                                      'VideoScreen');
+                                              YearsData.selectedYear=index;
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) => LectureScreen(lecture: lecture),
+                                                ),
+                                              );
                                             } else {
                                               ShowToast(
                                                   localization.code_expired,
@@ -711,9 +714,11 @@ class LectureCard extends StatelessWidget {
                                               YearsData.lectureCodes.values
                                                   .elementAt(i));
                                           YearsData.lectureNumber = index;
-                                          Navigator.of(context)
-                                              .pushReplacementNamed(
-                                                  'VideoScreen');
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) => LectureScreen(lecture: lecture),
+                                            ),
+                                          );
                                         }
                                       } else {
                                         ShowToast(localization.code_invalid,
@@ -747,13 +752,7 @@ class LectureCard extends StatelessWidget {
                         );
                       },
                     );
-                    print(YearsData.subjectData);
-                    YearsData.lectureNumber = index;
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => LectureScreen(lecture: lecture),
-                      ),
-                    );
+
                   },
                   child: Container(
                     width: width,
@@ -775,7 +774,7 @@ class LectureCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(12.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -785,13 +784,13 @@ class LectureCard extends StatelessWidget {
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 18,
+                                  fontSize: 30,
                                 ),
                               ),
                               Text(
                                 '${lecture.videos.length} ${localization.videos}, ${lecture.documents.length} ${localization.documents}',
                                 style: TextStyle(
-                                  color: Colors.grey[100],
+                                  color: Colors.grey,
                                   fontSize: 14,
                                 ),
                               ),
@@ -799,6 +798,52 @@ class LectureCard extends StatelessWidget {
                           ),
                         ),
                         GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(18.0))),
+                                  title: Text(
+                                    localization.buy_confirmation,
+                                    style: const TextStyle(color: Colors.blueAccent),
+                                  ),
+                                  content: Text(
+                                    localization.buy_confirmation_alert_message,
+                                    style: const TextStyle(color: Colors.black),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      child: const Text(
+                                        // #TODO
+                                        'NO',
+                                        style: TextStyle(
+                                            color: Colors.red, fontSize: 20),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: const Text(
+                                        // #TODO
+                                        'YES',
+                                        style: TextStyle(
+                                            color: Colors.green, fontSize: 20),
+                                      ),
+                                      onPressed: () async {
+                                        YearsData.lectureNumber = index;
+                                        Navigator.of(context)
+                                            .pushReplacementNamed('LoadingPayScreen');
+                                      },
+                                    )
+                                  ],
+                                );
+                              },
+                            );
+                          },
                           child: Container(
                             decoration: BoxDecoration(
                               color: Colors.blue,
@@ -815,7 +860,7 @@ class LectureCard extends StatelessWidget {
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 14,
+                                  fontSize:18,
                                 ),
                               ),
                             ),
@@ -844,10 +889,11 @@ class LectureCard extends StatelessWidget {
                     height: height * .15,
                     color: Colors.green,
                     child: const Padding(
-                      padding: EdgeInsetsDirectional.only(start: 6, top: 6),
+                      padding: EdgeInsetsDirectional.only(start: 15, top: 6),
                       child: Text(
                         'Take the free Assignment',
                         style: TextStyle(
+                          fontSize: 20,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),

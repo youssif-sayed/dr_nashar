@@ -267,23 +267,29 @@ class LanguagesScreen extends StatelessWidget {
         body: ValueListenableBuilder(
             valueListenable: language,
             builder: (context, lang, _) {
-              return Column(
-                children: [
-                  ListTile(
-                    tileColor: language.value == 'en' ? Colors.green : null,
-                    onTap: () {
-                      language.value = 'en';
-                    },
-                    title: const Text('English'),
-                  ),
-                  ListTile(
-                    onTap: () {
-                      language.value = 'ar';
-                    },
-                    tileColor: language.value == 'ar' ? Colors.green : null,
-                    title: const Text('اللغة العربية'),
-                  ),
-                ],
+              return Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  children: [
+                    ListTile(
+                      trailing: language.value == 'en'?Icon(Icons.check_rounded,color: Colors.green,):null,
+
+                      onTap: () {
+                        language.value = 'en';
+                      },
+                      title: const Text('English',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.blueAccent),),
+                    ),
+                    Divider(),
+                    ListTile(
+                      trailing: language.value == 'ar'?Icon(Icons.check_rounded,color: Colors.green,):null,
+                      onTap: () {
+                        language.value = 'ar';
+                      },
+
+                      title: const Text('اللغة العربية',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.blueAccent),),
+                    ),
+                  ],
+                ),
               );
             }),
       ),

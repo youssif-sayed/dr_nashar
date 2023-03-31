@@ -127,17 +127,18 @@ class _LectureScreenState extends State<LectureScreen> {
                         ),
                       ),
                 Padding(
-                  padding: const EdgeInsets.all(12.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        selectedVideo.name,
+                        widget.lecture.name,
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: 30,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
+
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         child: ListView.builder(
@@ -181,7 +182,7 @@ class _LectureScreenState extends State<LectureScreen> {
                                     title: Text(
                                       video.name,
                                       style: TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.w500,
                                         color: index == selectedVideoIndex
                                             ? Colors.blue[600]
@@ -214,7 +215,7 @@ class _LectureScreenState extends State<LectureScreen> {
                               Text(
                                 localization.documents,
                                 style: const TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
@@ -261,7 +262,7 @@ class _LectureScreenState extends State<LectureScreen> {
                                       }
                                     },
                                     leading: Icon(
-                                      Icons.file_present_sharp,
+                                      Icons.description_outlined,
                                       size: 34,
                                       color: Colors.blue[600],
                                     ),
@@ -269,7 +270,7 @@ class _LectureScreenState extends State<LectureScreen> {
                                       document.name,
                                       style: TextStyle(
                                         color: Colors.blue[600],
-                                        fontSize: 14,
+                                        fontSize: 15,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -294,7 +295,7 @@ class _LectureScreenState extends State<LectureScreen> {
                               Text(
                                 localization.quizzes,
                                 style: const TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
@@ -321,7 +322,7 @@ class _LectureScreenState extends State<LectureScreen> {
                                   'Take the quiz',
                                   style: TextStyle(
                                     color: Colors.blue[600],
-                                    fontSize: 14,
+                                    fontSize: 20,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),

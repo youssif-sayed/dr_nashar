@@ -7,7 +7,7 @@ String PaymobCardFinalToken='';
 
 String IntgrationIDCard = '3358862';
 //to be changed
-String IntgrationIDKiosk ='';
+String IntgrationIDKiosk ='3706510';
 String KioskFinalToken= '';
 String RefCode='';
 

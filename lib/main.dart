@@ -9,6 +9,7 @@ import 'package:dr_nashar/screens/layout.dart';
 import 'package:dr_nashar/screens/loadingHome.dart';
 import 'package:dr_nashar/screens/loadingPay.dart';
 import 'package:dr_nashar/screens/loadingSubject.dart';
+import 'package:dr_nashar/screens/payRefScreen.dart';
 import 'package:dr_nashar/screens/payScreen.dart';
 import 'package:dr_nashar/screens/payVFcashScreen.dart';
 import 'package:dr_nashar/screens/profileScreen.dart';
@@ -51,70 +52,74 @@ Future<void> main() async {
   if (Platform.isAndroid)
     FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
 
-  const AndroidNotificationChannel channel = AndroidNotificationChannel(
-    'high_importance_channel', // id
-    'High Importance Notifications', // title
-    description:
-        'This channel is used for important notifications.', // description
-    importance: Importance.max,
-  );
-
-  const InitializationSettings initializationSettings = InitializationSettings(
-      android: AndroidInitializationSettings('@mipmap/ic_launcher'));
-
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
-
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-  NotificationSettings settings = await messaging.requestPermission(
-    alert: true,
-    announcement: false,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  );
-
-  print('User granted permission: ${settings.authorizationStatus}');
-
-  FirebaseMessaging.onMessage.listen(
-    (RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
-
-      if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
-      }
-
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-
-      // If `onMessage` is triggered with a notification, construct our own
-      // local notification to show to users using the created channel.
-      if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-                channelDescription: channel.description,
-                icon: android.smallIcon,
-              ),
-            ));
-      }
-    },
-  );
+  // const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  //   'high_importance_channel', // id
+  //   'High Importance Notifications', // title
+  //   description:
+  //       'This channel is used for important notifications.', // description
+  //   importance: Importance.max,
+  // );
+  //
+  //
+  // const InitializationSettings initializationSettings = InitializationSettings(
+  //     android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+  //     iOS: DarwinInitializationSettings()
+  // );
+  //
+  //
+  // final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  //     FlutterLocalNotificationsPlugin();
+  // await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  //
+  // await flutterLocalNotificationsPlugin
+  //     .resolvePlatformSpecificImplementation<
+  //         AndroidFlutterLocalNotificationsPlugin>()
+  //     ?.createNotificationChannel(channel);
+  //
+  // FirebaseMessaging messaging = FirebaseMessaging.instance;
+  //
+  // NotificationSettings settings = await messaging.requestPermission(
+  //   alert: true,
+  //   announcement: false,
+  //   badge: true,
+  //   carPlay: false,
+  //   criticalAlert: false,
+  //   provisional: false,
+  //   sound: true,
+  // );
+  //
+  // print('User granted permission: ${settings.authorizationStatus}');
+  //
+  // FirebaseMessaging.onMessage.listen(
+  //   (RemoteMessage message) {
+  //     print('Got a message whilst in the foreground!');
+  //     print('Message data: ${message.data}');
+  //
+  //     if (message.notification != null) {
+  //       print('Message also contained a notification: ${message.notification}');
+  //     }
+  //
+  //     RemoteNotification? notification = message.notification;
+  //     AndroidNotification? android = message.notification?.android;
+  //
+  //     // If `onMessage` is triggered with a notification, construct our own
+  //     // local notification to show to users using the created channel.
+  //     if (notification != null && android != null) {
+  //       flutterLocalNotificationsPlugin.show(
+  //           notification.hashCode,
+  //           notification.title,
+  //           notification.body,
+  //           NotificationDetails(
+  //             android: AndroidNotificationDetails(
+  //               channel.id,
+  //               channel.name,
+  //               channelDescription: channel.description,
+  //               icon: android.smallIcon,
+  //             ),
+  //           ));
+  //     }
+  //   },
+  // );
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -164,6 +169,7 @@ class _MyAppState extends State<MyApp> {
             // 'VideoScreen': (context) => VideoScreen(),
             'LayoutScreen': (context) => const LayoutScreen(),
             'NotificationsScreen': (context) => const NotificationsScreen(),
+            'PayRefCodeScreen': (context)=> const PayRefCodeScreen(),
             // 'QuizScreen': (context) => QuizScreen(),
             // 'AssignmentScreen': (context) => AssignmentScreen(),
           },
@@ -171,4 +177,6 @@ class _MyAppState extends State<MyApp> {
       },
     );
   }
+
 }
+

@@ -65,8 +65,8 @@ class _LoadingPayScreenState extends State<LoadingPayScreen> {
                               },
                               leading: const Image(
                                   image: AssetImage('images/paymob.png')),
-                              title: Text(
-                                localization.pay_with_visa,
+                              title: const Text(
+                                'Card',
                                 style: TextStyle(fontSize: 25),
                               ),
                               trailing: Radio(
@@ -82,35 +82,35 @@ class _LoadingPayScreenState extends State<LoadingPayScreen> {
                           ),
                         ),
                         Gaps.gap8,
-                        // Card(
-                        //   shape: RoundedRectangleBorder(
-                        //       borderRadius: BorderRadius.circular(12)),
-                        //   child: Padding(
-                        //     padding: const EdgeInsets.all(8.0),
-                        //     child: ListTile(
-                        //       onTap: () {
-                        //         setState(() {
-                        //           _payOption = payOption.fawrey;
-                        //         });
-                        //       },
-                        //       leading: const Image(
-                        //           image: AssetImage('images/fawrey.png')),
-                        //       title: const Text(
-                        //         'Fawrey',
-                        //         style: TextStyle(fontSize: 25),
-                        //       ),
-                        //       trailing: Radio(
-                        //         value: payOption.fawrey,
-                        //         groupValue: _payOption,
-                        //         onChanged: (value) {
-                        //           setState(() {
-                        //             _payOption = value!;
-                        //           });
-                        //         },
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
+                        Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              onTap: () {
+                                setState(() {
+                                  _payOption = payOption.fawrey;
+                                });
+                              },
+                              leading: const Image(
+                                  image: AssetImage('images/paymob.png')),
+                              title: const Text(
+                                'Reference Code',
+                                style: TextStyle(fontSize: 25),
+                              ),
+                              trailing: Radio(
+                                value: payOption.fawrey,
+                                groupValue: _payOption,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _payOption = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
                         Gaps.gap8,
                         Card(
                           shape: RoundedRectangleBorder(
@@ -125,8 +125,8 @@ class _LoadingPayScreenState extends State<LoadingPayScreen> {
                               },
                               leading: const Image(
                                   image: AssetImage('images/VF Cash.png')),
-                              title: Text(
-                                localization.pay_with_vfcash,
+                              title: const Text(
+                                'Vodafone Cash',
                                 style: TextStyle(fontSize: 25),
                               ),
                               trailing: Radio(
@@ -160,7 +160,22 @@ class _LoadingPayScreenState extends State<LoadingPayScreen> {
                                   UserID.userdata['firstName'],
                                   UserID.userdata['lastName'],
                                   UserID.userdata['email'],
-                                  UserID.userdata['phone']);
+                                  UserID.userdata['phone'],
+                              true
+                              );
+                            }
+                            break;
+                          case payOption.fawrey:
+                            {
+                              PaymentCubit.get(context).getFirstToken(
+                                  YearsData.subjectData[YearsData.lectureNumber]
+                                      .price.toString(),
+                                  UserID.userdata['firstName'],
+                                  UserID.userdata['lastName'],
+                                  UserID.userdata['email'],
+                                  UserID.userdata['phone'],
+                                  false
+                              );
                             }
                             break;
                           case payOption.vfCash:
@@ -187,6 +202,9 @@ class _LoadingPayScreenState extends State<LoadingPayScreen> {
           listener: (context, state) {
             if (state is PaymentRequestSuccessState) {
               Navigator.of(context).pushReplacementNamed('PayScreen');
+            }
+            else if (state is RefCodeSuccessState){
+              Navigator.of(context).pushReplacementNamed('PayRefCodeScreen');
             }
           },
         ),

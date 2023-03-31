@@ -113,7 +113,7 @@ class _PayScreenState extends State<PayScreen> {
     Map<String, dynamic> codeMap = {
       'used': false,
       'UID': '',
-      'expireDate': 7,
+      'expireDate': 15,
     };
     Map<String, dynamic> newMap = {};
     int code = random.nextInt(999999) + 100000;
@@ -121,7 +121,7 @@ class _PayScreenState extends State<PayScreen> {
     newMap.addAll({finalCode: codeMap});
     final docRef = FirebaseFirestore.instance
         .collection("codes")
-        .doc("${YearsData.lectureID}");
+        .doc("general");
     docRef.update(newMap);
     return finalCode;
   }

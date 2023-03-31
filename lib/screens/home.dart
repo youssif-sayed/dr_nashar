@@ -28,11 +28,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Map grades = {
     '1st sec': 'sec1',
-    '2st sec': 'sec2',
-    '3st sec': 'sec3',
+    '2nd sec': 'sec2',
+    '3rd sec': 'sec3',
     '1st prep': 'prep1',
-    '2st prep': 'prep2',
-    '3st prep': 'prep3',
+    '2nd prep': 'prep2',
+    '3rd prep': 'prep3',
   };
 
   @override
@@ -74,19 +74,21 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
+                width: MediaQuery.of(context).size.width ,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: const Color(0xff098FEA),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * .5,
+
                       height: 150,
                       padding: const EdgeInsets.only(top: 30, left: 10),
                       child: Column(
@@ -117,14 +119,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-                    Expanded(
-                      child: Center(
-                        child: QrImage(
-                          data: "${UserID.userID?.uid}",
-                          version: QrVersions.auto,
-                          foregroundColor: Colors.white,
-                          size: 150.0,
-                        ),
+                    Center(
+                      child: QrImage(
+                        data: "${UserID.userID?.uid}",
+                        version: QrVersions.auto,
+                        foregroundColor: Colors.white,
+                        size: 150.0,
                       ),
                     ),
                   ],
@@ -132,47 +132,51 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Gaps.gap24,
               SizedBox(
-                height: MediaQuery.of(context).size.height * .05,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: grades.length,
-                  itemBuilder: (context, index) {
-                    var grade = grades.keys.toList()[index];
-                    var gradeValue = grades[grade];
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 4.0),
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            selectedYear = gradeValue;
-                            print(selectedYear);
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              color: selectedYear == gradeValue
-                                  ? Colors.black
-                                  : null,
-                              borderRadius: BorderRadius.circular(50),
-                              border: selectedYear == gradeValue
-                                  ? null
-                                  : Border.all(width: 1)),
-                          child: FittedBox(
-                            fit: BoxFit.fitHeight,
-                            child: Text(
-                              grade,
-                              style: TextStyle(
+                height: 40,
+                child: Center(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: grades.length,
+                    itemBuilder: (context, index) {
+                      var grade = grades.keys.toList()[index];
+                      var gradeValue = grades[grade];
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 5.0),
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectedYear = gradeValue;
+                              print(selectedYear);
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
                                 color: selectedYear == gradeValue
-                                    ? Colors.white
-                                    : Colors.black,
+                                    ? Colors.black
+                                    : null,
+                                borderRadius: BorderRadius.circular(50),
+                                border: selectedYear == gradeValue
+                                    ? null
+                                    : Border.all(width: 1)),
+                            child: FittedBox(
+                              fit: BoxFit.fitHeight,
+                              child: Text(
+                                grade,
+                                style: TextStyle(
+
+                                  color: selectedYear == gradeValue
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
               Gaps.gap24,
@@ -181,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisCount: 2,
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
-                  childAspectRatio: 3 / 3.5,
+                  childAspectRatio: .9992,
                 ),
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -247,20 +251,21 @@ class SubjectCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: constraints.maxHeight * .35,
+
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.only(top: 12,bottom: 12,right: 12,left: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
                           width: width * .5,
                           child: FittedBox(
+                            alignment: Alignment.centerLeft,
                             fit: BoxFit.scaleDown,
                             child: Text(
                               '${fetchedYear[index]['name']}',
                               style: const TextStyle(
-                                fontSize: 16,
+                                fontSize: 25,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -268,7 +273,7 @@ class SubjectCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         SizedBox(
-                          width: width * .5,
+                          width: width * .4,
                           child: InkWell(
                             onTap: () {
                               YearsData.selectedSubject = fetchedYear[index].id;
@@ -279,9 +284,9 @@ class SubjectCard extends StatelessWidget {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(12),
                                   border: Border.all(width: 2)),
-                              padding: const EdgeInsets.all(4),
+                              padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 5),
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
                                 child: Row(
@@ -291,12 +296,12 @@ class SubjectCard extends StatelessWidget {
                                     Text(
                                       AppLocalizations.of(context)!.start,
                                       style: const TextStyle(
-                                          fontSize: 12,
+                                          fontSize: 20,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     const Icon(
                                       Icons.arrow_forward_ios_rounded,
-                                      size: 12,
+                                      size: 20,
                                     ),
                                   ],
                                 ),
