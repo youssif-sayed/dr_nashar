@@ -76,7 +76,7 @@ class PayRefCodeScreen extends StatelessWidget {
             ),
             Container(
                 padding:
-                const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12)),
@@ -85,21 +85,20 @@ class PayRefCodeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                     Text(
-                      '$RefCode',
-                      style:
-                      TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    Text(
+                      RefCode,
+                      style: const TextStyle(
+                          fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(
                       width: 5,
                     ),
                     IconButton(
                       onPressed: () async {
-                        await Clipboard.setData(
-                             ClipboardData(text: '$RefCode'));
+                        await Clipboard.setData(ClipboardData(text: RefCode));
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content:
-                            Text(localization.code_copied_to_clipboard)));
+                                Text(localization.code_copied_to_clipboard)));
                       },
                       icon: const Icon(Icons.copy_rounded),
                       color: Colors.grey,

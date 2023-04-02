@@ -293,8 +293,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
                                       // student quiz marks
                                       finalAnswers[UserID.userID!.uid]
-                                              ['quiz_marks'] =
-                                          '$quizMark / $total';
+                                          ['quiz_marks'] = '$quizMark / $total';
 
                                       finalAnswers[UserID.userID!.uid]
                                               ['total_marks'] =
@@ -415,7 +414,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                 },
                                 child: Text(
                                   localization.cancel,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 15.0,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.grey,

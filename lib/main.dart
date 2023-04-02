@@ -27,7 +27,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'firebase_options.dart';
 
@@ -49,8 +48,9 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FlutterDownloader.initialize();
-  if (Platform.isAndroid)
+  if (Platform.isAndroid) {
     FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+  }
 
   // const AndroidNotificationChannel channel = AndroidNotificationChannel(
   //   'high_importance_channel', // id
@@ -169,7 +169,7 @@ class _MyAppState extends State<MyApp> {
             // 'VideoScreen': (context) => VideoScreen(),
             'LayoutScreen': (context) => const LayoutScreen(),
             'NotificationsScreen': (context) => const NotificationsScreen(),
-            'PayRefCodeScreen': (context)=> const PayRefCodeScreen(),
+            'PayRefCodeScreen': (context) => const PayRefCodeScreen(),
             // 'QuizScreen': (context) => QuizScreen(),
             // 'AssignmentScreen': (context) => AssignmentScreen(),
           },
@@ -177,6 +177,4 @@ class _MyAppState extends State<MyApp> {
       },
     );
   }
-
 }
-

@@ -1,17 +1,14 @@
 // Flutter imports:
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
 
 // Package imports:
 import 'package:rive/rive.dart';
 
 // Project imports:
-import 'package:dr_nashar/components.dart';
 import 'package:dr_nashar/utils/gaps.dart';
 import 'package:dr_nashar/widgets/text_input.dart';
 
@@ -54,9 +51,9 @@ class _SignInState extends State<SignIn> {
                 children: [
                   Column(
                     children: [
-                      Container(
+                      const SizedBox(
                         height: 200,
-                        child: const Hero(
+                        child: Hero(
                             tag: 'logo',
                             child: RiveAnimation.asset(
                               'images/animatedLogo.riv',
