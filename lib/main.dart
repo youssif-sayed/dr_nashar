@@ -50,7 +50,7 @@ Future<void> main() async {
   );
   await FlutterDownloader.initialize();
   if (Platform.isAndroid)
-    FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+    // FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
 
   // const AndroidNotificationChannel channel = AndroidNotificationChannel(
   //   'high_importance_channel', // id
