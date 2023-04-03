@@ -86,5 +86,6 @@
   "account_already_exist": "هناك بالفعل حساب موجود لهذا البريد الالكتروني!",
   "email_created": "تم إنشاء الحساب بنجاح!",
   "assignments": "الواجبات",
-  "quizzes": "الامتحانات"
+  "quizzes": "الامتحانات",
+  "missing_profile_picture_error": "من فضلك قم بإضافة صورة شخصية"
 }
