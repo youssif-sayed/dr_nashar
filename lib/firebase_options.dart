@@ -66,7 +66,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '582450987697',
     projectId: 'dr-nashar',
     storageBucket: 'dr-nashar.appspot.com',
-    iosClientId: '582450987697-2qp40bn7mooclsv4rs8ra8sshncb4j32.apps.googleusercontent.com',
+    iosClientId:
+        '582450987697-2qp40bn7mooclsv4rs8ra8sshncb4j32.apps.googleusercontent.com',
     iosBundleId: 'com.drnashar.drNashar',
   );
 }

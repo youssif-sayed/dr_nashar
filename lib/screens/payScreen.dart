@@ -4,7 +4,6 @@ import 'package:dr_nashar/const/payMob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import '../user/yearsData.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -85,7 +84,8 @@ class _PayScreenState extends State<PayScreen> {
                   TextButton(
                     child: Text(
                       localization.okay,
-                      style: TextStyle(color: Colors.blueAccent, fontSize: 20),
+                      style: const TextStyle(
+                          color: Colors.blueAccent, fontSize: 20),
                     ),
                     onPressed: () {
                       Navigator.pop(context);
@@ -117,11 +117,10 @@ class _PayScreenState extends State<PayScreen> {
     };
     Map<String, dynamic> newMap = {};
     int code = random.nextInt(999999) + 100000;
-    String finalCode = 'DN-${code}';
+    String finalCode = 'DN-$code';
     newMap.addAll({finalCode: codeMap});
-    final docRef = FirebaseFirestore.instance
-        .collection("codes")
-        .doc("general");
+    final docRef =
+        FirebaseFirestore.instance.collection("codes").doc("general");
     docRef.update(newMap);
     return finalCode;
   }

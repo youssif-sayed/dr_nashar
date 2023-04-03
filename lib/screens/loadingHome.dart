@@ -19,6 +19,7 @@ class LoadingHomeScreen extends StatefulWidget {
 class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
   @override
   late StreamSubscription<User?> user;
+  @override
   void initState() {
     super.initState();
     loadData();
@@ -29,7 +30,7 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
       if (user == null) {
         print('User is currently signed out!');
       } else {
-        UserID.userID = await FirebaseAuth.instance.currentUser;
+        UserID.userID = FirebaseAuth.instance.currentUser;
 
         print(UserID.userID?.uid);
         print('User is signed in!');
@@ -40,14 +41,14 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
           docRef.get().then(
             (DocumentSnapshot doc) async {
               var data = doc.data() as Map<String, dynamic>;
-              if (data != null) {
-                print('data:$data');
-                UserID.userdata = data;
-                YearsData.set_defult_year();
-                bool isyears = await YearsData.get_years_data();
-                print(isyears);
-                if (mounted) {
-                  if (isyears) Navigator.of(context).pushReplacementNamed('LayoutScreen');
+              print('data:$data');
+              UserID.userdata = data;
+              YearsData.set_defult_year();
+              bool isyears = await YearsData.get_years_data();
+              print(isyears);
+              if (mounted) {
+                if (isyears) {
+                  Navigator.of(context).pushReplacementNamed('LayoutScreen');
                 }
               }
             },
@@ -64,6 +65,7 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
     user.cancel;
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
@@ -72,9 +74,9 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(),
-            Container(
+            const SizedBox(
               height: 200,
-              child: const Hero(
+              child: Hero(
                   tag: 'logo',
                   child: RiveAnimation.asset(
                     'images/animatedLogo.riv',

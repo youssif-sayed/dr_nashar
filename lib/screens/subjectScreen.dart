@@ -689,10 +689,12 @@ class LectureCard extends StatelessWidget {
                                                     .elementAt(
                                                         i)['expireDate']) {
                                               YearsData.lectureNumber = index;
-                                              YearsData.selectedYear=index;
+                                              YearsData.selectedYear = index;
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
-                                                  builder: (context) => LectureScreen(lecture: lecture),
+                                                  builder: (context) =>
+                                                      LectureScreen(
+                                                          lecture: lecture),
                                                 ),
                                               );
                                             } else {
@@ -716,7 +718,9 @@ class LectureCard extends StatelessWidget {
                                           YearsData.lectureNumber = index;
                                           Navigator.of(context).push(
                                             MaterialPageRoute(
-                                              builder: (context) => LectureScreen(lecture: lecture),
+                                              builder: (context) =>
+                                                  LectureScreen(
+                                                      lecture: lecture),
                                             ),
                                           );
                                         }
@@ -752,7 +756,6 @@ class LectureCard extends StatelessWidget {
                         );
                       },
                     );
-
                   },
                   child: Container(
                     width: width,
@@ -789,7 +792,7 @@ class LectureCard extends StatelessWidget {
                               ),
                               Text(
                                 '${lecture.videos.length} ${localization.videos}, ${lecture.documents.length} ${localization.documents}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.grey,
                                   fontSize: 14,
                                 ),
@@ -804,11 +807,12 @@ class LectureCard extends StatelessWidget {
                               builder: (context) {
                                 return AlertDialog(
                                   shape: const RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(18.0))),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(18.0))),
                                   title: Text(
                                     localization.buy_confirmation,
-                                    style: const TextStyle(color: Colors.blueAccent),
+                                    style: const TextStyle(
+                                        color: Colors.blueAccent),
                                   ),
                                   content: Text(
                                     localization.buy_confirmation_alert_message,
@@ -836,7 +840,8 @@ class LectureCard extends StatelessWidget {
                                       onPressed: () async {
                                         YearsData.lectureNumber = index;
                                         Navigator.of(context)
-                                            .pushReplacementNamed('LoadingPayScreen');
+                                            .pushReplacementNamed(
+                                                'LoadingPayScreen');
                                       },
                                     )
                                   ],
@@ -860,7 +865,7 @@ class LectureCard extends StatelessWidget {
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
-                                  fontSize:18,
+                                  fontSize: 18,
                                 ),
                               ),
                             ),

@@ -10,11 +10,10 @@ Widget defaultButton({
   required String text,
 }) =>
     Container(
-     width: width,
+      width: width,
       height: 40.0,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(radius), color: background
-      ),
+          borderRadius: BorderRadius.circular(radius), color: background),
       child: MaterialButton(
         onPressed: function,
         child: Text(
@@ -36,12 +35,13 @@ Widget defaultFormField({
   required String hintText,
   IconData? suffix,
   VoidCallback? suffixPressed,
-  bool isPassword= false,
+  bool isPassword = false,
   bool isClickable = true,
-  int? lines, required bool obscureText,
+  int? lines,
+  required bool obscureText,
 }) =>
     TextFormField(
-      controller: controller ,
+      controller: controller,
       keyboardType: TextInputType.text,
       obscureText: isPassword,
       enabled: isClickable,
@@ -72,21 +72,28 @@ Widget defaultFormField({
             borderRadius: BorderRadius.all(Radius.circular(80.0)),
             borderSide: BorderSide(color: Colors.white)),
         border: InputBorder.none,
-        contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10,),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 10,
+        ),
         focusedBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(80.0)),
             borderSide: BorderSide(color: Colors.white)),
       ),
     );
 
-Widget userInfo(IconData icon, String data, Color color, onPressed ,isExpanded) {
+Widget userInfo(
+    IconData icon, String data, Color color, onPressed, isExpanded) {
   return GestureDetector(
     onTap: onPressed,
     child: Row(
       children: [
         CircleAvatar(
           backgroundColor: color,
-          child: Icon(icon, color: Colors.white,),
+          child: Icon(
+            icon,
+            color: Colors.white,
+          ),
         ),
         const SizedBox(
           width: 10.0,
@@ -98,10 +105,13 @@ Widget userInfo(IconData icon, String data, Color color, onPressed ,isExpanded) 
             fontWeight: FontWeight.bold,
           ),
         ),
-
         const Spacer(),
-
-         isExpanded?Icon(Icons.arrow_forward_ios_rounded,color: Colors.grey,):Container(),
+        isExpanded
+            ? const Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: Colors.grey,
+              )
+            : Container(),
       ],
     ),
   );
@@ -111,15 +121,15 @@ void NavigateTo(context, widget) => Navigator.push(
     context,
     MaterialPageRoute(
       builder: (context) => widget,
-      ));
+    ));
 
 void NavigateAndFinish(context, widget) => Navigator.pushAndRemoveUntil(
-    context,
-    MaterialPageRoute(
+      context,
+      MaterialPageRoute(
         builder: (context) => widget,
-    ),
+      ),
       (Route<dynamic> route) => false,
-);
+    );
 
 showLoadingDialog(context) {
   showDialog(
@@ -137,4 +147,3 @@ showLoadingDialog(context) {
     barrierDismissible: false,
   );
 }
-

@@ -31,34 +31,35 @@ class _TextInputState extends State<TextInput> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-
       keyboardAppearance: Brightness.dark,
-    style: TextStyle(color: Colors.black),
-    obscureText: widget.inputType == TextInputType.visiblePassword && _obscured,
-    keyboardType: widget.inputType,
-    validator: widget.validator,
-    onChanged: widget.onChanged,
-    cursorRadius: Radius.circular(200),
-    decoration: InputDecoration(
-      filled: true,
-      fillColor: Colors.white,
-      contentPadding: const EdgeInsets.all(12),
-      isDense: true,
-
-      focusColor: ColorsPalette.darkGrey,
-
-
-      border:  OutlineInputBorder(borderSide: const BorderSide(color: ColorsPalette.white),borderRadius: BorderRadius.circular(50)),
-      prefixIcon: widget.prefixIcon != null ? Icon(widget.prefixIcon, color: Colors.blueAccent) : null,
-      hintText: widget.hint,
-      hintStyle: const TextStyle(color: ColorsPalette.darkGrey),
-      suffixIcon: widget.inputType == TextInputType.visiblePassword
-          ? IconButton(
-              icon: Icon(_obscured ? Icons.visibility : Icons.visibility_off),
-              onPressed: _toggleObscure,
-            )
-          : null,
-    ),
-      );
+      style: const TextStyle(color: Colors.black),
+      obscureText:
+          widget.inputType == TextInputType.visiblePassword && _obscured,
+      keyboardType: widget.inputType,
+      validator: widget.validator,
+      onChanged: widget.onChanged,
+      cursorRadius: const Radius.circular(200),
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: const EdgeInsets.all(12),
+        isDense: true,
+        focusColor: ColorsPalette.darkGrey,
+        border: OutlineInputBorder(
+            borderSide: const BorderSide(color: ColorsPalette.white),
+            borderRadius: BorderRadius.circular(50)),
+        prefixIcon: widget.prefixIcon != null
+            ? Icon(widget.prefixIcon, color: Colors.blueAccent)
+            : null,
+        hintText: widget.hint,
+        hintStyle: const TextStyle(color: ColorsPalette.darkGrey),
+        suffixIcon: widget.inputType == TextInputType.visiblePassword
+            ? IconButton(
+                icon: Icon(_obscured ? Icons.visibility : Icons.visibility_off),
+                onPressed: _toggleObscure,
+              )
+            : null,
+      ),
+    );
   }
 }

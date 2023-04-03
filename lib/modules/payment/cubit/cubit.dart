@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:dr_nashar/const/payMob.dart';
 import 'package:dr_nashar/models/first_token.dart';
 import 'package:dr_nashar/modules/payment/cubit/states.dart';
@@ -10,42 +9,44 @@ class PaymentCubit extends Cubit<PaymentState> {
   static PaymentCubit get(context) => BlocProvider.of(context);
   FirstToken? firstToken;
 
-
-  Future getFirstToken(String price,String firstname,String lastname,String email,String phone,isCard) async {
+  Future getFirstToken(String price, String firstname, String lastname,
+      String email, String phone, isCard) async {
     DioHelperPayment.postData(
         url: "auth/tokens", data: {"api_key": PayMobApiKey}).then((value) {
       PayMobFirstToken = value.data['token'];
-      print ('First token : $PayMobFirstToken');
+      print('First token : $PayMobFirstToken');
       price = '${price}00';
-      getOrderID(price, firstname, lastname, email, phone,isCard);
+      getOrderID(price, firstname, lastname, email, phone, isCard);
       emit(PaymentSuccessState());
     }).catchError((error) {
       emit(PaymentErrorState(error));
     });
   }
 
-  Future getOrderID(String price,String firstname,String lastname,String email,String phone,isCard) async {
+  Future getOrderID(String price, String firstname, String lastname,
+      String email, String phone, isCard) async {
     DioHelperPayment.postData(url: "ecommerce/orders", data: {
       "auth_token": PayMobFirstToken,
       "delivery_needed": "false",
       "items": [],
       "amount_cents": price,
-      "currency":"EGP",
+      "currency": "EGP",
     }).then((value) {
       PayMobOrderID = value.data['id'].toString();
-      print ('OrderID : $PayMobOrderID');
-      if(isCard)
-      {getFinalTokenCard(price, firstname, lastname, email, phone);}
-      else{
-      getFinalTokenKiosk(price, firstname, lastname, email, phone);}
+      print('OrderID : $PayMobOrderID');
+      if (isCard) {
+        getFinalTokenCard(price, firstname, lastname, email, phone);
+      } else {
+        getFinalTokenKiosk(price, firstname, lastname, email, phone);
+      }
       emit(PaymentOrderIDSuccessState());
     }).catchError((error) {
       emit(PaymentOrderIDErrorState(error));
     });
   }
 
-  Future getFinalTokenCard(String price,String firstname,String lastname,String email,String phone) async {
-
+  Future getFinalTokenCard(String price, String firstname, String lastname,
+      String email, String phone) async {
     DioHelperPayment.postData(url: "acceptance/payment_keys", data: {
       "auth_token": PayMobFirstToken,
       "amount_cents": price,
@@ -69,8 +70,6 @@ class PaymentCubit extends Cubit<PaymentState> {
       "currency": "EGP",
       "integration_id": IntgrationIDCard,
       "lock_order_when_paid": "false"
-
-
     }).then((value) {
       PaymobCardFinalToken = value.data['token'].toString();
       print('Final token: $PaymobCardFinalToken');
@@ -81,8 +80,8 @@ class PaymentCubit extends Cubit<PaymentState> {
     });
   }
 
-  Future getFinalTokenKiosk(String price,String firstname,String lastname,String email,String phone) async {
-
+  Future getFinalTokenKiosk(String price, String firstname, String lastname,
+      String email, String phone) async {
     DioHelperPayment.postData(url: "acceptance/payment_keys", data: {
       "auth_token": PayMobFirstToken,
       "amount_cents": price,
@@ -106,8 +105,6 @@ class PaymentCubit extends Cubit<PaymentState> {
       "currency": "EGP",
       "integration_id": IntgrationIDKiosk,
       "lock_order_when_paid": "false"
-
-
     }).then((value) {
       KioskFinalToken = value.data['token'].toString();
       print('Final token kiosk: $KioskFinalToken');
@@ -119,13 +116,10 @@ class PaymentCubit extends Cubit<PaymentState> {
     });
   }
 
-  Future getRefCode(String price,String firstname,String lastname,String email,String phone) async {
-
+  Future getRefCode(String price, String firstname, String lastname,
+      String email, String phone) async {
     DioHelperPayment.postData(url: "acceptance/payments/pay", data: {
-      "source": {
-        "identifier": "AGGREGATOR",
-        "subtype": "AGGREGATOR"
-      },
+      "source": {"identifier": "AGGREGATOR", "subtype": "AGGREGATOR"},
       "payment_token": KioskFinalToken
     }).then((value) {
       RefCode = value.data['id'].toString();

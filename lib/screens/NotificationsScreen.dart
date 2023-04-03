@@ -9,7 +9,7 @@ class NotificationsScreen extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.black,
-        title: Container(
+        title: SizedBox(
           height: 50,
           child: Hero(
               tag: 'logo',
@@ -27,7 +27,10 @@ class NotificationsScreen extends StatelessWidget {
             );
           },
           separatorBuilder: (context, index) {
-            return notificationItem(title: 'Notification $index', body: 'This is body number $index',);
+            return notificationItem(
+              title: 'Notification $index',
+              body: 'This is body number $index',
+            );
           },
           itemCount: 0,
         ),
@@ -42,47 +45,56 @@ class NotificationsScreen extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: 100,
-
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: const [
-          BoxShadow(offset: Offset(1,1), blurRadius: 2,blurStyle: BlurStyle.outer),
+          BoxShadow(
+              offset: Offset(1, 1), blurRadius: 2, blurStyle: BlurStyle.outer),
         ],
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const SizedBox(width: 20.0,),
+          const SizedBox(
+            width: 20.0,
+          ),
           ShaderMask(
-              blendMode: BlendMode.srcIn,
-              shaderCallback: (Rect bounds) => const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xff08CE5D),
-                  Color(0xff098FEA),
-                ],
-              ).createShader(bounds),
-              child: const Icon(Icons.notifications_active),),
-          const SizedBox(width: 20.0,),
+            blendMode: BlendMode.srcIn,
+            shaderCallback: (Rect bounds) => const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xff08CE5D),
+                Color(0xff098FEA),
+              ],
+            ).createShader(bounds),
+            child: const Icon(Icons.notifications_active),
+          ),
+          const SizedBox(
+            width: 20.0,
+          ),
           Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20.0,
-                color: Colors.black,
-              ),),
-              Text(body, style: const TextStyle(
-                fontWeight: FontWeight.w300,
-                fontSize: 15.0,
-                color: Colors.grey,
-              ),),
-
-
+              Text(
+                title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                body,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w300,
+                  fontSize: 15.0,
+                  color: Colors.grey,
+                ),
+              ),
             ],
           ),
         ],

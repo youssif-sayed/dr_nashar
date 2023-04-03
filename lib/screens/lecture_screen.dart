@@ -13,8 +13,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:video_player/video_player.dart';
 
-import '../utils/gaps.dart';
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LectureScreen extends StatefulWidget {
@@ -138,7 +136,6 @@ class _LectureScreenState extends State<LectureScreen> {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         child: ListView.builder(

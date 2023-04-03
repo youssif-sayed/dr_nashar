@@ -765,7 +765,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         }
 
         Uint8List? file = result?.files.first.bytes;
-        String fileName = "users/${_email}.${result?.files.first.extension}";
+        String fileName = "users/$_email.${result?.files.first.extension}";
 
         UserID.userdata['photo'] = fileName;
         UserID.userdata['firstName'] = _firstName;
