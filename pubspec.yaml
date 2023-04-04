@@ -19,11 +19,11 @@ dependencies:
   device_info_plus: ^8.1.0
   dio: ^5.0.1
   dotted_border: ^2.0.0+3
-  equatable:
+  equatable: null
   file_picker: ^5.2.5
   firebase_auth: ^4.2.10
   firebase_core: ^2.7.1
-  firebase_messaging: ^14.3.0
+  firebase_messaging: ^14.4.0
   firebase_storage: ^11.0.15
   flutter:
     sdk: flutter

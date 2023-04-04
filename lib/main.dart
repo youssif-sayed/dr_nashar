@@ -25,7 +25,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'firebase_options.dart';
@@ -35,11 +34,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:dr_nashar/l10n/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-ValueNotifier<String> language = ValueNotifier<String>('en');
+import 'services/local_notifications/local_notifications_service.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.messageId}");
-}
+ValueNotifier<String> language = ValueNotifier<String>('en');
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,81 +44,14 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   await FlutterDownloader.initialize();
+
+  LocalNotificationsService.instance.init();
+
   if (Platform.isAndroid) {
     FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
   }
-
-  // const AndroidNotificationChannel channel = AndroidNotificationChannel(
-  //   'high_importance_channel', // id
-  //   'High Importance Notifications', // title
-  //   description:
-  //       'This channel is used for important notifications.', // description
-  //   importance: Importance.max,
-  // );
-  //
-  //
-  // const InitializationSettings initializationSettings = InitializationSettings(
-  //     android: AndroidInitializationSettings('@mipmap/ic_launcher'),
-  //     iOS: DarwinInitializationSettings()
-  // );
-  //
-  //
-  // final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  //     FlutterLocalNotificationsPlugin();
-  // await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  //
-  // await flutterLocalNotificationsPlugin
-  //     .resolvePlatformSpecificImplementation<
-  //         AndroidFlutterLocalNotificationsPlugin>()
-  //     ?.createNotificationChannel(channel);
-  //
-  // FirebaseMessaging messaging = FirebaseMessaging.instance;
-  //
-  // NotificationSettings settings = await messaging.requestPermission(
-  //   alert: true,
-  //   announcement: false,
-  //   badge: true,
-  //   carPlay: false,
-  //   criticalAlert: false,
-  //   provisional: false,
-  //   sound: true,
-  // );
-  //
-  // print('User granted permission: ${settings.authorizationStatus}');
-  //
-  // FirebaseMessaging.onMessage.listen(
-  //   (RemoteMessage message) {
-  //     print('Got a message whilst in the foreground!');
-  //     print('Message data: ${message.data}');
-  //
-  //     if (message.notification != null) {
-  //       print('Message also contained a notification: ${message.notification}');
-  //     }
-  //
-  //     RemoteNotification? notification = message.notification;
-  //     AndroidNotification? android = message.notification?.android;
-  //
-  //     // If `onMessage` is triggered with a notification, construct our own
-  //     // local notification to show to users using the created channel.
-  //     if (notification != null && android != null) {
-  //       flutterLocalNotificationsPlugin.show(
-  //           notification.hashCode,
-  //           notification.title,
-  //           notification.body,
-  //           NotificationDetails(
-  //             android: AndroidNotificationDetails(
-  //               channel.id,
-  //               channel.name,
-  //               channelDescription: channel.description,
-  //               icon: android.smallIcon,
-  //             ),
-  //           ));
-  //     }
-  //   },
-  // );
-
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   runApp(const MyApp());
 }
