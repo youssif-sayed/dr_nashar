@@ -3,11 +3,15 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dr_nashar/user/yearsData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rive/rive.dart';
 
+import '../services/local_notifications/local_notifications_service.dart';
 import '../user/UserID.dart';
+import '../utils/constants.dart';
 
 class LoadingHomeScreen extends StatefulWidget {
   const LoadingHomeScreen({Key? key}) : super(key: key);
@@ -22,7 +26,31 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
   @override
   void initState() {
     super.initState();
+    FirebaseMessaging.instance.subscribeToTopic(Constants.fcmAllTopic);
+
+    FlutterLocalNotificationsPlugin()
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestPermission();
+
+    _initNotifications();
+
     loadData();
+  }
+
+  Future<void> _initNotifications() async {
+    FirebaseMessaging.onMessage.listen(
+      (RemoteMessage message) async {
+        final notification = message.notification;
+
+        if (notification != null) {
+          LocalNotificationsService.instance.showNotification(
+            title: notification.title!,
+            body: notification.body!,
+          );
+        }
+      },
+    );
   }
 
   Future<void> loadData() async {

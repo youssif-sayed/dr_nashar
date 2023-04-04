@@ -91,5 +91,6 @@
   "contact_us_body": "If you have any questions or concerns, please contact us at:",
   "missing_profile_picture_error": "Please upload your profile picture",
   "attendance": "Attendance",
-  "no_attendance_found": "No attendance found"
+  "no_attendance_found": "No attendance found",
+  "no_notifications_yet": "No notifications yet"
 }

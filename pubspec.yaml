@@ -11,6 +11,7 @@ environment:
 dependencies:
   auto_size_text: ^3.0.0
   bloc: ^8.1.1
+  cached_network_image: ^3.2.3
   chewie: ^1.4.0
   cloud_firestore: ^4.4.4
   conditional_builder_rec: ^1.0.0
@@ -18,11 +19,11 @@ dependencies:
   device_info_plus: ^8.1.0
   dio: ^5.0.1
   dotted_border: ^2.0.0+3
-  equatable:
+  equatable: null
   file_picker: ^5.2.5
   firebase_auth: ^4.2.10
   firebase_core: ^2.7.1
-  firebase_messaging: ^14.3.0
+  firebase_messaging: ^14.4.0
   firebase_storage: ^11.0.15
   flutter:
     sdk: flutter
