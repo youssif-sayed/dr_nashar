@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:conditional_builder_rec/conditional_builder_rec.dart';
+import 'package:dr_nashar/main.dart';
 import 'package:dr_nashar/user/yearsData.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -338,9 +339,9 @@ class StudentMarksScreen extends StatelessWidget {
                     itemCount: YearsData.studentQuizzes.length,
                   ),
                   const SizedBox(height: 10.0),
-                  const Text(
-                    'Attendance',
-                    style: TextStyle(
+                  Text(
+                    localization.attendance,
+                    style: const TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.grey,
@@ -363,10 +364,10 @@ class StudentMarksScreen extends StatelessWidget {
                         ));
                       }
                       if (snapshot.data!.docs.isEmpty) {
-                        return const Center(
+                        return Center(
                           child: Padding(
-                            padding: EdgeInsets.all(16),
-                            child: Text('No attendance found'),
+                            padding: const EdgeInsets.all(16),
+                            child: Text(localization.no_attendance_found),
                           ),
                         );
                       }
@@ -436,12 +437,12 @@ class StudentAttendance extends StatelessWidget {
 
   String _getDayName(Timestamp timestamp) {
     final date = timestamp.toDate();
-    return DateFormat.EEEE().format(date);
+    return DateFormat.EEEE(language.value).format(date);
   }
 
   String _formatAttendanceDate(Timestamp timestamp) {
     final date = timestamp.toDate();
 
-    return DateFormat.yMd().add_jm().format(date);
+    return DateFormat.yMd(language.value).add_jm().format(date);
   }
 }
