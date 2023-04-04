@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dr_nashar/models/video_model.dart';
 import 'package:dr_nashar/screens/quiz_screen.dart';
 import 'package:dr_nashar/screens/lecture_screen.dart';
@@ -776,28 +777,33 @@ class LectureCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                lecture.name,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 30,
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                AutoSizeText(
+                                  lecture.name,
+                                  maxLines: 3,
+                                  maxFontSize: 24,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                '${lecture.videos.length} ${localization.videos}, ${lecture.documents.length} ${localization.documents}',
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 14,
+                                const SizedBox(height: 4),
+                                Text(
+                                  '${lecture.videos.length} ${localization.videos}, ${lecture.documents.length} ${localization.documents}',
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                         GestureDetector(
