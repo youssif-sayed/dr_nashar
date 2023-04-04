@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactUsScreen extends StatelessWidget {
   const ContactUsScreen({super.key});
@@ -46,24 +48,57 @@ class ContactUsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               ContactCard(
-                icon: Icons.email,
-                text: 'moazelsawaf@hotmail.com',
-                backgroundColor: Colors.blue,
+                icon: MaterialCommunityIcons.web,
+                text: 'Dr. Nashar Website',
+                backgroundColor: const Color(0xFF1e1f1f),
                 foregroundColor: Colors.white,
-                onTap: () {},
+                onTap: () => _launchURL('https://www.dr-nashar.com/'),
               ),
               const SizedBox(height: 16),
               ContactCard(
-                icon: Icons.phone,
-                text: '+201026833397',
-                backgroundColor: Colors.green,
+                icon: Fontisto.facebook,
+                text: 'Facebook Page',
+                backgroundColor: const Color(0xFF3982e4),
                 foregroundColor: Colors.white,
-                onTap: () {},
+                onTap: () => _launchURL(
+                    'https://www.facebook.com/drnashar?mibextid=LQQJ4d'),
+              ),
+              const SizedBox(height: 16),
+              ContactCard(
+                icon: FontAwesome.youtube_play,
+                text: 'Youtube Channel',
+                backgroundColor: const Color(0xFFff0000),
+                foregroundColor: Colors.white,
+                onTap: () => _launchURL('https://www.youtube.com/@drnashar'),
+              ),
+              const SizedBox(height: 16),
+              ContactCard(
+                icon: MaterialCommunityIcons.whatsapp,
+                text: 'WhatsApp',
+                backgroundColor: const Color(0xFF0dbf42),
+                foregroundColor: Colors.white,
+                onTap: () => _launchURL(
+                    'https://chat.whatsapp.com/JMFWUpJNrqnJ7x5HfpYCMn'),
+              ),
+              const SizedBox(height: 16),
+              ContactCard(
+                icon: FontAwesome5Brands.telegram,
+                text: 'Telegram',
+                backgroundColor: const Color(0xFF3390ec),
+                foregroundColor: Colors.white,
+                onTap: () => _launchURL('https://t.me/drnasharx'),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  void _launchURL(String url) async {
+    await launchUrl(
+      Uri.parse(url),
+      mode: LaunchMode.externalApplication,
     );
   }
 }
@@ -106,7 +141,7 @@ class ContactCard extends StatelessWidget {
                     text,
                     style: TextStyle(
                       color: foregroundColor,
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
