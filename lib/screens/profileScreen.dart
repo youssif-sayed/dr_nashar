@@ -1,5 +1,6 @@
 import 'package:dr_nashar/components.dart';
 import 'package:dr_nashar/main.dart';
+import 'package:dr_nashar/screens/contact_us_screen.dart';
 import 'package:dr_nashar/screens/student_marks_screen.dart';
 import 'package:dr_nashar/user/UserID.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -136,6 +137,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const LanguagesScreen()));
             }, true),
+
+            const SizedBox(height: 15.0),
+
+            userInfo(
+              Icons.support_agent_rounded,
+              localization.contact_us,
+              const Color(0xFFFF9900),
+              () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const ContactUsScreen(),
+                  ),
+                );
+              },
+              true,
+            ),
 
             const SizedBox(height: 15.0),
 

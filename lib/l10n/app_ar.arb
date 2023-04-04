@@ -87,5 +87,7 @@
   "email_created": "تم إنشاء الحساب بنجاح!",
   "assignments": "الواجبات",
   "quizzes": "الامتحانات",
+  "contact_us": "تواصل معنا",
+  "contact_us_body": "إذا كان لديك أي أسئلة، يرجى الاتصال بنا على:",
   "missing_profile_picture_error": "من فضلك قم بإضافة صورة شخصية"
 }
