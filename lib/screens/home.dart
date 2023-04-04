@@ -246,6 +246,7 @@ class SubjectCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
+                  height: constraints.maxHeight * .35,
                   child: Padding(
                     padding: const EdgeInsets.only(
                         top: 12, bottom: 12, right: 12, left: 8),
