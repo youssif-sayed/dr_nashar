@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:conditional_builder_rec/conditional_builder_rec.dart';
 import 'package:dr_nashar/user/yearsData.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart' show DateFormat;
+
+import '../user/UserID.dart';
 
 class StudentMarksScreen extends StatelessWidget {
   const StudentMarksScreen({super.key});
@@ -333,6 +337,54 @@ class StudentMarksScreen extends StatelessWidget {
                     },
                     itemCount: YearsData.studentQuizzes.length,
                   ),
+                  const SizedBox(height: 10.0),
+                  const Text(
+                    'Attendance',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                    stream: FirebaseFirestore.instance
+                        .collection('attendence')
+                        .where('student_uid', isEqualTo: UserID.userID!.uid)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                            child: Padding(
+                          padding: EdgeInsets.all(16),
+                          child: CircularProgressIndicator(
+                            color: Colors.grey,
+                          ),
+                        ));
+                      }
+                      if (snapshot.data!.docs.isEmpty) {
+                        return const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Text('No attendance found'),
+                          ),
+                        );
+                      }
+                      final attendances = snapshot.data!.docs;
+                      return ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: attendances.length,
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 12),
+                        itemBuilder: (context, index) {
+                          return StudentAttendance(
+                            attendance: attendances[index].data(),
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
@@ -340,5 +392,56 @@ class StudentMarksScreen extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+class StudentAttendance extends StatelessWidget {
+  final Map attendance;
+
+  const StudentAttendance({super.key, required this.attendance});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Icon(
+          Icons.circle,
+          color: Colors.green,
+          size: 20,
+        ),
+        const SizedBox(width: 10.0),
+        Text(
+          _getDayName(attendance['time']),
+          style: const TextStyle(
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(width: 10.0),
+        Expanded(
+          child: Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: Text(
+              _formatAttendanceDate(attendance['time']),
+              style: const TextStyle(
+                fontSize: 18.0,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _getDayName(Timestamp timestamp) {
+    final date = timestamp.toDate();
+    return DateFormat.EEEE().format(date);
+  }
+
+  String _formatAttendanceDate(Timestamp timestamp) {
+    final date = timestamp.toDate();
+
+    return DateFormat.yMd().add_jm().format(date);
   }
 }
