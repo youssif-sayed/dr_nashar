@@ -98,7 +98,7 @@ class YearsData {
         .collection('lectures')
         .get()
         .then((value) {
-          print(value.docs.length);
+      print(value.docs.length);
       subjectData =
           value.docs.map((e) => LectureModel.fromJson(e.data())).toList();
     });

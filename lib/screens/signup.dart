@@ -757,6 +757,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (formState.validate()) {
         formState.save();
 
+        if (result == null) {
+          setState(() {
+            _errorText =
+                AppLocalizations.of(context)!.missing_profile_picture_error;
+          });
+          return;
+        }
+
         final deviceInfoPlugin = DeviceInfoPlugin();
         final deviceInfo = await deviceInfoPlugin.deviceInfo;
         if (Platform.isAndroid) UserID.userdata['UIDV'] = deviceInfo.data['id'];
@@ -765,7 +773,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         }
 
         Uint8List? file = result?.files.first.bytes;
-        String fileName = "users/${_email}.${result?.files.first.extension}";
+        String fileName = "users/$_email.${result?.files.first.extension}";
 
         UserID.userdata['photo'] = fileName;
         UserID.userdata['firstName'] = _firstName;

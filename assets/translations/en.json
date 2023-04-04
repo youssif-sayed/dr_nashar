@@ -1,5 +1,5 @@
 {
-  "intro_screen_text" : "Start studying math today!",
+  "intro_screen_text": "Start studying math today!",
   "sign_in": "Sign In",
   "sign_up": "Sign Up",
   "welcome": "Welcome,",
@@ -86,5 +86,11 @@
   "account_already_exist": "The account already exists for that email.",
   "email_created": "Email created successfully!",
   "assignments": "Assignments",
-  "quizzes": "Quizzes"
+  "quizzes": "Quizzes",
+  "contact_us": "Contact Us",
+  "contact_us_body": "If you have any questions or concerns, please contact us at:",
+  "missing_profile_picture_error": "Please upload your profile picture",
+  "attendance": "Attendance",
+  "no_attendance_found": "No attendance found",
+  "no_notifications_yet": "No notifications yet"
 }

@@ -156,26 +156,26 @@ class _LoadingPayScreenState extends State<LoadingPayScreen> {
                             {
                               PaymentCubit.get(context).getFirstToken(
                                   YearsData.subjectData[YearsData.lectureNumber]
-                                      .price.toString(),
+                                      .price
+                                      .toString(),
                                   UserID.userdata['firstName'],
                                   UserID.userdata['lastName'],
                                   UserID.userdata['email'],
                                   UserID.userdata['phone'],
-                              true
-                              );
+                                  true);
                             }
                             break;
                           case payOption.fawrey:
                             {
                               PaymentCubit.get(context).getFirstToken(
                                   YearsData.subjectData[YearsData.lectureNumber]
-                                      .price.toString(),
+                                      .price
+                                      .toString(),
                                   UserID.userdata['firstName'],
                                   UserID.userdata['lastName'],
                                   UserID.userdata['email'],
                                   UserID.userdata['phone'],
-                                  false
-                              );
+                                  false);
                             }
                             break;
                           case payOption.vfCash:
@@ -192,7 +192,8 @@ class _LoadingPayScreenState extends State<LoadingPayScreen> {
                         child: Center(
                             child: Text(
                           localization.pay,
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 20),
                         )),
                       )),
                 ],
@@ -202,8 +203,7 @@ class _LoadingPayScreenState extends State<LoadingPayScreen> {
           listener: (context, state) {
             if (state is PaymentRequestSuccessState) {
               Navigator.of(context).pushReplacementNamed('PayScreen');
-            }
-            else if (state is RefCodeSuccessState){
+            } else if (state is RefCodeSuccessState) {
               Navigator.of(context).pushReplacementNamed('PayRefCodeScreen');
             }
           },

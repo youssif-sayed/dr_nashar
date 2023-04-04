@@ -1,4 +1,3 @@
-import 'package:dr_nashar/main.dart';
 import 'package:dr_nashar/screens/home.dart';
 import 'package:dr_nashar/screens/profileScreen.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +15,8 @@ class _LayoutScreenState extends State<LayoutScreen> {
 
   // Screen
   List<Widget> screens = [
-    HomeScreen(),
-    ProfileScreen(),
+    const HomeScreen(),
+    const ProfileScreen(),
   ];
 
   // Screen Titles
@@ -50,7 +49,7 @@ class _LayoutScreenState extends State<LayoutScreen> {
         ],
         centerTitle: true,
         backgroundColor: Colors.black,
-        title: Container(
+        title: SizedBox(
           height: 50,
           child: Hero(
               tag: 'logo',

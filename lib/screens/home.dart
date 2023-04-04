@@ -1,8 +1,6 @@
 // Flutter imports:
 import 'dart:ui';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dr_nashar/modules/payment/cubit/cubit.dart';
 import 'package:dr_nashar/user/yearsData.dart';
 import 'package:dr_nashar/utils/gaps.dart';
 import 'package:flutter/material.dart';
@@ -78,17 +76,15 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                width: MediaQuery.of(context).size.width ,
+                width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: const Color(0xff098FEA),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                   children: [
                     Container(
-
                       height: 150,
                       padding: const EdgeInsets.only(top: 30, left: 10),
                       child: Column(
@@ -165,7 +161,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Text(
                                 grade,
                                 style: TextStyle(
-
                                   color: selectedYear == gradeValue
                                       ? Colors.white
                                       : Colors.black,
@@ -251,9 +246,10 @@ class SubjectCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-
+                  height: constraints.maxHeight * .35,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 12,bottom: 12,right: 12,left: 8),
+                    padding: const EdgeInsets.only(
+                        top: 12, bottom: 12, right: 12, left: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -286,7 +282,8 @@ class SubjectCard extends StatelessWidget {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(width: 2)),
-                              padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 5),
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
                                 child: Row(

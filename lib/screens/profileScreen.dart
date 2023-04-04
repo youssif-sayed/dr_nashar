@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dr_nashar/components.dart';
 import 'package:dr_nashar/main.dart';
+import 'package:dr_nashar/screens/contact_us_screen.dart';
 import 'package:dr_nashar/screens/student_marks_screen.dart';
 import 'package:dr_nashar/user/UserID.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -51,12 +51,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         end: Alignment.bottomRight,
                         colors: UserID.userdata['gender'] == 'male'
                             ? [
-                                Color(0xff08CE5D),
-                                Color(0xff098FEA),
+                                const Color(0xff08CE5D),
+                                const Color(0xff098FEA),
                               ]
                             : [
-                                Color(0xfff953c6),
-                                Color(0xffb91d73),
+                                const Color(0xfff953c6),
+                                const Color(0xffb91d73),
                               ],
                       ),
                       borderRadius: BorderRadius.circular(15.0)),
@@ -140,6 +140,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             const SizedBox(height: 15.0),
 
+            userInfo(
+              Icons.support_agent_rounded,
+              localization.contact_us,
+              const Color(0xFFFF9900),
+              () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const ContactUsScreen(),
+                  ),
+                );
+              },
+              true,
+            ),
+
+            const SizedBox(height: 15.0),
+
             userInfo(Icons.delete_rounded, 'Delete Account', Colors.red,
                 () async {
               showDialog(
@@ -147,7 +163,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 builder: (context) {
                   return StatefulBuilder(builder: (context, setState) {
                     return AlertDialog(
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(12.0))),
                       title: const Text(
@@ -156,7 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       content: TextField(
                         keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Password',
                         ),
@@ -175,7 +191,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                         ),
                         isLoading
-                            ? Container(
+                            ? const SizedBox(
                                 height: 25,
                                 width: 25,
                                 child: CircularProgressIndicator(
@@ -272,21 +288,41 @@ class LanguagesScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     ListTile(
-                      trailing: language.value == 'en'?Icon(Icons.check_rounded,color: Colors.green,):null,
-
+                      trailing: language.value == 'en'
+                          ? const Icon(
+                              Icons.check_rounded,
+                              color: Colors.green,
+                            )
+                          : null,
                       onTap: () {
                         language.value = 'en';
                       },
-                      title: const Text('English',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.blueAccent),),
+                      title: const Text(
+                        'English',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueAccent),
+                      ),
                     ),
-                    Divider(),
+                    const Divider(),
                     ListTile(
-                      trailing: language.value == 'ar'?Icon(Icons.check_rounded,color: Colors.green,):null,
+                      trailing: language.value == 'ar'
+                          ? const Icon(
+                              Icons.check_rounded,
+                              color: Colors.green,
+                            )
+                          : null,
                       onTap: () {
                         language.value = 'ar';
                       },
-
-                      title: const Text('اللغة العربية',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.blueAccent),),
+                      title: const Text(
+                        'اللغة العربية',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueAccent),
+                      ),
                     ),
                   ],
                 ),
