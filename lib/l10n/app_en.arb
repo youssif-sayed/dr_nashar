@@ -86,5 +86,6 @@
   "account_already_exist": "The account already exists for that email.",
   "email_created": "Email created successfully!",
   "assignments": "Assignments",
-  "quizzes": "Quizzes"
+  "quizzes": "Quizzes",
+  "missing_profile_picture_error": "Please upload your profile picture"
 }

@@ -757,6 +757,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (formState.validate()) {
         formState.save();
 
+        if (result == null) {
+          setState(() {
+            _errorText =
+                AppLocalizations.of(context)!.missing_profile_picture_error;
+          });
+          return;
+        }
+
         final deviceInfoPlugin = DeviceInfoPlugin();
         final deviceInfo = await deviceInfoPlugin.deviceInfo;
         if (Platform.isAndroid) UserID.userdata['UIDV'] = deviceInfo.data['id'];
