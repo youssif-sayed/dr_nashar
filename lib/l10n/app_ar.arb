@@ -91,5 +91,6 @@
   "contact_us_body": "إذا كان لديك أي أسئلة، يرجى الاتصال بنا على:",
   "missing_profile_picture_error": "من فضلك قم بإضافة صورة شخصية",
   "attendance": "الحضور",
-  "no_attendance_found": "لا يوجد حضور"
+  "no_attendance_found": "لا يوجد حضور",
+  "no_notifications_yet": "لا يوجد إشعارات"
 }
