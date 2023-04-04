@@ -88,5 +88,6 @@
   "assignments": "Assignments",
   "quizzes": "Quizzes",
   "contact_us": "Contact Us",
-  "contact_us_body": "If you have any questions or concerns, please contact us at:"
+  "contact_us_body": "If you have any questions or concerns, please contact us at:",
+  "missing_profile_picture_error": "Please upload your profile picture"
 }
