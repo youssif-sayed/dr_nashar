@@ -15,6 +15,7 @@ class PaymentCubit extends Cubit<PaymentState> {
         url: "auth/tokens", data: {"api_key": PayMobApiKey}).then((value) {
       PayMobFirstToken = value.data['token'];
       print('First token : $PayMobFirstToken');
+
       price = '${price}00';
       getOrderID(price, firstname, lastname, email, phone, isCard);
       emit(PaymentSuccessState());
@@ -33,6 +34,7 @@ class PaymentCubit extends Cubit<PaymentState> {
       "currency": "EGP",
     }).then((value) {
       PayMobOrderID = value.data['id'].toString();
+      print(price);
       print('OrderID : $PayMobOrderID');
       if (isCard) {
         getFinalTokenCard(price, firstname, lastname, email, phone);

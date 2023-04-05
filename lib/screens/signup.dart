@@ -31,7 +31,8 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   bool isLoading = false;
   double progress = 0;
-  bool _ismale = true;
+  bool _ismale = false;
+  bool _isfemale= false;
   bool _isonsite = true;
   String _email = '';
   String _password = '';
@@ -41,7 +42,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String _fullName = '';
   String _firstName = '';
   String _lastName = '';
-  String _gender = 'male';
+  String _gender = '';
   String _phone = '';
   String _fatherPhone = '';
   String _motherPhone = '';
@@ -262,6 +263,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           onPressed: () {
                                             setState(() {
                                               _ismale = true;
+                                              _isfemale=false;
                                               _gender = 'male';
                                             });
                                           },
@@ -296,14 +298,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           onPressed: () {
                                             setState(() {
                                               _ismale = false;
+                                              _isfemale=true;
                                               _gender = 'female';
                                             });
                                           },
                                           child: Container(
                                             decoration: BoxDecoration(
-                                                color: _ismale
-                                                    ? Colors.grey
-                                                    : Colors.amberAccent,
+                                                color: _isfemale
+                                                    ? Colors.amberAccent
+                                                    : Colors.grey,
                                                 borderRadius:
                                                     BorderRadius.circular(250)),
                                             child: Image.asset(
@@ -315,9 +318,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         Text(
                                           localization.female,
                                           style: TextStyle(
-                                              color: _ismale
-                                                  ? Colors.grey
-                                                  : Colors.amberAccent,
+                                              color: _isfemale
+                                                  ? Colors.amberAccent
+                                                  : Colors.grey,
                                               fontSize: 25),
                                         )
                                       ],

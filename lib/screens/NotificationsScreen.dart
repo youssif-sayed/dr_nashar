@@ -53,6 +53,7 @@ class NotificationsScreen extends StatelessWidget {
                 title: notification['title'],
                 body: notification['body'],
                 imageUrl: notification['imageUrl'],
+                context: context
               );
             },
           );
@@ -65,8 +66,10 @@ class NotificationsScreen extends StatelessWidget {
     required String title,
     required String body,
     String? imageUrl,
+    context
   }) {
     return Container(
+      constraints: BoxConstraints(maxWidth: 600),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -79,56 +82,63 @@ class NotificationsScreen extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
+      child: Column(
+
         children: [
-          ShaderMask(
-            blendMode: BlendMode.srcIn,
-            shaderCallback: (Rect bounds) => const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Color(0xff08CE5D),
-                Color(0xff098FEA),
-              ],
-            ).createShader(bounds),
-            child: const Icon(Icons.notifications_active),
-          ),
-          const SizedBox(width: 20),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  body,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w300,
-                    fontSize: 15.0,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 20.0),
           if (imageUrl != null)
             ClipRRect(
-              borderRadius: BorderRadius.circular(150),
+
               child: CachedNetworkImage(
                 imageUrl: imageUrl,
-                width: 60,
-                height: 60,
+                width: MediaQuery.of(context).size.width/1.5,
+
                 fit: BoxFit.cover,
               ),
             ),
+          const SizedBox(height: 12,),
+          Row(
+            children: [
+              ShaderMask(
+                blendMode: BlendMode.srcIn,
+                shaderCallback: (Rect bounds) => const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xff08CE5D),
+                    Color(0xff098FEA),
+                  ],
+                ).createShader(bounds),
+                child: const Icon(Icons.notifications_active),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      body,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w300,
+                        fontSize: 15.0,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 20.0),
+
+            ],
+          ),
         ],
       ),
     );

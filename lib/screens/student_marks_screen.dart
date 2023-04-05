@@ -30,7 +30,7 @@ class StudentMarksScreen extends StatelessWidget {
       ),
       builder: (context) {
         return Scaffold(
-          backgroundColor: CupertinoColors.lightBackgroundGray,
+          backgroundColor: CupertinoColors.white,
           appBar: AppBar(
             centerTitle: true,
             backgroundColor: Colors.black,

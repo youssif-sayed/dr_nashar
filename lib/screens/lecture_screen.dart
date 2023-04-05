@@ -72,6 +72,7 @@ class _LectureScreenState extends State<LectureScreen> {
   void dispose() {
     videoPlayerController.dispose();
     chewieController?.dispose();
+    chewieController?.pause();
     super.dispose();
   }
 
@@ -157,6 +158,7 @@ class _LectureScreenState extends State<LectureScreen> {
                                             selectedVideoIndex = index;
                                           },
                                         );
+                                        chewieController?.pause();
                                         videoPlayerController =
                                             VideoPlayerController.network(
                                                 '${video.url}.mp4')

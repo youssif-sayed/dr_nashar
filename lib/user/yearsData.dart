@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dr_nashar/const/payMob.dart';
 import 'package:dr_nashar/user/UserID.dart';
 
 import '../models/video_model.dart';
@@ -87,6 +88,18 @@ class YearsData {
     });
 
     return true;
+  }
+
+  static Future<void> get_intgrationID() async {
+    await FirebaseFirestore.instance
+        .collection("payments")
+        .doc('integrationID')
+        .get()
+        .then((doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      IntgrationIDKiosk = data['kiosk'];
+      IntgrationIDCard = data['card'];
+    });
   }
 
   static Future<bool> get_subject_data() async {
@@ -247,12 +260,13 @@ class YearsData {
     return (to.difference(from).inHours / 24).round();
   }
 
-  static void update_code_data(date, uid, code, index, map) async {
+  static void update_code_data(date, uid, code, index, map,lid) async {
     var updatedmap = map;
     Timestamp timeStamp = Timestamp.fromDate(date);
     updatedmap['used'] = true;
     updatedmap['UID'] = uid;
     updatedmap['startDate'] = timeStamp;
+    updatedmap['lectureID'] =lid;
     await FirebaseFirestore.instance
         .collection('codes')
         .doc('general')

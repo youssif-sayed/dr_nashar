@@ -7,6 +7,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../user/yearsData.dart';
+
 class PayScreen extends StatefulWidget {
   const PayScreen({Key? key}) : super(key: key);
 
@@ -113,7 +115,7 @@ class _PayScreenState extends State<PayScreen> {
     Map<String, dynamic> codeMap = {
       'used': false,
       'UID': '',
-      'expireDate': 15,
+      'expireDate': 15,'price':YearsData.subjectData[YearsData.lectureNumber].price.toInt().toString(),
     };
     Map<String, dynamic> newMap = {};
     int code = random.nextInt(999999) + 100000;

@@ -70,6 +70,9 @@ class _MyAppState extends State<MyApp> {
       valueListenable: language,
       builder: (context, lang, __) {
         return MaterialApp(
+          theme: ThemeData(
+            fontFamily: language.value == 'ar'?'shamel':null,
+          ),
           debugShowCheckedModeBanner: false,
           supportedLocales: L10n.all,
           locale: Locale(lang),

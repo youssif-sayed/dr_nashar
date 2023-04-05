@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dr_nashar/const/payMob.dart';
 import 'package:dr_nashar/user/yearsData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -72,6 +73,8 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
               print('data:$data');
               UserID.userdata = data;
               YearsData.set_defult_year();
+              await YearsData.get_intgrationID();
+              print(IntgrationIDCard);
               bool isyears = await YearsData.get_years_data();
               print(isyears);
               if (mounted) {
