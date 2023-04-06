@@ -25,9 +25,9 @@ class _QuizScreenState extends State<QuizScreen> {
   List<QuestionModel> quizQuestions = [];
   int rightAnswers = 0;
   int wrongAnswers = 0;
-  Map<String, dynamic> finalAnswers = {
+  late Map<String, dynamic> finalAnswers = {
     UserID.userID!.uid: {
-      'quiz_name': '${YearsData.selectedSubject} quiz',
+      'quiz_name': '${widget.lecture.name} quiz',
       'quiz': [],
       'right_answers': 0,
       'wrong_answers': 0,
@@ -300,7 +300,6 @@ class _QuizScreenState extends State<QuizScreen> {
                                               ['total_marks'] =
                                           '${total + widget.lecture.quiz!.stepsMarks}';
 
-                                      print(finalAnswers);
                                       showLoadingDialog(context);
                                       YearsData.sendQuiz(quiz: finalAnswers);
                                       Navigator.of(context).pop();

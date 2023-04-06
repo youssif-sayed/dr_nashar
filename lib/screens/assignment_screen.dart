@@ -30,11 +30,10 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   int wrongAnswers = 0;
   late Map<String, dynamic> finalAnswers = {
     UserID.userID!.uid: {
-      'assignment_name': '${YearsData.selectedSubject} assignment',
+      'assignment_name': '${widget.lecture.name} assignment',
       'assignment': [],
       'right_answers': 0,
       'wrong_answers': 0,
-      'quiz_marks': '',
       'total_marks': '',
     },
   };
@@ -48,6 +47,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.lecture.name);
     var localization = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.black,
@@ -273,10 +273,8 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                                             assignmentMark +=
                                                 assignmentQuestions[i].mark;
                                             rightAnswers += 1;
-                                            print('right');
                                           } else {
                                             wrongAnswers += 1;
-                                            print('wrong');
                                           }
                                         }
 
@@ -286,14 +284,11 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                                             ['wrong_answers'] = wrongAnswers;
 
                                         Navigator.of(context).pop();
-                                        print(answersIndexes);
                                         try {
                                           //Submission
                                           for (int i = 0;
                                               i < assignmentQuestions.length;
                                               i++) {
-                                            print(answersIndexes[
-                                                assignmentQuestions[i].id]);
                                             finalAnswers[UserID.userID!.uid]
                                                     ['assignment']
                                                 .add({
